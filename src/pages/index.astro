@@ -1,0 +1,148 @@
+---
+import { Image } from 'astro:assets'
+
+import { Quote } from 'astro-pure/advanced'
+import { PostPreview } from 'astro-pure/components/pages'
+import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
+import { Button, Card, Icon, Label } from 'astro-pure/user'
+import PageLayout from '@/layouts/BaseLayout.astro'
+import ProjectCard from '@/components/home/ProjectCard.astro'
+import Section from '@/components/home/Section.astro'
+import SkillLayout from '@/components/home/SkillLayout.astro'
+import avatar from '@/assets/avatar.png'
+import config from '@/site-config'
+
+const languages = [
+  'Python',
+  'C',
+  'C++',
+  'Java',
+  'Html',
+  'JavaScript',
+  'CSS',
+  'SQL',
+  'PostgreSQL',
+]
+const frontend = [
+  'TypeScript',
+  'React',
+  'Vue',
+  'Pinia',
+  'Vite',
+  'Webpack',
+  'Astro',
+  'Hexo'
+]
+const backend = ['Nodejs', 'Nginx', 'NextJS']
+const others = ['Qt', 'Android']
+
+const websiteList = [
+  {
+    href: 'https://status.lazy-boy-acmer.cn/',
+    heading: 'Website status',
+    subheading: 'Record status of websites',
+    imagePath: '/src/assets/projects/site-status.png'
+  },
+  {
+    href: 'https://umami.santisify.top',
+    heading: 'Website data',
+    subheading: 'Umami makes it easy to collect, analyze, and understand your website data',
+    imagePath: '/src/assets/projects/site-data.png'
+  }
+]
+
+const MAX_POSTS = 10
+const allPosts = await getBlogCollection()
+const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+---
+<PageLayout meta={{ title: 'Home' }} highlightColor="#659EB9">
+  <main class="flex w-full flex-col items-center">
+    <section class="animate mb-10 flex flex-col items-center gap-y-7" id="content-header">
+      <Image
+        src={avatar}
+        alt="profile"
+        class="h-28 w-auto rounded-full border p-1"
+        loading="eager"
+      />
+
+      <div class="flex flex-col items-center gap-y-4">
+        <h1 class="text-3xl font-bold">{config.author}</h1>
+        <div class="flex flex-wrap justify-center gap-x-7 gap-y-3">
+          <Label title="成都">
+            <Icon name="location" class="size-5" slot="icon" />
+          </Label>
+          <Label title="Github" as="a" href="https://github.com/santisify" target="_blank">
+            <Icon name="github" class="size-5" slot="icon" />
+          </Label>
+        </div>
+      </div>
+    </section>
+
+    <div id="content" class="animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6">
+      <Section title="About">
+        <p class="text-muted-foreground">Developer / Student</p>
+        <p class="text-muted-foreground">
+          Full-time undergraduate student majoring in Computer Science, skilled in big data and
+          full-stack web development.
+        </p>
+        <Button title="More about me" class="w-fit self-end" href="/about" style="ahead " />
+      </Section>
+      {
+        allPostsByDate.length > 0 && (
+          <Section title="Posts">
+            <ul class="flex flex-col gap-y-1.5 sm:gap-y-2">
+              {allPostsByDate.map((p) => (
+                <li class="flex flex-col gap-x-2 sm:flex-row">
+                  <PostPreview post={p} />
+                </li>
+              ))}
+            </ul>
+            <Button title="More posts" class="w-fit self-end" href="/blog" style="ahead" />
+          </Section>
+        )
+      }
+      <Section title="Education">
+        <Card
+          as="a"
+          heading="Aba Teacher University"
+          subheading="Full-time undergraduate student"
+          date="August 2022 - July 2026"
+          href="http://www.abtu.edu.cn/"
+        />
+      </Section>
+
+      <Section title="Website List">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {
+            websiteList.map((site) => (
+              <ProjectCard
+                href={site.href}
+                heading={site.heading}
+                subheading={site.subheading}
+                imagePath={site.imagePath}
+              />
+            ))
+          }
+        </div>
+      </Section>
+
+      <!--<Section title="Certifications">-->
+      <!--  <Card-->
+      <!--    as="a"-->
+      <!--    heading="Mathematical Modeling Competition"-->
+      <!--    subheading='Won the first prize of the national award in the National Mathematical Modeling Competition of "Higher Education Society"'-->
+      <!--    date="October 2023"-->
+      <!--    href="http://www.mcm.edu.cn"-->
+      <!--  />-->
+      <!--</Section>-->
+
+      <Section title="Skills">
+        <SkillLayout title="Languages" skills={languages} />
+        <SkillLayout title="Frontend" skills={frontend} />
+        <SkillLayout title="Backend" skills={backend} />
+        <SkillLayout title="Others" skills={others} />
+      </Section>
+    </div>
+    <Quote class='mt-12' />
+  </main>
+</PageLayout>
