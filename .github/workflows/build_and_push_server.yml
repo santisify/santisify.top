@@ -23,12 +23,19 @@ jobs:
       - name: 构建项目
         run: bun run build
 
+      - name: 设置 SSH 密钥
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
       - name: 推送到服务器
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
+          port: 22
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "dist/"
+          source: "dist/*"
           target: "${{ secrets.SERVER_TARGET_PATH }}"
           overwrite: true
+          strip_components: 1
