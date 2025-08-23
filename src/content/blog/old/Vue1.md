@@ -11,16 +11,16 @@ language: 'zh-cn'
   
 <strong>Vue3对Vue2向下兼容，但部分不兼容</strong>  
   
-# 语法  
+## 语法  
   
-## 文本插值：  
+### 文本插值：  
   
 在`HTML`中插入文本  
   
 ```html  <span>Message: {{ msg }}</span>    
 ```  
   
-## HTML插值：  
+### HTML插值：  
   
 上述操作只能插入纯文本，可以使用`v-html`插入`html`文本  
   
@@ -28,7 +28,7 @@ language: 'zh-cn'
 <p>Using v-html directive: <span v-html="rawHtml"></span></p>    
 ```  
   
-## Attribute **绑定**  
+### Attribute **绑定**  
   
 对使用的元素属性进行绑定  想响应式绑定一个Attribute,但又不能使用`{{  }}`时,可使用`v-bind`指令：  
   
@@ -78,7 +78,7 @@ language: 'zh-cn'
 当`isButtonDisabled`为[真值](https://developer.mozilla.org/en-US/docs/Glossary/Truthy)或一个空字符串 (即  
 `<button disabled="">`) 时，元素会包含这个`disabled`  attribute。而当其为其他[假值](https://developer.mozilla.org/en-US/docs/Glossary/Falsy)时 attribute 将被忽略。  
   
-## 动态绑定多个值  
+### 动态绑定多个值  
   
 如果你有像这样的一个包含多个 attribute 的 JavaScript 对象：  
   
@@ -96,7 +96,7 @@ const objectOfAttrs = {
 <div v-bind="objectOfAttrs"></div>    
 ```  
   
-## 使用 JavaScript 表达式
+### 使用 JavaScript 表达式
 至此，我们仅在模板中绑定了一些简单的属性名。但是 Vue 实际上在所有的数据绑定中都支持完整的 JavaScript 表达式：  
   
 ```html
@@ -111,7 +111,7 @@ const objectOfAttrs = {
 - 在文本插值中 (双大括号)  
 - 在任何 Vue 指令 (以`v-`开头的特殊 attribute) attribute 的值中  
   
-## 仅支持表达式
+### 仅支持表达式
   
 每个绑定仅支持**单一表达式**，也就是一段能够被求值的 JavaScript 代码。一个简单的判断方法是是否可以合法地写在`return`后面。  
   
@@ -135,7 +135,7 @@ const objectOfAttrs = {
 }    
 ```  
   
-### [调用函数](https://cn.vuejs.org/guide/essentials/template-syntax#calling-functions)  
+#### [调用函数](https://cn.vuejs.org/guide/essentials/template-syntax#calling-functions)  
   
 可以在绑定的表达式中使用一个组件暴露的方法：  
   
@@ -147,13 +147,13 @@ const objectOfAttrs = {
   
 Tip: 绑定在表达式中的方法在组件每次更新时都会被重新调用，因此**不**应该产生任何副作用，比如改变数据或触发异步操作。  
   
-## 受限的全局访问
+### 受限的全局访问
   
 模板中的表达式将被沙盒化，仅能够访问到有限的全局对象列表。该列表中会暴露常用的内置全局对象，比如`Math`和`Date`。  没有显式包含在列表中的全局对象将不能在模板内表达式中访问，例如用户附加在`window`上的属性。然而，你也可以自行在`app.config.globalProperties`上显式地添加它们，供所有的  Vue 表达式使用。  
   
-# 响应式基础  
+## 响应式基础  
   
-## ref()  
+### ref()  
   
 组合式API中,使用`ref()`函数声明响应式状态  
   
@@ -187,7 +187,7 @@ const num = ref(100);
   
 > `vue2`中使用`set()`实现响应式，而在`vue3`中使用`ref()`，并且`vue3`不兼容`set()`函数  
   
-## 深层响应性  
+### 深层响应性  
   
 Ref 可以持有任何类型的值，包括深层嵌套的对象、数组或者 JavaScript 内置的数据结构，比如`Map`。  
   
@@ -208,7 +208,7 @@ obj.value.nested.count++
 }    
 ```  
   
-## reactive()  
+### reactive()  
   
 > `reactive()`是响应式的另一种**API**，`reactive()`可使对象本身具有响应性  
   
@@ -228,9 +228,9 @@ const state = reactive({count: 0})
 </template>  
 ```  
   
-# 计算属性  
+## 计算属性  
   
-## 基础示例  
+### 基础示例  
   
 ```html
 <template>  
@@ -254,7 +254,7 @@ const state = reactive({count: 0})
 在上述示例中，可以发现计算是依靠`author.books`的大小确定的，如果我在模板中多次使用这样的判断，是否显得过于臃肿。  
 对于这样的判断可以引入`computed()`.  
   
-## computed()  
+### computed()  
   
 ```html
 <script setup>  
@@ -288,7 +288,7 @@ const state = reactive({count: 0})
 Vue 的计算属性会自动追踪响应式依赖。它会检测到`publishedBooksMessage`依赖于`author.books`，所以当`author.books`改变时，任何依赖于  
 `publishedBooksMessage`的绑定都会同时更新。  
   
-## 可写计算属性  
+### 可写计算属性  
   
 计算属性默认是只读的。当你尝试修改一个计算属性时，你会收到一个运行时警告。只在某些特殊场景中你可能才需要用到“可写”的属性，你可以通过同时提供  
 getter 和 setter 来创建：  
@@ -324,11 +324,11 @@ getter 和 setter 来创建：
   
 在上述示例中，当运行`fullName.value = "Jack Doe";`时，`firstName`和`lastName`也会随之更新。  
   
-# 类与样式绑定  
+## 类与样式绑定  
   
-## 绑定HTML class  
+### 绑定HTML class  
   
-### 绑定对象  
+#### 绑定对象  
   
 绑定对象一般使用`v-bind`，比如绑定`class`一般写为`v-bind:class` 简写为`:class`,对其传递对象可动态切换class：  
   
@@ -415,7 +415,7 @@ const obj = computed(() => ({
 <div :class="classObject"></div>  
 ```  
   
-### 绑定数组  
+#### 绑定数组  
   
 我们可以给`:class`绑定一个数组来渲染多个 CSS class：  
   
@@ -448,7 +448,7 @@ const errorClass = ref('text-danger')
 <div :class="[{ [activeClass]: isActive }, errorClass]"></div>  
 ```  
   
-### 在组件上使用  
+#### 在组件上使用  
   
 > 本节假设你已经有[Vue 组件](https://cn.vuejs.org/guide/essentials/component-basics.html)的知识基础。如果没有，你也可以暂时跳过，以后再阅读。  
   
@@ -507,9 +507,9 @@ Class 的绑定也是同样的：
   
 你可以在透传 Attribute一章中了解更多组件的 attribute 继承的细节。  
   
-## 绑定内联样式  
+### 绑定内联样式  
   
-### 绑定对象  
+#### 绑定对象  
   
 `:style`支持绑定 JavaScript 对象值，对应的是HTML 元素的`style`属性：  
   
@@ -543,7 +543,7 @@ const styleObject = reactive({
   
 同样的，如果样式对象需要更复杂的逻辑，也可以使用返回样式对象的计算属性。  
   
-### 绑定数组  
+#### 绑定数组  
   
 我们还可以给`:style`绑定一个包含多个样式对象的数组。这些对象会被合并后渲染到同一元素上：  
   
@@ -551,12 +551,12 @@ const styleObject = reactive({
 <div :style="[baseStyles, overridingStyles]"></div>  
 ```  
   
-### 自动前缀  
+#### 自动前缀  
   
 当你在`:style`中使用了需要[浏览器特殊前缀](https://developer.mozilla.org/en-US/docs/Glossary/Vendor_Prefix)的 CSS  
 属性时，Vue 会自动为他们加上相应的前缀。Vue 是在运行时检查该属性是否支持在当前浏览器中使用。如果浏览器不支持某个属性，那么将尝试加上各个浏览器特殊前缀，以找到哪一个是被支持的。  
   
-### 样式多值  
+#### 样式多值  
   
 你可以对一个样式属性提供多个 (不同前缀的) 值，举例来说：  
   

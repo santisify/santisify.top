@@ -41,11 +41,6 @@ export const theme: ThemeUserConfig = {
     //   attrs: { name: 'telegram:channel', content: '@cworld0_cn' },
     //   content: ''
     // }
-    {
-      tag: 'meta',
-      attrs: {name: 'baidu-site-verification', content: 'codeva-JgS539fVDf'},
-      content: 'codeva-JgS539fVDf'
-    }
   ],
   customCss: [],
 

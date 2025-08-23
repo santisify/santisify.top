@@ -6,8 +6,8 @@ description: 'API设计小Tips'
 heroImage: { src: './iv/apifox.svg', color: '#4891B2' }
 language: 'zh-cn'
 ---
-# API请求
-## HTTP动词
+## API请求
+### HTTP动词
 ```http
 GET:     读取（READ）
 POST:    新建（CREATE）
@@ -16,7 +16,7 @@ DELETE:  删除（DELETE）
 ```
 > PATCH 部分更新
 
-## URL宾语
+### URL宾语
 **宾语** 顾名思义，是一个名词，`URL`作为`API`的宾语是作用`HTTP`的对象，普遍以复数形式存在.
 
 以下为错误示例：
@@ -33,7 +33,7 @@ DELETE:  删除（DELETE）
 /cars
 ```
 
-### 煮个栗子
+#### 煮个栗子
 ```http
  GET    /zoos：列出所有动物园
  POST   /zoos：新建一个动物园
@@ -45,7 +45,7 @@ DELETE:  删除（DELETE）
  DELETE /zoos/ID/animals/ID：删除某个指定动物园的指定动物
 ```
 
-## 过滤（filter）
+### 过滤（filter）
 通常在数据库中存储着许多数据，我们不可能将所有数据返回给用户，而是选择性的将一些数据返回给用户，而`API`就应该提供一些参数，过滤返回的结果。
 
 下面是一些常见的参数。
@@ -59,7 +59,7 @@ DELETE:  删除（DELETE）
 
 参数的设计允许存在冗余，即允许API路径和URL参数偶尔有重复。比如，`GET /zoo/ID/animals` 与 `GET /animals?zoo_id=ID` 的含义是相同的。
 
-## 不符合 CRUD 情况的 RESTful API
+### 不符合 CRUD 情况的 RESTful API
 在实际资源操作中，总会有一些不符合 CRUD 的情况，一般有几种处理方法。
 - 1、使用 POST，为需要的动作增加一个 endpoint，使用 POST 来执行动作，比如: POST /resend 重新发送邮件。
 - 2、增加控制参数，添加动作相关的参数，通过修改参数来控制动作。比如一个博客网站，会有把写好的文章“发布”的功能，可以用上面的 `POST /articles/{:id}/publish` 方法，也可以在文章中增加 `published:boolean` 字段，发布的时候就是更新该字段 `PUT /articles/{:id}?published=true`
@@ -67,24 +67,24 @@ DELETE:  删除（DELETE）
 比如“喜欢”一个 gist，就增加一个 `/gists/:id/star` 子资源，然后对其进行操作：“喜欢”使用`PUT /gists/:id/star`，“取消喜欢”使用 `DELETE /gists/:id/star`。
 另外一个例子是 Fork，这也是一个动作，但是在 gist 下面增加 forks资源，就能把动作变成 CRUD 兼容的：`POST /gists/:id/forks` 可以执行用户 fork 的动作。
 
-## 动词覆盖，应对服务器不完全支持 HTTP 的情况
+### 动词覆盖，应对服务器不完全支持 HTTP 的情况
 有些客户端只能使用GET和POST这两种方法。服务器必须接受POST模拟其他三个方法（PUT、PATCH、DELETE）。
 这时，客户端发出的 HTTP 请求，要加上X-HTTP-Method-Override属性，告诉服务器应该使用哪一个动词，覆盖POST方法。
 
-# API响应
+## API响应
 
-## 状态码
-### 2xx 状态码
+### 状态码
+#### 2xx 状态码
 `200`状态码也称成功状态码，但是对于不同的方法又有不同的状态码
 - GET --> `200` OK
 - POST--> `201` Created（表示生成新的资源）
 - PUT --> `200` OK
 - PATCH --> `200` OK
 - DELETE --> `204` No Content（表示该资源已不存在）
-### 3xx 状态码
+#### 3xx 状态码
 在**Restful API**中用不上，永久重定向（`301`）、暂时重定向（`302`、`307`）可由应用级别返回，浏览器直接跳转。
 主要使用`303` see other，以表示参考另一个URL，它与302和307的含义一样，也是”暂时重定向”，区别在于302和307用于GET请求，而303用于POST、PUT和DELETE请求。收到303以后，浏览器不会自动跳转，而会让用户自己决定下一步怎么办。
-### 4xx 状态码
+#### 4xx 状态码
 `4xx` 状态码表示客户端错误，主要有下面几种：
 
 1. `400` --> Bad Request：服务器不理解客户端的请求，未做任何处理。
@@ -97,17 +97,17 @@ DELETE:  删除（DELETE）
 8. `422` --> Unprocessable Entity ：客户端上传的附件无法处理，导致请求失败。
 9. `429` --> Too Many Requests：客户端的请求次数超过限额。
 
-### 5xx 状态码
+#### 5xx 状态码
 `5xx`状态码表示服务端错误。一般来说，**API**不会向用户透露服务器的详细信息，所以只要两个状态码就够了。
 1. `500` --> Internal Server Error：客户端请求有效，服务器处理时发生了意外。
 2. `503` --> Service Unavailable：服务器无法处理请求，一般用于网站维护状态。
 
-## 返回数据
+### 返回数据
 以下事项均为注意事项，不要问为什么，因为站长在学之前全都犯过。
-### 不要返回纯本文
+#### 不要返回纯本文
 `API` 返回的数据格式，不应该是纯文本，而应该是一个 JSON 对象，因为这样才能返回标准的结构化数据。所以，服务器回应的 HTTP 头的**Content-Type**属性要设为`application/json`。
 客户端请求时，也要明确告诉服务器，可以接受 JSON 格式，即请求的 HTTP 头的ACCEPT属性也要设成`application/json`。
-### 不要包装数据
+#### 不要包装数据
 response 的 body直接就是数据，不要做多余的包装。错误实例：
 ```json
 {
@@ -129,7 +129,7 @@ response 的 body直接就是数据，不要做多余的包装。错误实例：
  DELETE /collection/resource：返回一个空文档
 ```
 
-### 发生错误时，不要返回 200 状态码
+#### 发生错误时，不要返回 200 状态码
 有一种不恰当的做法是，即使发生错误，也返回200状态码，把错误信息放在数据体里面，就像下面这样。
 ```json
 {

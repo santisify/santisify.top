@@ -7,16 +7,16 @@ heroImage: { src: './img/npm-logo.jpg', color: '#4891B2' }
 language: 'zh-cn'
 ---
 
-# 创建文件夹
+## 创建文件夹
 ```bash
 mkdir demo
 ```
-# 初始化
+## 初始化
 ```bash
 npm init -y
 ```
 
-# 打开编译器创建文件`index.js`并填入以下信息
+## 打开编译器创建文件`index.js`并填入以下信息
 ```js
 function main () {
     console.log("Hello, world");
@@ -27,7 +27,7 @@ export function Hello(name) {
     console.log('${ name }}');
 }
 ```
-# 打开package.json文件
+## 打开package.json文件
 现在我们来熟悉下这个文件。
 
 | 字段             | 备注                         |
@@ -45,7 +45,7 @@ export function Hello(name) {
 ```
 在`[]`中添加需要发布的文件或文件夹，多个文件或文件夹用`,`隔开并且每个都用`""`包裹。
 自行检查语法错误
-# 发布
+## 发布
 由于镜像源问题，我们可能会发布失败
 我们直接在**cmd**中切换镜像源
 ```bash
@@ -61,7 +61,7 @@ npm config set registry https://registry.npmmirror.com
 ```
 若不切换，可能会出现 `npm install` 失败
 
-# 访问文件
+## 访问文件
 访问npm包的文件我们可以使用[unpkg](https://www.unpkg.com)来访问
 以下链接是访问最新发布的npm包
 ```

@@ -3,7 +3,9 @@ import readline from 'readline'
 
 const sitemapUrls = [
   // CWorld Site
-  'https://blog.lazy-boy-acmer.cn/atom.xml'
+  'https://santisify.top/siteap-0.xml',
+  'https://santisify.top/siteap-index.xml',
+  'https://santisify.top/rss.xml'
 ]
 
 // Fetch sites of sitemap and return a url list

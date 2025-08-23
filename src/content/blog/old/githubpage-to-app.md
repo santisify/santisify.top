@@ -6,7 +6,7 @@ description: ''
 heroImage: { src: './iv/logo.svg', color: '#4891B2' }
 language: 'zh-cn'
 ---
-# 配置环境
+## 配置环境
 
 首先我们得先配置好环境 </br>
 我这里用的是IDEA,也可以用android studio
@@ -26,7 +26,7 @@ https://mirrors.cloud.tencent.com/gradle/gradle-8.2-all.zip
 ```
 修改后，重新加载gradle项目即可
 
-# 项目搭建
+## 项目搭建
 首先我们找到文件`app\src\main\java\com\example\myapplication\MainActivity`</br>
 若没有修改项目名称，那路径就和我一样的
 ![image.png](https://s2.loli.net/2025/01/18/jw8aYu3sxOZClW1.png)
@@ -170,7 +170,7 @@ class MainActivity : ComponentActivity() {
 </RelativeLayout>
 ```
 
-# 生成apk
+## 生成apk
 点击菜单栏的 ``Build -> Build Apk(s)``</br>
 生成的安装包会在项目根目录下的**app\build\outputs\apk\debug**里面</br>
 至于如何修改Apk的名称和图标，大家可以自行百度或AI

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:check": "astro check --watch & astro dev",
-    "build": "astro-pure check && astro check && astro build",
+    "build": "rm -rf .astro .vercel dist && astro build",
     "preview": "astro preview",
     "sync": "astro sync",
     "check": "astro check",
@@ -27,7 +27,6 @@
     "@waline/client": "^3.5.7",
     "astro": "^5.8.1",
     "astro-pure": "1.2.8",
-    "katex": "^0.16.22",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.2",
