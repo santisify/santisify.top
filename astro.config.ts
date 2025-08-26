@@ -1,9 +1,10 @@
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import AstroPureIntegration from 'astro-pure'
 import { defineConfig } from 'astro/config'
+import rehypeKatex from 'rehype-katex'
+import remarkMath from 'remark-math'
 
 // Local integrations
-// Local rehype & remark plugins
 import rehypeAutolinkHeadings from './src/plugins/rehype-auto-link-headings.ts'
 // Shiki
 import {
@@ -16,150 +17,221 @@ import {
 } from './src/plugins/shiki-transformers.ts'
 import config from './src/site.config.ts'
 
-// 导入 LaTeX 支持所需的插件
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-
-// 导入 KaTeX 扩展以支持更多功能
-import katex from 'katex';
-
-// 确保 KaTeX 加载所有必要的扩展
-// 这些扩展提供了对更多 LaTeX 命令的支持
+// 完整的 KaTeX 配置
 const katexOptions = {
-  // 启用所有信任选项以支持更多命令
-  trust: true,
-  // 启用严格模式以捕获更多错误
   strict: false,
-  // 添加宏定义以支持更多 LaTeX 命令
+  throwOnError: false,
+  trust: true,
+  // 添加必要的宏定义
   macros: {
-    "\\RR": "\\mathbb{R}",
-    "\\bold": "\\mathbf",
-    "\\x": "\\times",
-    "\\diag": "\\operatorname{diag}",
-    "\\sgn": "\\operatorname{sgn}",
-    "\\tr": "\\operatorname{tr}",
-    "\\rank": "\\operatorname{rank}",
-    "\\Span": "\\operatorname{Span}",
-    "\\argmin": "\\operatorname*{argmin}",
-    "\\argmax": "\\operatorname*{argmax}",
-    "\\softmax": "\\operatorname{softmax}",
-    "\\relu": "\\operatorname{ReLU}",
-    "\\sigmoid": "\\operatorname{\\sigma}",
-    "\\softplus": "\\operatorname{softplus}",
-    "\\crossentropy": "\\operatorname{CE}",
-    "\\kl": "D_{\\mathrm{KL}}",
-    "\\entropy": "H",
-    "\\var": "\\operatorname{Var}",
-    "\\cov": "\\operatorname{Cov}",
-    "\\corr": "\\operatorname{Corr}",
-    "\\normal": "\\mathcal{N}",
-    "\\uniform": "\\mathcal{U}",
-    "\\bernoulli": "\\mathrm{Bern}",
-    "\\poisson": "\\mathrm{Poisson}",
-    "\\binomial": "\\mathrm{Bin}",
-    "\\expect": "\\mathbb{E}",
-    "\\indicator": "\\mathbb{1}",
-    "\\given": "\\mid",
-    "\\T": "^{\\mathsf{T}}",
-    "\\inv": "^{-1}",
-    "\\pinv": "^{+}",
-    "\\top": "^{\\top}",
-    "\\bottom": "\\bot",
-    "\\vec": "\\overrightarrow",
-    "\\abs": "\\left|#1\\right|",
-    "\\norm": "\\left\\|#1\\right\\|",
-    "\\floor": "\\left\\lfloor#1\\right\\rfloor",
-    "\\ceil": "\\left\\lceil#1\\right\\lceil",
-    "\\round": "\\left[#1\\right]",
-    "\\set": "\\left\\{#1\\right\\}",
-    "\\paren": "\\left(#1\\right)",
-    "\\bracket": "\\left[#1\\right]",
-    "\\brace": "\\left\\{#1\\right\\}",
-    "\\angle": "\\left\\langle#1\\right\\rangle",
-    "\\eval": "\\left.#1\\right|_{#2}",
-    "\\pdv": "\\frac{\\partial #1}{\\partial #2}",
-    "\\dv": "\\frac{\\mathrm{d}#1}{\\mathrm{d}#2}",
-    "\\odv": "\\frac{\\mathrm{d}#1}{\\mathrm{d}#2}",
-    "\\pddv": "\\frac{\\partial^2 #1}{\\partial #2 \\partial #3}",
-    "\\ddv": "\\frac{\\mathrm{d}^2#1}{\\mathrm{d}#2^2}",
-    "\\oddv": "\\frac{\\mathrm{d}^2#1}{\\mathrm{d}#2^2}",
-    "\\int": "\\int\\limits_{#1}^{#2}",
-    "\\iint": "\\iint\\limits_{#1}^{#2}",
-    "\\iiint": "\\iiint\\limits_{#1}^{#2}",
-    "\\oint": "\\oint\\limits_{#1}",
-    "\\sum": "\\sum\\limits_{#1}^{#2}",
-    "\\prod": "\\prod\\limits_{#1}^{#2}",
-    "\\coprod": "\\coprod\\limits_{#1}^{#2}",
-    "\\bigcup": "\\bigcup\\limits_{#1}^{#2}",
-    "\\bigcap": "\\bigcap\\limits_{#1}^{#2}",
-    "\\bigsqcup": "\\bigsqcup\\limits_{#1}^{#2}",
-    "\\bigvee": "\\bigvee\\limits_{#1}^{#2}",
-    "\\bigwedge": "\\bigwedge\\limits_{#1}^{#2}",
-    "\\bigodot": "\\bigodot\\limits_{#1}^{#2}",
-    "\\bigotimes": "\\bigotimes\\limits_{#1}^{#2}",
-    "\\bigoplus": "\\bigoplus\\limits_{#1}^{#2}",
-    "\\biguplus": "\\biguplus\\limits_{#1}^{#2}",
-  },
-  // 启用所有扩展
-  // 注意：某些扩展可能需要额外配置
-};
+    // 基本数学符号
+    '\\RR': '\\mathbb{R}',
+    '\\NN': '\\mathbb{N}',
+    '\\ZZ': '\\mathbb{Z}',
+    '\\QQ': '\\mathbb{Q}',
+    '\\CC': '\\mathbb{C}',
+    '\\HH': '\\mathbb{H}',
+    '\\FF': '\\mathbb{F}',
+
+    // 数学运算符
+    '\\argmax': '\\operatorname*{argmax}',
+    '\\argmin': '\\operatorname*{argmin}',
+    '\\diag': '\\operatorname{diag}',
+    '\\rank': '\\operatorname{rank}',
+    '\\tr': '\\operatorname{tr}',
+    '\\sgn': '\\operatorname{sgn}',
+    '\\Span': '\\operatorname{Span}',
+    '\\Var': '\\operatorname{Var}',
+    '\\Cov': '\\operatorname{Cov}',
+    '\\Corr': '\\operatorname{Corr}',
+    '\\E': '\\mathbb{E}',
+    '\\expect': '\\mathbb{E}',
+
+    // 特殊函数
+    '\\softmax': '\\operatorname{softmax}',
+    '\\relu': '\\operatorname{ReLU}',
+    '\\sigmoid': '\\operatorname{\\sigma}',
+    '\\softplus': '\\operatorname{softplus}',
+    '\\crossentropy': '\\operatorname{CE}',
+    '\\kl': 'D_{\\mathrm{KL}}',
+    '\\entropy': 'H',
+
+    // 概率分布
+    '\\normal': '\\mathcal{N}',
+    '\\uniform': '\\mathcal{U}',
+    '\\bernoulli': '\\mathrm{Bern}',
+    '\\poisson': '\\mathrm{Poisson}',
+    '\\binomial': '\\mathrm{Bin}',
+    '\\exponential': '\\mathrm{Exp}',
+    '\\gamma': '\\mathrm{Gamma}',
+    '\\beta': '\\mathrm{Beta}',
+    '\\dirichlet': '\\mathrm{Dir}',
+
+    // 矩阵操作
+    '\\T': '^{\\mathsf{T}}',
+    '\\top': '^{\\top}',
+    '\\inv': '^{-1}',
+    '\\pinv': '^{+}',
+    '\\det': '\\operatorname{det}',
+
+    // 集合论
+    '\\emptyset': '\\varnothing',
+    '\\set': '\\left\\{#1\\right\\}',
+    '\\given': '\\mid',
+    '\\suchthat': '\\mid',
+
+    // 括号和分隔符
+    '\\abs': '\\left|#1\\right|',
+    '\\norm': '\\left\\|#1\\right\\|',
+    '\\floor': '\\left\\lfloor#1\\right\\rfloor',
+    '\\ceil': '\\left\\lceil#1\\right\\rceil',
+    '\\round': '\\left[#1\\right]',
+    '\\paren': '\\left(#1\\right)',
+    '\\bracket': '\\left[#1\\right]',
+    '\\brace': '\\left\\{#1\\right\\}',
+    '\\angle': '\\left\\langle#1\\right\\rangle',
+
+    // 微积分
+    '\\dv': '\\frac{\\mathrm{d}#1}{\\mathrm{d}#2}',
+    '\\pdv': '\\frac{\\partial #1}{\\partial #2}',
+    '\\odv': '\\frac{\\mathrm{d}#1}{\\mathrm{d}#2}',
+    '\\ddv': '\\frac{\\mathrm{d}^2#1}{\\mathrm{d}#2^2}',
+    '\\pddv': '\\frac{\\partial^2 #1}{\\partial #2 \\partial #3}',
+    '\\int': '\\int\\limits_{#1}^{#2}',
+    '\\iint': '\\iint\\limits_{#1}^{#2}',
+    '\\iiint': '\\iiint\\limits_{#1}^{#2}',
+    '\\oint': '\\oint\\limits_{#1}',
+    '\\eval': '\\left.#1\\right|_{#2}',
+
+    // 向量和矩阵
+    '\\vec': '\\overrightarrow{#1}',
+    '\\mat': '\\begin{pmatrix} #1 \\end{pmatrix}',
+    '\\bmat': '\\begin{bmatrix} #1 \\end{bmatrix}',
+    '\\pmat': '\\begin{pmatrix} #1 \\end{pmatrix}',
+    '\\vmat': '\\begin{vmatrix} #1 \\end{vmatrix}',
+
+    // 求和和乘积
+    '\\sum': '\\sum\\limits_{#1}^{#2}',
+    '\\prod': '\\prod\\limits_{#1}^{#2}',
+    '\\coprod': '\\coprod\\limits_{#1}^{#2}',
+    '\\bigcup': '\\bigcup\\limits_{#1}^{#2}',
+    '\\bigcap': '\\bigcap\\limits_{#1}^{#2}',
+    '\\bigsqcup': '\\bigsqcup\\limits_{#1}^{#2}',
+    '\\bigvee': '\\bigvee\\limits_{#1}^{#2}',
+    '\\bigwedge': '\\bigwedge\\limits_{#1}^{#2}',
+    '\\bigodot': '\\bigodot\\limits_{#1}^{#2}',
+    '\\bigotimes': '\\bigotimes\\limits_{#1}^{#2}',
+    '\\bigoplus': '\\bigoplus\\limits_{#1}^{#2}',
+    '\\biguplus': '\\biguplus\\limits_{#1}^{#2}',
+
+    // 逻辑和集合操作
+    '\\implies': '\\Rightarrow',
+    '\\impliedby': '\\Leftarrow',
+    '\\iff': '\\Leftrightarrow',
+    '\\forall': '\\forall',
+    '\\exists': '\\exists',
+    '\\nexists': '\\nexists',
+    '\\in': '\\in',
+    '\\notin': '\\notin',
+    '\\subset': '\\subset',
+    '\\supset': '\\supset',
+    '\\subseteq': '\\subseteq',
+    '\\supseteq': '\\supseteq',
+    '\\cup': '\\cup',
+    '\\cap': '\\cap',
+    '\\setminus': '\\setminus',
+
+    // 其他常用符号
+    '\\degree': '^{\\circ}',
+    '\\indicator': '\\mathbb{1}',
+    '\\x': '\\times',
+    '\\dot': '\\cdot',
+    '\\bd': '\\mathbf',
+    '\\cal': '\\mathcal',
+    '\\frak': '\\mathfrak',
+
+    // 计算机科学相关
+    '\\bigO': '\\mathcal{O}',
+    '\\bigTheta': '\\Theta',
+    '\\bigOmega': '\\Omega',
+    '\\smallO': 'o',
+    '\\smallOmega': '\\omega',
+    '\\softO': '\\widetilde{O}',
+
+    // 特殊字符
+    '\\alpha': '\\alpha',
+    '\\beta': '\\beta',
+    '\\gamma': '\\gamma',
+    '\\delta': '\\delta',
+    '\\epsilon': '\\epsilon',
+    '\\varepsilon': '\\varepsilon',
+    '\\zeta': '\\zeta',
+    '\\eta': '\\eta',
+    '\\theta': '\\theta',
+    '\\vartheta': '\\vartheta',
+    '\\iota': '\\iota',
+    '\\kappa': '\\kappa',
+    '\\lambda': '\\lambda',
+    '\\mu': '\\mu',
+    '\\nu': '\\nu',
+    '\\xi': '\\xi',
+    '\\pi': '\\pi',
+    '\\varpi': '\\varpi',
+    '\\rho': '\\rho',
+    '\\varrho': '\\varrho',
+    '\\sigma': '\\sigma',
+    '\\varsigma': '\\varsigma',
+    '\\tau': '\\tau',
+    '\\upsilon': '\\upsilon',
+    '\\phi': '\\phi',
+    '\\varphi': '\\varphi',
+    '\\chi': '\\chi',
+    '\\psi': '\\psi',
+    '\\omega': '\\omega',
+
+    // 大写希腊字母
+    '\\Gamma': '\\Gamma',
+    '\\Delta': '\\Delta',
+    '\\Theta': '\\Theta',
+    '\\Lambda': '\\Lambda',
+    '\\Xi': '\\Xi',
+    '\\Pi': '\\Pi',
+    '\\Sigma': '\\Sigma',
+    '\\Upsilon': '\\Upsilon',
+    '\\Phi': '\\Phi',
+    '\\Psi': '\\Psi',
+    '\\Omega': '\\Omega'
+  }
+}
 
 // https://astro.build/config
 export default defineConfig({
   vite: {
     build: {
-      minify: 'terser', // 启用 JS/CSS 压缩
-      cssMinify: true // 确保 CSS 压缩开启
+      minify: 'terser',
+      cssMinify: true
     },
-    // 确保 KaTeX 正确打包
     optimizeDeps: {
       include: ['katex']
     }
   },
-  // Top-Level Options
   site: 'https://santisify.top',
-  // base: '/docs',
   trailingSlash: 'never',
-
-  // Adapter
-  // https://docs.astro.build/en/guides/deploy/
-  // 1. Vercel (serverless)
-  // adapter: vercel(),
   output: 'static',
-  // 2. Vercel (static)
-  // adapter: vercelStatic(),
-  // 3. Local (standalone)
-  // adapter: node({ mode: 'standalone' }),
-  // output: 'server',
-  // ---
-
-  image: { service: { entrypoint: 'astro/assets/services/sharp' }, domains: ['ghchart.rshah.org'] },
-
-  integrations: [
-    // astro-pure will automatically add sitemap, mdx & unocss
-    // sitemap(),
-    // mdx(),
-    AstroPureIntegration(config)
-    // (await import('@playform/compress')).default({ SVG: false, Exclude: ['index.*.js'] })
-    // Temporary fix vercel adapter
-    // static build method is not needed
-  ],
-  // root: './my-project-directory',
-
-  // Prefetch Options
+  image: {
+    service: { entrypoint: 'astro/assets/services/sharp' },
+    domains: ['ghchart.rshah.org']
+  },
+  integrations: [AstroPureIntegration(config)],
   prefetch: true,
-  // Server Options
   server: {
     host: true
   },
-  // Markdown Options - 添加完整的 LaTeX 支持
   markdown: {
-    remarkPlugins: [
-      remarkMath, // 添加数学公式支持
-    ],
+    remarkPlugins: [remarkMath],
     rehypePlugins: [
       rehypeHeadingIds,
-      [rehypeKatex, katexOptions], // 添加 KaTeX 支持并传递选项
+      [rehypeKatex, katexOptions],
       [
         rehypeAutolinkHeadings,
         {
@@ -169,7 +241,6 @@ export default defineConfig({
         }
       ]
     ],
-    // https://docs.astro.build/en/guides/syntax-highlighting/
     shikiConfig: {
       themes: {
         light: 'github-light',

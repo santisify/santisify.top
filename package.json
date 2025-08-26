@@ -27,6 +27,7 @@
     "@waline/client": "^3.6.0",
     "astro": "^5.13.3",
     "astro-pure": "1.2.8",
+    "katex": "^0.16.22",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.3",
