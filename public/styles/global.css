@@ -1,4 +1,4 @@
-@import 'katex/dist/katex.min.css';
+@import url("./katex.min.css");
 .katex {
   font-size: 1.1em;
 }
