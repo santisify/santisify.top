@@ -196,9 +196,9 @@ export const integ: IntegrationUserConfig = {
   waline: {
     enable: true,
     // Server service link
-    server: 'https://twikoo.lazy-boy-acmer.cn',
+    server: 'https://waline.lazy-boy-acmer.cn/',
     // Refer https://waline.js.org/en/guide/features/emoji.html
-    emoji: ['bmoji', 'weibo'],
+    emoji: ['bmoji', 'weibo', 'bilibili', 'alus', 'tieba'],
     // Refer https://waline.js.org/en/reference/client/props.html
     additionalConfigs: {
       // search: false,
