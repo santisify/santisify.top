@@ -79,7 +79,7 @@ export const theme: ThemeUserConfig = {
     credits: true,
     /** Optional details about the social media accounts for this site. */
     social: {
-      github: 'https://github.com/santisify',
+      github: 'https://github.com/santisify'
     }
   },
 
@@ -163,7 +163,10 @@ export const integ: IntegrationUserConfig = {
       { name: 'Name', val: theme.title },
       { name: 'Desc', val: 'I miss you, but I miss you' },
       { name: 'Link', val: 'https://santisify.top/' },
-        { name: 'Avatar', val: 'https://cn.cravatar.com/avatar/737CF21C04FCD75BADF35BE0A797DE8A?s=200' }
+      {
+        name: 'Avatar',
+        val: 'https://cn.cravatar.com/avatar/737CF21C04FCD75BADF35BE0A797DE8A?s=200'
+      }
     ]
   },
   // Enable page search function
