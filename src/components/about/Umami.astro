@@ -1,14 +1,23 @@
 ---
 import { cn } from 'astro-pure/utils'
 
-const { link = 'https://umami.jiangdongjun321.workers.dev/', class: className } = Astro.props
+const {
+  umamiUrl = 'https://umami.santisify.top',
+  username = 'admin',
+  password = '@Jdj20040908',
+  websiteId = '5398afde-5764-4ebc-843c-f0fa4b99d4e5',
+  class: className
+} = Astro.props
 ---
 <uma-info
   class={cn(
     'grid grid-cols-1 gap-3 rounded-xl border px-3 py-2 sm:grid-cols-2 sm:px-4 sm:py-3 sm:gap-x-4',
     className
   )}
-  data-message={link}
+  data-message={umamiUrl}
+  data-username={username}
+  data-password={password}
+  data-website-id={websiteId}
 >
   <p>
     <span class="text-foreground">Today</span>
@@ -17,7 +26,7 @@ const { link = 'https://umami.jiangdongjun321.workers.dev/', class: className } 
     </span>
   </p>
   <p>
-    <span class="text-foreground">Today</span>
+    <span class="text-foreground">Yesterday</span>
     <span class="float-end">
       <span id="yesterday_uv">???</span> users, <span id="yesterday_pv">???</span> visits
     </span>
@@ -33,6 +42,49 @@ const { link = 'https://umami.jiangdongjun321.workers.dev/', class: className } 
 </uma-info>
 
 <script>
+  // 全局Token管理
+  const umamiTokenManager = {
+    token: null,
+    tokenExpiry: null,
+
+    async getAuthToken(baseUrl: string, username: string, password: string): Promise<string | null> {
+      try {
+        // 检查是否有有效的token
+        if (this.token && this.tokenExpiry && Date.now() < this.tokenExpiry) {
+          return this.token
+        }
+
+        const response = await fetch(`${baseUrl}/api/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        })
+
+        if (!response.ok) {
+          throw new Error(`Authentication failed: ${response.status}`)
+        }
+
+        const authData = await response.json()
+        this.token = authData.token
+        // 设置token过期时间（假设token有效期为24小时）
+        this.tokenExpiry = Date.now() + (24 * 60 * 60 * 1000)
+
+        return this.token
+      } catch (error) {
+        console.error('Failed to get authentication token:', error)
+        return null
+      }
+    },
+
+    clearToken(): void {
+      this.token = null
+      this.tokenExpiry = null
+    }
+  }
+
   interface UmamiProps {
     today_uv: number
     today_pv: number
@@ -42,34 +94,170 @@ const { link = 'https://umami.jiangdongjun321.workers.dev/', class: className } 
     last_year_pv: number
   }
 
+  interface UmamiStatsResponse {
+    pageviews: {
+      value: number
+    }
+    visitors: {
+      value: number
+    }
+  }
+
   class UmaInfo extends HTMLElement {
-    async fetchUmami(umami_url: string): Promise<UmamiProps | null> {
+    // 获取Umami统计数据
+    async fetchUmamiDataWithAuth(
+      baseUrl: string,
+      websiteId: string,
+      username: string,
+      password: string,
+      startAt: number,
+      endAt: number
+    ): Promise<UmamiStatsResponse | null> {
       try {
-        const res = await fetch(umami_url)
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`)
+        const token = await umamiTokenManager.getAuthToken(baseUrl, username, password)
+        if (!token) {
+          throw new Error('No authentication token available')
         }
-        return (await res.json()) as UmamiProps
+
+        const url = new URL(`${baseUrl}/api/websites/${websiteId}/stats`)
+        url.searchParams.append('startAt', startAt.toString())
+        url.searchParams.append('endAt', endAt.toString())
+
+        const response = await fetch(url.toString(), {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+
+        if (response.status === 401) {
+          // Token过期，清除后重试
+          umamiTokenManager.clearToken()
+          return this.fetchUmamiDataWithAuth(baseUrl, websiteId, username, password, startAt, endAt)
+        }
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error(`API request failed: ${response.status}`, errorText)
+          throw new Error(`API request failed: ${response.status}`)
+        }
+
+        return await response.json()
+      } catch (error) {
+        console.error('Failed to fetch Umami data:', error)
+        return null
+      }
+    }
+
+    async fetchUmami(umamiUrl: string): Promise<UmamiProps | null> {
+      try {
+        const username = this.dataset.username
+        const password = this.dataset.password
+        const websiteId = this.dataset.websiteId
+
+        if (!username || !password || !websiteId) {
+          throw new Error('Missing authentication credentials or website ID')
+        }
+
+        // 获取各个时间段的日期范围（时间戳）
+        const todayRange = this.getDateRange('today')
+        const yesterdayRange = this.getDateRange('yesterday')
+        const lastMonthRange = this.getDateRange('lastMonth')
+        const lastYearRange = this.getDateRange('lastYear')
+
+        // 并行获取所有数据
+        const [
+          todayData,
+          yesterdayData,
+          lastMonthData,
+          lastYearData
+        ] = await Promise.all([
+          this.fetchUmamiDataWithAuth(umamiUrl, websiteId, username, password, todayRange.start, todayRange.end),
+          this.fetchUmamiDataWithAuth(umamiUrl, websiteId, username, password, yesterdayRange.start, yesterdayRange.end),
+          this.fetchUmamiDataWithAuth(umamiUrl, websiteId, username, password, lastMonthRange.start, lastMonthRange.end),
+          this.fetchUmamiDataWithAuth(umamiUrl, websiteId, username, password, lastYearRange.start, lastYearRange.end)
+        ])
+
+        return {
+          today_uv: todayData?.visitors?.value || 0,
+          today_pv: todayData?.pageviews?.value || 0,
+          yesterday_uv: yesterdayData?.visitors?.value || 0,
+          yesterday_pv: yesterdayData?.pageviews?.value || 0,
+          last_month_pv: lastMonthData?.pageviews?.value || 0,
+          last_year_pv: lastYearData?.pageviews?.value || 0
+        }
       } catch (e) {
         console.error('Failed to fetch Umami data:', e)
         return null
       }
     }
 
+    // 辅助方法：获取日期范围（返回时间戳）
+    getDateRange(type: 'today' | 'yesterday' | 'lastMonth' | 'lastYear'): { start: number; end: number } {
+      const now = new Date()
+      const start = new Date()
+      const end = new Date()
+
+      switch (type) {
+        case 'today':
+          start.setHours(0, 0, 0, 0)
+          end.setHours(23, 59, 59, 999)
+          break
+        case 'yesterday':
+          start.setDate(now.getDate() - 1)
+          start.setHours(0, 0, 0, 0)
+          end.setDate(now.getDate() - 1)
+          end.setHours(23, 59, 59, 999)
+          break
+        case 'lastMonth':
+          start.setMonth(now.getMonth() - 1, 1)
+          start.setHours(0, 0, 0, 0)
+          end.setMonth(now.getMonth(), 0)
+          end.setHours(23, 59, 59, 999)
+          break
+        case 'lastYear':
+          start.setFullYear(now.getFullYear() - 1, 0, 1)
+          start.setHours(0, 0, 0, 0)
+          end.setFullYear(now.getFullYear() - 1, 11, 31)
+          end.setHours(23, 59, 59, 999)
+          break
+      }
+
+      return {
+        start: start.getTime(),
+        end: end.getTime()
+      }
+    }
+
     async connectedCallback() {
-      if (!this.dataset.message) return
+      if (!this.dataset.message) {
+        console.error('Umami URL is required')
+        return
+      }
 
       try {
         const umamiData = await this.fetchUmami(this.dataset.message)
-        if (!umamiData) return
+        if (!umamiData) {
+          console.error('Failed to fetch Umami data')
+          return
+        }
 
-        const keys = Object.keys(umamiData) as (keyof UmamiProps)[]
-        keys.forEach((key) => {
-          const element = this.querySelector(`#${key}`)
+        // 更新DOM元素
+        const updateElement = (id: string, value: number) => {
+          const element = this.querySelector(`#${id}`)
           if (element) {
-            element.textContent = umamiData[key].toString()
+            element.textContent = value.toString()
           }
-        })
+        }
+
+        updateElement('today_uv', umamiData.today_uv)
+        updateElement('today_pv', umamiData.today_pv)
+        updateElement('yesterday_uv', umamiData.yesterday_uv)
+        updateElement('yesterday_pv', umamiData.yesterday_pv)
+        updateElement('last_month_pv', umamiData.last_month_pv)
+        updateElement('last_year_pv', umamiData.last_year_pv)
+
       } catch (e) {
         console.error('Error setting Umami data:', e)
       }
