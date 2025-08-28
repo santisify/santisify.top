@@ -15,18 +15,6 @@ interface Props {
 const { meta, highlightColor, back = '/', ...props } = Astro.props
 ---
 
-<style>
-  aside.show {
-    display: block !important;
-  }
-  @media (max-width: 800px) {
-    aside {
-      height: calc(100vh - 14rem) !important;
-      width: calc(100vw - 2rem) !important;
-    }
-  }
-</style>
-
 <PageLayout {meta} {highlightColor} {...props}>
   <Button title='Back' href={back} style='back' />
   <main class='mt-6 items-start gap-x-10 md:flex'>
@@ -89,4 +77,14 @@ const { meta, highlightColor, back = '/', ...props } = Astro.props
     sidebar?.classList.toggle('show')
   })
 </script>
-
+<style>
+  aside.show {
+    display: block !important;
+  }
+  @media (max-width: 800px) {
+    aside {
+      height: calc(100vh - 14rem) !important;
+      width: calc(100vw - 2rem) !important;
+    }
+  }
+</style>
