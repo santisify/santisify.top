@@ -30,12 +30,6 @@
       "desc": "Other special links",
       "link_list": [
         {
-          "name": "十年之约",
-          "intro": "本站已签约十年之约",
-          "link": "https://foreverblog.cn/blog/2788.html",
-          "avatar": "https://avatars.githubusercontent.com/u/39395618?s=200&v=4"
-        },
-        {
           "name": "虫洞",
           "intro": "随机前往十年之约的成员博客",
           "link": "https://www.foreverblog.cn/go.html",
