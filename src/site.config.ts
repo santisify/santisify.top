@@ -7,7 +7,7 @@ export const theme: ThemeUserConfig = {
   /** Will be used in index page & copyright declaration */
   author: 'santisify',
   /** Description metadata for your website. Can be used in page metadata. */
-  description: 'I miss you, but I miss you',
+  description: 'to simplify technology to its purest, most powerful form.',
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
   favicon: '/favicon/favicon.ico',
   /** Specify the default language for this site. */

@@ -9,6 +9,12 @@
           "intro": "hexo-theme-anzhiyu blog",
           "link": "https://blog.lazy-boy-acmer.cn",
           "avatar": "https://blog.lazy-boy-acmer.cn/assets/imgs/avater.webp"
+        },
+        {
+          "name": "Pinpe",
+          "link": "https://pinpe.top",
+          "avatar": "https://pinpe.top/head.jpg",
+          "intro": "一个属于自己的云朵。"
         }
       ]
     },
@@ -16,7 +22,7 @@
       "id_name": "inactive-links",
       "desc": "Inactive or rule-breaking friends",
       "link_list": [
-        
+
       ]
     },
     {
