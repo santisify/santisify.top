@@ -20,6 +20,26 @@ const headings = [
   { depth: 2, slug: 'sponsorship', text: 'Sponsorship' }
 ]
 ---
+<style>
+  .sponsorship-card {
+    & .sponsorship-card-img {
+      opacity: 0.3;
+      --un-blur: blur(4px);
+      filter: var(--un-blur);
+    }
+
+    &:hover {
+      & .sponsorship-card-icon {
+        opacity: 0;
+      }
+
+      & .sponsorship-card-img {
+        opacity: 1;
+        --un-blur: blur(0);
+      }
+    }
+  }
+</style>
 
 <PageLayout title="Projects" {headings} info={{ slug: '/projects', hideComment: true }}>
   <p>Github Activities:</p>
@@ -39,327 +59,24 @@ const headings = [
     <Icon class="size-5" name="receive-money" slot="before" />
   </Button>
 
-  <h2 id="applications">Applications</h2>
-  <ProjectSection
-    project={[
-      {
-        name: '➕ Pure New Tab [Browser Extension]',
-        description: 'A open-source, clean and minimalistic new tab page extension',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/pure-new-tab' },
-          { type: 'site', href: 'https://cworld0.com/blog/pure-new-tab' }
-        ]
-      },
-      {
-        name: '📊 Novel Analysis [Web]',
-        description: 'A simple project for analyzing Chinese novels',
-        image: 'novel-analysis.png',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/novel-analysis' },
-          { type: 'site', href: 'https://cworld1.github.io/novel-analysis' }
-        ]
-      },
-      {
-        name: '📒 Notie [Android]',
-        description:
-          'Android note App complies with Material You specifications, developed using Java',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/notie' },
-          { type: 'release', href: 'https://github.com/cworld1/notie/releases' }
-        ]
-      },
-      {
-        name: '💌 Fluent Mail [Desktop]',
-        description:
-          'A program to send and receive emails with attachments supported by C++, Qt and SQL',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/fluent-mail' },
-          { type: 'release', href: 'https://github.com/cworld1/fluent-mail/releases' }
-        ]
-      },
-      {
-        name: '⛅ PureWeather [Android]',
-        description: 'Weather at a glance! Current and forecast weather for anywhere in the world',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/PureWeather' },
-          { type: 'release', href: 'https://github.com/cworld1/PureWeather/releases' }
-        ]
-      },
-      {
-        name: '📷 Kinect Camera Neural [Desktop]',
-        description:
-          'An AI program that using Kinect camera and shows neural networks and human skeleton',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/tcm' }]
-      }
-    ]}
-  />
-  <Collapse title="Some old projects">
-    <ProjectSection
-      project={[
-        {
-          name: 'Poker Hover Effect [Web]',
-          description: 'A demo HTML program that shows poker hover effect only using CSS',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/poker-hover-effect' }]
-        },
-        {
-          name: 'Effect of Browser Multi-Window Stacking [Web]',
-          description: 'A demo program that shows effect of browser multi-window stacking',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/browser-multiwin-stack' }]
-        },
-        {
-          name: 'Vue Login [Web]',
-          description: 'A simple Vue designed login program',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/vue-login' }]
-        },
-        {
-          name: 'Student Score System [Desktop]',
-          description:
-            'A student performance management system built using Qt and developed using C++',
-          links: [
-            { type: 'github', href: 'https://github.com/cworld1/stu-score-sys' },
-            { type: 'release', href: 'https://github.com/cworld1/stu-score-sys/releases' }
-          ]
-        },
-        {
-          name: 'Momotap [Web]',
-          description: 'A mainland China friendly version extracted from Momotap',
-          links: [
-            { type: 'github', href: 'https://github.com/cworld1/momotap' },
-            { type: 'site', href: 'https://cworld1.github.io/momotap' }
-          ]
-        },
-        {
-          name: 'Aircraft Booking System',
-          description: 'Aircraft booking system for terminal ui using C lan',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/aircraft-booking-system' }]
-        }
-      ]}
-    />
-  </Collapse>
-
-  <h2 id="programs">Programs</h2>
-  <ProjectSection
-    project={[
-      {
-        name: '🎨 Astro Theme Pure',
-        description: 'A simple, fast and powerful blog theme built by Astro',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/astro-theme-pure' },
-          { type: 'site', href: 'https://astro-pure.js.org/' },
-          { type: 'doc', href: 'https://astro-pure.js.org/docs/list' },
-          { type: 'release', href: 'https://www.npmjs.com/package/astro-pure' }
-        ]
-      },
-      {
-        name: '🏓 pingpong-calculation',
-        description: 'A calculation of pingpong play sport using go and rust',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/pingpong-calculation' }]
-      },
-      {
-        name: '🏓 pingpong-simulation',
-        description: 'A simulation and calculation of pingpong play sport using unity 3d',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/pingpong-simulation' }]
-      },
-      {
-        name: '🤖 Arknights Telegram Bot',
-        description: 'Telegram Bot for Arknights',
-        links: [
-          { type: 'github', href: 'https://github.com/IJNKAWAKAZE/arknights_bot' },
-          { type: 'site', href: 'https://t.me/PtiIopsis_bot' },
-          {
-            type: 'doc',
-            href: 'https://github.com/IJNKAWAKAZE/arknights_bot/blob/main/docs/Development.md'
-          }
-        ]
-      },
-      {
-        name: '🤖 PaiGram',
-        description: 'Telegram robot, query the official Genshin information',
-        links: [
-          { type: 'github', href: 'https://github.com/PaiGramTeam/PaiGram' },
-          { type: 'site', href: 'https://t.me/PaimonMasterBot' },
-          { type: 'doc', href: 'https://docs.paimon.vip/' }
-        ]
-      },
-      {
-        name: '📊 Novel Data',
-        description: 'The data repository of novel analysis',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/novel-data' }]
-      },
-      {
-        name: '🧮 N Queens Problem',
-        description: 'A solution of solving N Queens Problem',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/nqueens-problem' }]
-      },
-      {
-        name: '🛠️ Gaussian NB',
-        description:
-          'Simulating the Parsimonious Bayesian Algorithm with Python and Finding the Probability Prediction of Breast Cancer ',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/gaussian-nb' }]
-      },
-      {
-        name: '📊 Business Data Analysis',
-        description:
-          'Using python and jupyter notebook to analyze the data of electrical appliances, and then using the data to predict the sales of electrical appliances',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/business-data' },
-          { type: 'site', href: 'https://github.com/cworld1/business-data/blob/main/main.ipynb' }
-        ]
-      }
-    ]}
-  />
-  <Collapse title="Some old projects">
-    <ProjectSection
-      project={[
-        {
-          name: 'Search Switcher',
-          description: 'Add links to each other in search engines',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/search-switcher' }]
-        },
-        {
-          name: 'Pure Baidu',
-          description: 'Baidu search page beautification module',
-          links: [
-            { type: 'doc', href: 'https://cworld0.com/blog/pure-baidu' },
-            { type: 'site', href: 'https://userstyles.org/styles/173673/pure' }
-          ]
-        }
-      ]}
-    />
-  </Collapse>
-
-  <h2 id="learnings">Learnings</h2>
-  <ProjectSection
-    class="my-2"
-    project={[
-      {
-        name: 'Rust Learning',
-        description: 'Some notes and code about CWorld learning Rust',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/rust-learning' }]
-      },
-      {
-        name: 'Unity Learning',
-        description: 'Some notes and code about learning Unity',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/unity-learning' }]
-      },
-      {
-        name: 'Matlab Learning',
-        description: 'Some notes and code about learning Matlab',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/matlab-learning' }]
-      },
-      {
-        name: 'Operation System Principle Learning',
-        description: 'Some notes and code about CWorld learning Operating System Principle',
-        image: 'osp-learning.png',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/osp-learning' },
-          { type: 'site', href: 'https://cworld1.github.io/osp-learning' },
-          { type: 'doc', href: 'https://cworld1.github.io/osp-learning/README' }
-        ]
-      },
-      {
-        name: 'Computer Composition Principle Learning',
-        description: 'Some notes and code about CWorld learning Computer Composition Principle',
-        image: 'ccp-learning.png',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/ccp-learning' },
-          { type: 'site', href: 'https://cworld1.github.io/ccp-learning' },
-          { type: 'doc', href: 'https://cworld1.github.io/ccp-learning/README' }
-        ]
-      },
-      {
-        name: 'Database Learning',
-        description: 'Some notes and code about learning Database',
-        image: 'db-learning.png',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/db-learning' },
-          { type: 'site', href: 'https://cworld1.github.io/db-learning' },
-          { type: 'doc', href: 'https://cworld1.github.io/db-learning/intro' }
-        ]
-      },
-      {
-        name: 'Computer Network Learning',
-        description: 'Some notes and code about learning Computer Network',
-        image: 'cn-learning.png',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/cn-learning' },
-          { type: 'site', href: 'https://cworld1.github.io/cn-learning' },
-          { type: 'doc', href: 'https://cworld1.github.io/cn-learning/intro' }
-        ]
-      },
-      {
-        name: 'Data Analysis Learning',
-        description: 'Some notes and code about learning Data Analysis',
-        image: 'da-learning.png',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/da-learning' },
-          { type: 'site', href: 'https://cworld1.github.io/da-learning' }
-        ]
-      },
-      {
-        name: 'Linux Learning',
-        description: 'Some notes and code about learning Linux',
-        image: 'linux-learning.png',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/linux-learning' },
-          { type: 'site', href: 'https://cworld1.github.io/linux-learning' },
-          { type: 'doc', href: 'https://cworld1.github.io/linux-learning/docs' }
-        ]
-      },
-      {
-        name: 'R Learning',
-        description: 'Some notes and code about learning R language',
-        image: 'r-learning.png',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/r-learning' },
-          { type: 'site', href: 'https://cworld1.github.io/r-learning' }
-        ]
-      }
-    ]}
-  />
-
-  <Collapse title="Some old projects">
-    <ProjectSection
-      project={[
-        {
-          name: 'Java Learning',
-          description: 'Some notes and code about learning Java',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/java-learning' }]
-        },
-        {
-          name: 'C Learning',
-          description: 'Some notes and code about learning C language',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/c-learning' }]
-        },
-        {
-          name: 'Vue Learning',
-          description: 'Some notes and code about learning Vue',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/vue-learning' }]
-        }
-      ]}
-    />
-  </Collapse>
-
-  <h2 id="others">Others</h2>
-  <ProjectSection
-    project={[
-      {
-        name: 'Dotfiles',
-        description: 'Personal *unix dotfiles',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/dotfiles' }]
-      },
-      {
-        name: 'Neovim Config',
-        description: 'Personal Neovim config files',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/nvim-config' }]
-      },
-      {
-        name: 'CWorld Website',
-        description: 'CWorld\'s personal website',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/cworld1' }]
-      }
-    ]}
-  />
+  <!--<h2 id="applications">Applications</h2>-->
+  <!--<ProjectSection-->
+  <!--  project={[-->
+  <!--{-->
+  <!--  name: '➕ Pure New Tab [Browser Extension]',-->
+  <!--  description: 'A open-source, clean and minimalistic new tab page extension',-->
+  <!--  links: [-->
+  <!--    { type: 'github', href: 'https://github.com/cworld1/pure-new-tab' },-->
+  <!--    { type: 'site', href: 'https://cworld0.com/blog/pure-new-tab' }-->
+  <!--  ]-->
+  <!--}-->
+  <!--]}-->
+  <!--/>-->
+  <!--<Collapse title="Some old projects">-->
+  <!--  <ProjectSection-->
+  <!--    project={[]}-->
+  <!--  />-->
+  <!--</Collapse>-->
 
   <!-- gpg signature -->
   <h2 id="gpg-signature">GPG Signature</h2>
@@ -410,22 +127,3 @@ const headings = [
   await loadPageviewCount()
 </script>
 
-<style>
-.sponsorship-card {
-  & .sponsorship-card-img {
-  opacity: 0.3;
-  --un-blur: blur(4px);
-  filter: var(--un-blur);
-  }
-
-  &:hover {
-  & .sponsorship-card-icon {
-  opacity: 0;
-  }
-  & .sponsorship-card-img {
-  opacity: 1;
-  --un-blur: blur(0);
-  }
-  }
-  }
-</style>
