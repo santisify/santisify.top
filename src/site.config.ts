@@ -161,7 +161,7 @@ export const integ: IntegrationUserConfig = {
     // Yourself link info
     applyTip: [
       { name: 'Name', val: theme.title },
-      { name: 'Desc', val: 'I miss you, but I miss you' },
+      { name: 'Desc', val: 'to simplify technology to its purest, most powerful form. ' },
       { name: 'Link', val: 'https://santisify.top/' },
       {
         name: 'Avatar',
