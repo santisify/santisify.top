@@ -16,70 +16,13 @@
       "id_name": "inactive-links",
       "desc": "Inactive or rule-breaking friends",
       "link_list": [
-        {
-          "name": "HamCQ 社区",
-          "intro": "业余无线电爱好者社区",
-          "link": "https://forum.hamcq.cn/",
-          "avatar": "https://forum.hamcq.cn/assets/avatars/f4HJalvYcIsdJdNZ.png",
-          "status": "unverified"
-        },
-        {
-          "name": "字节君",
-          "intro": "热爱漫无边际，生活自有分寸",
-          "link": "https://blog.lvbyte.top/",
-          "avatar": "https://npm.elemecdn.com/lvbyte-cdn/20230104/%E8%8B%B9%E6%9E%9C.156l7bksen40.jpg",
-          "rss": "https://blog.lvbyte.top/atom.xml",
-          "email": "2015078351@qq.com",
-          "status": "stagnation"
-        },
-        {
-          "name": "Wittoy’s Blog",
-          "intro": "摸鱼天下第一",
-          "link": "https://blog.wittoy.com/",
-          "avatar": "https://cdn.jsdelivr.net/gh/1rz/static/images/me.webp",
-          "rss": "https://blog.wittoy.com/index.xml",
-          "email": "Wittoy@pm.me",
-          "status": "losing"
-        },
-        {
-          "name": "Joyer 的博客",
-          "intro": "一只会唱 Lahee~的龙",
-          "link": "https://blog.joyer.top/",
-          "avatar": "https://cravatar.cn/avatar/08fcf342df77ad03fcad18399a2fcb74",
-          "status": "stagnation"
-        },
-        {
-          "name": "hiCasper",
-          "intro": "没有 BUG 的代码是不完美的",
-          "link": "http://hicasper.com/",
-          "avatar": "https://cravatar.cn/avatar/b9fa18886cd3acb13fcd8ebfb6140c44",
-          "status": "stagnation"
-        },
-        {
-          "name": "L1nSn0w",
-          "intro": "无限进步.🎈",
-          "link": "https://linsnow.cn/",
-          "avatar": "https://linsnow.cn/avatar.png",
-          "status": "losing"
-        }
+        
       ]
     },
     {
       "id_name": "special-links",
       "desc": "Other special links",
       "link_list": [
-        {
-          "name": "米坛",
-          "intro": "创造不一样",
-          "link": "https://www.bandbbs.cn/",
-          "avatar": "https://static.cloudflare.ltd/Bandbbs_CDN/PWA/pwa_icon_192.png"
-        },
-        {
-          "name": "Lythriel Gallery",
-          "intro": "A website for sharing photography works",
-          "link": "https://lythriel.cn/",
-          "avatar": "https://cravatar.cn/avatar/7c9c38d4bebc764f1034527834f63c7d"
-        },
         {
           "name": "十年之约",
           "intro": "本站已签约十年之约",
@@ -109,12 +52,6 @@
           "intro": "博客人的朋友圈",
           "link": "https://www.boyouquan.com/",
           "avatar": "https://www.boyouquan.com/assets/images/sites/logo/logo-small.png"
-        },
-        {
-          "name": "前端大刘",
-          "intro": "记录和分享，每天进步一点点！",
-          "link": "https://lzwdot.com/",
-          "avatar": "https://lzwdot.com/logo.svg"
         }
       ]
     }
