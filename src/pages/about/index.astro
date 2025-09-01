@@ -18,19 +18,20 @@ const headings = [
 ]
 ---
 
-<PageLayout title="About" {headings} info="/about">
+<PageLayout title='About' {headings} info='/about'>
   <p>Developer / Designer</p>
   <p>
     Full-time undergraduate student majoring in Computer Science, skilled in big data and full-stack
     web development. Passionate about UI/UX design and photography during leisure time.
   </p>
-  <p>My motto: Stay hungry, Stay foolish.
+  <p>
+    My motto: Stay hungry, Stay foolish.
     <Spoiler>求知若愚，虚怀若谷。</Spoiler>
   </p>
-  <Button title="Sponsor Me" class="w-fit" href="/projects#sponsorship" style="ahead" />
+  <Button title='Sponsor Me' class='w-fit' href='/projects#sponsorship' style='ahead' />
 
   {/* general-talk */}
-  <h2 id="hobbies">Hobbies</h2>
+  <h2 id='hobbies'>Hobbies</h2>
   <ul>
     <li><b>Coding</b>: favorite editors are Vscode, Webstorm, IDEA, Pycharm, Clion.</li>
     <li><b>Creation</b>: Adobe Suit is quite proficient, with late stage UI OCD.</li>
@@ -45,11 +46,11 @@ const headings = [
   </ul>
 
   {/* tools */}
-  <h2 id="tools">Tools</h2>
+  <h2 id='tools'>Tools</h2>
   <p>Current support tools as follow:</p>
   <ToolSection
-    class="mb-5"
-    title="Creation"
+    class='mb-5'
+    title='Creation'
     tools={[
       {
         name: 'Photoshop',
@@ -90,8 +91,8 @@ const headings = [
     ]}
   />
   <ToolSection
-    class="mb-5"
-    title="Productivity"
+    class='mb-5'
+    title='Productivity'
     tools={[
       {
         name: 'Github-desktop',
@@ -104,12 +105,14 @@ const headings = [
         description: 'Browser',
         href: 'https://www.google.com/intl/zh-cn/chrome/',
         icon: import('@/assets/tools/chrome.svg?raw')
-      }, {
+      },
+      {
         name: 'Apifox',
         href: 'https://apifox.com/',
         description: 'API tool',
         icon: import('@/assets/tools/apifox.svg?raw')
-      }, {
+      },
+      {
         name: 'GitKraken',
         href: '',
         description: 'Git tool',
@@ -118,8 +121,8 @@ const headings = [
     ]}
   />
   <ToolSection
-    class="mb-5"
-    title="Development"
+    class='mb-5'
+    title='Development'
     tools={[
       {
         name: 'VS Code',
@@ -166,8 +169,8 @@ const headings = [
     ]}
   />
   <ToolSection
-    class="mb-5"
-    title="Environment"
+    class='mb-5'
+    title='Environment'
     tools={[
       {
         name: 'Arch Linux',
@@ -185,7 +188,7 @@ const headings = [
   />
 
   {/* social-networks */}
-  <h2 id="social-networks">Social Networks</h2>
+  <h2 id='social-networks'>Social Networks</h2>
   <p>
     The main network usernames include <code>santisify</code>, <code>lazy-boy</code>.
   </p>
@@ -214,7 +217,6 @@ const headings = [
         link: 'https://weibo.com/u/7573439882',
         text: 'followers'
         // api: 'weibo/7573439882'
-
       },
       {
         platform: 'Zhihu',
@@ -223,7 +225,6 @@ const headings = [
         link: 'https://www.zhihu.com/people/Lazy_boy_/',
         text: 'followers',
         // api: 'zhihu/Lazy_boy_',
-
         count: 6
       },
       {
@@ -238,139 +239,159 @@ const headings = [
   />
 
   {/* gossips */}
-  <h2 id="gossips">Gossips</h2>
-  <Collapse title="The Story Behind Santisify">
-    <ul>
-      <p> The name <strong>Santisify</strong> is a purposeful fusion of two foundational concepts:
-        <strong>Sanctity</strong> and <strong>Simplify</strong>.
-        It is more than just a brand; it is a declaration of our mission and a reflection of the value we strive to
-        deliver to every user.
-      </p>
-      <p><strong>Sanctity</strong> represents our core ambition. In an increasingly complex and often chaotic digital
-        landscape,
-        we champion what is pure, reliable, and trustworthy. We believe your data, your attention, and your digital
-        experience should be treated with integrity and respect. "Sanctity" embodies our commitment to creating a
-        pristine and secure environment—a sanctuary where quality is paramount and your trust is sacred.
-      </p>
-      <p><strong>Simplify</strong> represents our method for achieving that ambition. Technology should empower, not
-        overwhelm. It
-        should remove barriers, not create them. We are dedicated to the relentless pursuit of elegance through
-        simplicity. We distill complex processes into intuitive actions, eliminate unnecessary clutter, and design
-        with profound clarity. We transform the daunting into the effortless.
-      </p>
-      <p>Thus, <strong>Santisify</strong> was born: <strong>to simplify technology to its purest, most powerful
-        form.</strong> It is the act of
-        purifying the user experience. Our name is a promise—a pledge to cleanse digital interaction of its
-        frustrations and to sanctify it with seamless, intelligent, and empowering simplicity.
-      </p>
-      <p>
-        Welcome to a state of purified performance. Welcome to Santisify.
-      </p>
-    </ul>
-  </Collapse>
-  <Collapse title="About your avatar?">
+  <h2 id='gossips'>Gossips</h2>
+  <Collapse title='The Story Behind Santisify'>
     <ul>
       <li>
-        <p>Shape and Image: The main body is an image similar to a cloud or a cute little animal. The lines are concise
-          and smooth, and the outline is round and soft, giving people a cute and lovely feeling. There are no sharp
-          edges and corners, which can quickly arouse people's affection and conform to the public's aesthetic
-          preference for cute - style images.
-        </p>
-      </li>
-      <li>
-        <p>Color Application: It uses a light blue background, which is fresh and elegant. The main image is mainly
-          light pink and white, with details such as pink blush. The color saturation is low, and the overall color tone
-          is soft, creating a warm and healing atmosphere, which is very comfortable visually.
-        </p>
-      </li>
-      <li>
-        <p>Element Integration: The angel halo element is integrated into it. The halo has a luminous effect, adding a
-          touch of "holiness" to the originally cute image. It echoes the text "santisify" below (which has the meaning
-          tendency of sanctifying and purifying), giving the cute image an additional layer of unique meaning and
-          interest, and making the design more layered and connotative.
-
-        </p>
-      </li>
-      <li>
-        <p>Style Orientation: The whole design belongs to the healing and cute style. From the shape to the color and
-          then to the element combination, it all revolves around creating a relaxed, pleasant and warm visual
-          experience. It can well attract the audience who like the cute and warm style, and is convenient to convey a
-          friendly and cute personal image and emotion in social scenarios.
         <p>
+          The name <strong>Santisify</strong> is a purposeful fusion of two foundational concepts:
+          <strong>Sanctity</strong> and <strong>Simplify</strong>. It is more than just a brand; it
+          is a declaration of our mission and a reflection of the value we strive to deliver to
+          every user.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Sanctity</strong> represents our core ambition. In an increasingly complex and often
+          chaotic digital landscape, we champion what is pure, reliable, and trustworthy. We believe
+          your data, your attention, and your digital experience should be treated with integrity and
+          respect. "Sanctity" embodies our commitment to creating a pristine and secure environment—a
+          sanctuary where quality is paramount and your trust is sacred.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Simplify</strong> represents our method for achieving that ambition. Technology should
+          empower, not overwhelm. It should remove barriers, not create them. We are dedicated to the
+          relentless pursuit of elegance through simplicity. We distill complex processes into intuitive
+          actions, eliminate unnecessary clutter, and design with profound clarity. We transform the
+          daunting into the effortless.
+        </p>
+      </li>
+      <li>
+        <p>
+          Thus, <strong>Santisify</strong> was born: <strong
+            >to simplify technology to its purest, most powerful form.</strong
+          > It is the act of purifying the user experience. Our name is a promise—a pledge to cleanse
+          digital interaction of its frustrations and to sanctify it with seamless, intelligent, and
+          empowering simplicity.
+        </p>
+      </li>
+      <li>
+        <p>Welcome to a state of purified performance. Welcome to Santisify.</p>
       </li>
     </ul>
   </Collapse>
-  <Collapse title="What kind of music or rhythm games are playing?">
-    I have tried almost all the games in the music game circle. Commonly played include Cytus II,
-    Lanota, Musedash, etc. I have played Yang Chun Bai Xue, Phigros, Rhythm Doctor, and Ice and Fire
-    Dance before.
-  </Collapse>
+  <Collapse title='About your avatar?'>
+    <ul>
+      <li>
+        <p>
+          Shape and Image: The main body is an image similar to a cloud or a cute little animal. The
+          lines are concise and smooth, and the outline is round and soft, giving people a cute and
+          lovely feeling. There are no sharp edges and corners, which can quickly arouse people's
+          affection and conform to the public's aesthetic preference for cute - style images.
+        </p>
+      </li>
+      <li>
+        <p>
+          Color Application: It uses a light blue background, which is fresh and elegant. The main
+          image is mainly light pink and white, with details such as pink blush. The color
+          saturation is low, and the overall color tone is soft, creating a warm and healing
+          atmosphere, which is very comfortable visually.
+        </p>
+      </li>
+      <li>
+        <p>
+          Element Integration: The angel halo element is integrated into it. The halo has a luminous
+          effect, adding a touch of "holiness" to the originally cute image. It echoes the text
+          "santisify" below (which has the meaning tendency of sanctifying and purifying), giving
+          the cute image an additional layer of unique meaning and interest, and making the design
+          more layered and connotative.
+        </p>
+      </li>
+      <li>
+        <p>
+          Style Orientation: The whole design belongs to the healing and cute style. From the shape
+          to the color and then to the element combination, it all revolves around creating a
+          relaxed, pleasant and warm visual experience. It can well attract the audience who like
+          the cute and warm style, and is convenient to convey a friendly and cute personal image
+          and emotion in social scenarios.
+          <p></p>
+        </p>
+      </li>
+      <Collapse title='What kind of music or rhythm games are playing?'>
+        I have tried almost all the games in the music game circle. Commonly played include Cytus
+        II, Lanota, Musedash, etc. I have played Yang Chun Bai Xue, Phigros, Rhythm Doctor, and Ice
+        and Fire Dance before.
+      </Collapse>
 
-  {/* about-blog */}
-  <h2 id="about-blog">About Blog</h2>
-  <p>Visit statistics:</p>
-  <Umami class="not-prose" />
-  <p>Website history:</p>
-  <Timeline
-    events={[
-      { date: '2025-01-01', content: 'Moved to Vercel and open source it on Github' },
-      {
-        date: '2025-01-01',
-        content:
-          'Website successfully signed and joined <a href="https://www.travellings.cn/" target="_blank"> travellings</a>'
-      },
-      {
-        date: '2025-04-23',
-        content:
-          'Bought new domain <a href="https://santisify.top/" target="_blank">santisify.top</a> with new redesigned theme <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a>'
-      },
-      {
-        date: '2025-07-18',
-        content:
-          'Website refactored using <a href="https://astro.build/" target="_blank">Astro</a> and <a href="https://github.com/srleom/astro-theme-resume" target="_blank">Astro Theme Resume</a> (Old one is saved at <a href="https://blog.lazy-boy-acmer.cn/" target="_blank">blog.lazy-boy-acmer.cn</a>)'
-      }
-    ]}
-  />
-  <p>
-    The smooth operation and personalized customization of website also rely on the resources and
-    technical support provided by the following excellent projects/service providers:
-  </p>
-  <ul>
-    <li>Domain: <a href="https://santisify.top/" target="_blank">santisify.top</a></li>
-    <li>
-      Framework & Theme: <a href="https://astro.build/" target="_blank">Astro</a> + <a
-      href="https://github.com/cworld1/astro-theme-pure"
-      target="_blank">Astro Theme Pure</a
-    >
-    </li>
-    <!--<li>-->
-    <!--  Site hosting: <a href="https://vercel.com/" target="_blank">Vercel</a>-->
-    <!--</li>-->
-    <!--<li>-->
-    <!--  CI/CD: <a href="https://vercel.com/workflow" target="_blank">Vercel Workflow</a>-->
-    <!--</li>-->
-    <!-- <li>Resources speedup: <a href='https://cdn.cbd.int/' target='_blank'>CBD CDN</a></li> -->
-    <li>Comment system: <a href="https://waline.js.org" target="_blank">Waline</a></li>
-    <li>
-      Analytics: <a href="https://github.com/umami-software/umami" target="_blank">Umami</a>
-    </li>
-    <li>
-      Other statistics: <a href="https://github.com/spencerwooo/substats" target="_blank"
-    >Substats</a
-    > & <a href="https://github.com/willow-god/Friend-Circle-Lite" target="_blank"
-    >Friend Circle Lite</a
-    >
-    </li>
-  </ul>
-  <p>... and one thing I have been insisting on so far:</p>
-  <a href="https://notbyai.fyi/" target="_blank">
-    <Image
-      src={notByAIImage}
-      alt="Written by Human Not by AI"
-      width="131"
-      height="42"
-      style="border-radius:unset"
-    />
-  </a>
-  <Comment slot="bottom" />
-</PageLayout>
+      {/* about-blog */}
+      <h2 id='about-blog'>About Blog</h2>
+      <p>Visit statistics:</p>
+      <Umami class='not-prose' />
+      <p>Website history:</p>
+      <Timeline
+        events={[
+          { date: '2025-01-01', content: 'Moved to Vercel and open source it on Github' },
+          {
+            date: '2025-01-01',
+            content:
+              'Website successfully signed and joined <a href="https://www.travellings.cn/" target="_blank"> travellings</a>'
+          },
+          {
+            date: '2025-04-23',
+            content:
+              'Bought new domain <a href="https://santisify.top/" target="_blank">santisify.top</a> with new redesigned theme <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a>'
+          },
+          {
+            date: '2025-07-18',
+            content:
+              'Website refactored using <a href="https://astro.build/" target="_blank">Astro</a> and <a href="https://github.com/srleom/astro-theme-resume" target="_blank">Astro Theme Resume</a> (Old one is saved at <a href="https://blog.lazy-boy-acmer.cn/" target="_blank">blog.lazy-boy-acmer.cn</a>)'
+          }
+        ]}
+      />
+      <p>
+        The smooth operation and personalized customization of website also rely on the resources
+        and technical support provided by the following excellent projects/service providers:
+      </p>
+      <ul>
+        <li>Domain: <a href='https://santisify.top/' target='_blank'>santisify.top</a></li>
+        <li>
+          Framework & Theme: <a href='https://astro.build/' target='_blank'>Astro</a> + <a
+            href='https://github.com/cworld1/astro-theme-pure'
+            target='_blank'>Astro Theme Pure</a
+          >
+        </li>
+        <!--<li>-->
+        <!--  Site hosting: <a href="https://vercel.com/" target="_blank">Vercel</a>-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--  CI/CD: <a href="https://vercel.com/workflow" target="_blank">Vercel Workflow</a>-->
+        <!--</li>-->
+        <!-- <li>Resources speedup: <a href='https://cdn.cbd.int/' target='_blank'>CBD CDN</a></li> -->
+        <li>Comment system: <a href='https://waline.js.org' target='_blank'>Waline</a></li>
+        <li>
+          Analytics: <a href='https://github.com/umami-software/umami' target='_blank'>Umami</a>
+        </li>
+        <li>
+          Other statistics: <a href='https://github.com/spencerwooo/substats' target='_blank'
+            >Substats</a
+          > & <a href='https://github.com/willow-god/Friend-Circle-Lite' target='_blank'
+            >Friend Circle Lite</a
+          >
+        </li>
+      </ul>
+      <p>... and one thing I have been insisting on so far:</p>
+      <a href='https://notbyai.fyi/' target='_blank'>
+        <Image
+          src={notByAIImage}
+          alt='Written by Human Not by AI'
+          width='131'
+          height='42'
+          style='border-radius:unset'
+        />
+      </a>
+      <Comment slot='bottom' />
+    </ul>
+  </Collapse></PageLayout
+>
