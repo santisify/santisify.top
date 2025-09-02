@@ -6,15 +6,21 @@
       "link_list": [
         {
           "name": "santisify",
-          "intro": "hexo-theme-anzhiyu blog",
           "link": "https://blog.lazy-boy-acmer.cn",
-          "avatar": "https://blog.lazy-boy-acmer.cn/assets/imgs/avater.webp"
+          "avatar": "https://blog.lazy-boy-acmer.cn/assets/imgs/avater.webp",
+          "intro": "hexo-theme-anzhiyu blog"
         },
         {
           "name": "Pinpe",
           "link": "https://pinpe.top",
           "avatar": "https://pinpe.top/head.jpg",
           "intro": "一个属于自己的云朵。"
+        },
+        {
+          "name": "santisify",
+          "link": "https://santisify.top",
+          "avatar": "https://cn.cravatar.com/avatar/737CF21C04FCD75BADF35BE0A797DE8A?s=200",
+          "intro": "to simplify technology to its purest, most powerful form."
         }
       ]
     },
@@ -22,7 +28,6 @@
       "id_name": "inactive-links",
       "desc": "Inactive or rule-breaking friends",
       "link_list": [
-
       ]
     },
     {
