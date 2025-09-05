@@ -316,82 +316,76 @@ const headings = [
           relaxed, pleasant and warm visual experience. It can well attract the audience who like
           the cute and warm style, and is convenient to convey a friendly and cute personal image
           and emotion in social scenarios.
-          <p></p>
         </p>
       </li>
-      <Collapse title='What kind of music or rhythm games are playing?'>
-        I have tried almost all the games in the music game circle. Commonly played include Cytus
-        II, Lanota, Musedash, etc. I have played Yang Chun Bai Xue, Phigros, Rhythm Doctor, and Ice
-        and Fire Dance before.
-      </Collapse>
-
-      {/* about-blog */}
-      <h2 id='about-blog'>About Blog</h2>
-      <p>Visit statistics:</p>
-      <Umami class='not-prose' />
-      <p>Website history:</p>
-      <Timeline
-        events={[
-          { date: '2025-01-01', content: 'Moved to Vercel and open source it on Github' },
-          {
-            date: '2025-01-01',
-            content:
-              'Website successfully signed and joined <a href="https://www.travellings.cn/" target="_blank"> travellings</a>'
-          },
-          {
-            date: '2025-04-23',
-            content:
-              'Bought new domain <a href="https://santisify.top/" target="_blank">santisify.top</a> with new redesigned theme <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a>'
-          },
-          {
-            date: '2025-07-18',
-            content:
-              'Website refactored using <a href="https://astro.build/" target="_blank">Astro</a> and <a href="https://github.com/srleom/astro-theme-resume" target="_blank">Astro Theme Resume</a> (Old one is saved at <a href="https://blog.lazy-boy-acmer.cn/" target="_blank">blog.lazy-boy-acmer.cn</a>)'
-          }
-        ]}
-      />
-      <p>
-        The smooth operation and personalized customization of website also rely on the resources
-        and technical support provided by the following excellent projects/service providers:
-      </p>
-      <ul>
-        <li>Domain: <a href='https://santisify.top/' target='_blank'>santisify.top</a></li>
-        <li>
-          Framework & Theme: <a href='https://astro.build/' target='_blank'>Astro</a> + <a
-            href='https://github.com/cworld1/astro-theme-pure'
-            target='_blank'>Astro Theme Pure</a
-          >
-        </li>
-        <!--<li>-->
-        <!--  Site hosting: <a href="https://vercel.com/" target="_blank">Vercel</a>-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--  CI/CD: <a href="https://vercel.com/workflow" target="_blank">Vercel Workflow</a>-->
-        <!--</li>-->
-        <!-- <li>Resources speedup: <a href='https://cdn.cbd.int/' target='_blank'>CBD CDN</a></li> -->
-        <li>Comment system: <a href='https://waline.js.org' target='_blank'>Waline</a></li>
-        <li>
-          Analytics: <a href='https://github.com/umami-software/umami' target='_blank'>Umami</a>
-        </li>
-        <li>
-          Other statistics: <a href='https://github.com/spencerwooo/substats' target='_blank'
-            >Substats</a
-          > & <a href='https://github.com/willow-god/Friend-Circle-Lite' target='_blank'
-            >Friend Circle Lite</a
-          >
-        </li>
-      </ul>
-      <p>... and one thing I have been insisting on so far:</p>
-      <a href='https://notbyai.fyi/' target='_blank'>
-        <Image
-          src={notByAIImage}
-          alt='Written by Human Not by AI'
-          width='131'
-          height='42'
-          style='border-radius:unset'
-        />
-      </a>
-      <Comment slot='bottom' />
     </ul>
-  </Collapse></PageLayout
->
+  </Collapse>
+
+  <Collapse title='What kind of music or rhythm games are playing?'>
+    I have tried almost all the games in the music game circle. Commonly played include Cytus II,
+    Lanota, Musedash, etc. I have played Yang Chun Bai Xue, Phigros, Rhythm Doctor, and Ice and Fire
+    Dance before.
+  </Collapse>
+
+  {/* about-blog */}
+  <h2 id='about-blog'>About Blog</h2>
+  <p>Visit statistics:</p>
+  <Umami class='not-prose' />
+  <p>Website history:</p>
+  <Timeline
+    events={[
+      { date: '2025-01-01', content: 'Moved to Vercel and open source it on Github' },
+      {
+        date: '2025-01-01',
+        content:
+          'Website successfully signed and joined <a href="https://www.travellings.cn/" target="_blank"> travellings</a>'
+      },
+      {
+        date: '2025-04-23',
+        content:
+          'Bought new domain <a href="https://santisify.top/" target="_blank">santisify.top</a> with new redesigned theme <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a>'
+      },
+      {
+        date: '2025-07-18',
+        content:
+          'Website refactored using <a href="https://astro.build/" target="_blank">Astro</a> and <a href="https://github.com/srleom/astro-theme-resume" target="_blank">Astro Theme Resume</a> (Old one is saved at <a href="https://blog.lazy-boy-acmer.cn/" target="_blank">blog.lazy-boy-acmer.cn</a>)'
+      }
+    ]}
+  />
+  <p>
+    The smooth operation and personalized customization of website also rely on the resources and
+    technical support provided by the following excellent projects/service providers:
+  </p>
+  <ul>
+    <li>Domain: <a href='https://santisify.top/' target='_blank'>santisify.top</a></li>
+    <li>
+      Framework & Theme: <a href='https://astro.build/' target='_blank'>Astro</a> + <a
+        href='https://github.com/cworld1/astro-theme-pure'
+        target='_blank'>Astro Theme Pure</a
+      >
+    </li>
+
+    <li>Comment system: <a href='https://waline.js.org' target='_blank'>Waline</a></li>
+    <li>
+      Analytics: <a href='https://github.com/umami-software/umami' target='_blank'>Umami</a>
+    </li>
+    <li>
+      Other statistics: <a href='https://github.com/spencerwooo/substats' target='_blank'
+        >Substats</a
+      > & <a href='https://github.com/willow-god/Friend-Circle-Lite' target='_blank'
+        >Friend Circle Lite</a
+      >
+    </li>
+  </ul>
+  <p>... and one thing I have been insisting on so far:</p>
+  <a href='https://notbyai.fyi/' target='_blank'>
+    <Image
+      src={notByAIImage}
+      alt='Written by Human Not by AI'
+      width='131'
+      height='42'
+      style='border-radius:unset'
+    />
+  </a>
+  <Comment slot='bottom' />
+</PageLayout>
