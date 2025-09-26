@@ -80,5 +80,4 @@ bunfig.toml
 /src/content/blog/test.*
 /test/
 .idea/*
-src/content/blog/.obsidian
-src/content/blog/实习
+src/content/blog/assets
