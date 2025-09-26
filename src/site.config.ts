@@ -50,7 +50,8 @@ export const theme: ThemeUserConfig = {
       { title: 'Blog', link: '/blog' },
       { title: 'Projects', link: '/projects' },
       { title: 'Links', link: '/links' },
-      { title: 'About', link: '/about' }
+      { title: 'About', link: '/about' },
+      { title: '🚇', link: 'https://www.travellings.cn/go.html' }
     ]
   },
 
@@ -99,64 +100,8 @@ export const integ: IntegrationUserConfig = {
   links: {
     // Friend logbook
     logbook: [
-      { date: '2020-07-09', content: '[蒟蒻の BLOG] rejected' },
-      { date: '2020-07-09', content: '[Vexsy] rejected' },
-      { date: '2020-07-07', content: '[Raaynk’s Blog] lost' },
-      { date: '2020-07-07', content: '[冬马的白色相簿] returned' },
-      { date: '2021-02-22', content: '[半叶子] rejected' },
-      { date: '2021-02-22', content: '[冬马的白色相簿] lost' },
-      { date: '2021-02-02', content: '[Heven Kin] returned' },
-      { date: '2022-02-13', content: '[理工小天使] lost' },
-      { date: '2022-02-13', content: '[自由灵的梦境] lost' },
-      { date: '2022-02-13', content: '[冬马のホワイトアルバム] lost' },
-      { date: '2022-02-13', content: '[Sansui] lost' },
-      { date: '2022-09-01', content: '[椎咲良田] lost' },
-      { date: '2022-09-01', content: '[木子の Blog] rejected' },
-      { date: '2022-09-01', content: '[LanYun の Blog] lost' },
-      { date: '2022-09-01', content: "[Wittoy's Blog] lost" },
-      { date: '2022-09-05', content: '[东方幻梦] rejected' },
-      { date: '2022-09-05', content: '[绎梦机] rejected' },
-      { date: '2022-11-09', content: '[一叶竹] lost' },
-      { date: '2022-11-23', content: "[KD's Blog] lost" },
-      { date: '2022-02-13', content: '[LanYun の Blog] returned' },
-      { date: '2022-12-14', content: '[KD 的网络小屋] returned' },
-      { date: '2023-02-09', content: '[L1nSn0w’s Blog] lost' },
-      { date: '2023-02-09', content: '[鲨鱼辣椒] lost' },
-      { date: '2023-02-09', content: "[Jinlk's blog] lost" },
-      { date: '2023-02-09', content: '[L1nSn0w’s Blog] returned' },
-      { date: '2023-03-01', content: '[NEKO#ΦωΦ] lost' },
-      { date: '2023-04-25', content: '[Barkure] lost' },
-      { date: '2023-04-25', content: '[KD 的网络小屋] lost' },
-      { date: '2023-06-13', content: '[LyShark - 孤风洗剑] lost' },
-      { date: '2023-06-13', content: '[Ojhdt’s Blog] lost' },
-      { date: '2023-06-13', content: '[Barkure] lost' },
-      { date: '2023-06-13', content: "[七云's Blog] lost" },
-      { date: '2023-10-24', content: "[Enjoy's blog] lost" },
-      { date: '2023-10-24', content: "[Wayne's Blog] lost" },
-      { date: '2023-10-24', content: "[七云's Blog] returned" },
-      { date: '2024-04-29', content: '[彬红茶博客] lost' },
-      { date: '2024-04-29', content: '[OURONGXING] rejected' },
-      { date: '2024-04-29', content: '[凌冬的个人博客] lost' },
-      { date: '2024-04-29', content: '[大蛋糕的烘焙坊] rejected' },
-      { date: '2024-05-07', content: '[Fly] lost' },
-      { date: '2024-06-13', content: "[Y'Blog] lost" },
-      { date: '2024-06-18', content: "[Y'Blog] returned" },
-      { date: '2024-07-01', content: '[安知鱼 荒废' },
-      { date: '2024-07-01', content: '[Kris Yan 荒废' },
-      { date: '2024-07-01', content: '[Ordis 荒废' },
-      { date: '2024-07-01', content: '[itsNeko] rejected' },
-      { date: '2024-07-01', content: "[Wittoy's Blog] returned" },
-      { date: '2024-09-23', content: '[流年轻迹] lost' },
-      { date: '2024-10-07', content: '[lee’s blog] lost' },
-      { date: '2024-11-19', content: '[Joyer 的博客] stagnated' },
-      { date: '2024-11-19', content: "[Wayne's Blog] lost" },
-      { date: '2024-11-19', content: '[流年轻迹] lost' },
-      { date: '2024-11-26', content: '[字节君] stagnated' },
-      { date: '2025-01-21', content: '[一叶竹] returned' },
-      { date: '2025-04-06', content: '[L1nSn0w] returned' },
-      { date: '2025-04-06', content: '[伍十七] lost' },
-      { date: '2025-04-06', content: '[LanM蓝莓Blog] lost' },
-      { date: '2025-06-10', content: '[L1nSn0w] lost' }
+      { date: '2025-08-29', content: '[Pinpe的云端] accepted' },
+      { date: '2025-09-16', content: '[FKUNのBLOG] accepted' }
     ],
     // Yourself link info
     applyTip: [
@@ -178,7 +123,7 @@ export const integ: IntegrationUserConfig = {
     // server: 'https://v1.hitokoto.cn/?c=i',
     // target: (data) => (data as { hitokoto: string }).hitokoto || 'Error'
     // https://github.com/lukePeavey/quotable
-    server: 'https://api.quotable.io/quotes/random?maxLength=60',
+    server: 'https://api.quotable.io/quotes/random?minLength=100&maxLength=140',
     target: `(data) => data[0].content || 'Error'`
   },
   // UnoCSS typography
