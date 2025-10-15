@@ -1,0 +1,164 @@
+---
+title: 'AtCoder Beginner Contest 425'
+tags: [ 'atcoder', '题解' ]
+publishDate: '2025-10-14 10:00:00'
+description: 'abc425 (A---D)'
+heroImage: { src: './assets/2.webp', color: '#4891B2' }
+language: 'zh-cn'
+---
+import { LinkPreview } from 'astro-pure/advanced'
+
+## A Sigma Cubes
+<LinkPreview href='https://atcoder.jp/contests/abc425/tasks/abc425_a'/>
+
+### 题目描述
+输入$N$,计算$\sum_{i=1}^N (-1)^i \times i^3$
+
+### 参考代码
+```cpp
+#include<bits/stdc++.h>
+
+#define int long long
+#define pii std::pair<int,int>
+
+void solve() {
+	int n;
+	std::cin >> n;
+	int res = 0;
+	for(int i = 1; i <= n; i ++) {
+		if(i & 1) res -= i * i * i;
+		else res += i * i * i;
+	}
+
+	std::cout << res << std::endl;
+}
+
+signed main() {
+	std::ios::sync_with_stdio(false);
+	std::cin.tie(nullptr), std::cout.tie(nullptr);
+  solve();
+}
+```
+
+## B Find Permutation 2
+<LinkPreview href='https://atcoder.jp/contests/abc425/tasks/abc425_b'/>
+
+### 题目描述
+给出数组 $A$, 判断是否存在一个排列 $P$ 使得满足:<br/>
+  - $P$是一个排列。
+  - $P_{i}=A_{i}(A_{i} \neq -1)$, $P{i} = R (A_{i} = -1)$
+
+<br/>若存在这样的排列，输出 $P$
+
+### 解题思路
+首先记录下 $A$ 中非 $-1$ 的其他数的个数记为 $ct$,若$ct_{i} \ge 2$ 则不可能有合法的 $P$<br/>
+将 $ct_{i}$ 为 $0$ 的依次填入$A_{i}=-1$ 处即可获得排列 $P$.
+
+### 参考代码
+```cpp
+#include<bits/stdc++.h>
+
+#define int long long
+#define pii std::pair<int,int>
+
+void solve() {
+	int n;
+	std::cin >> n;
+	std::vector<int> a(n + 1, 0), b(n + 1, 0);
+	for(int i = 1; i <= n; i ++) {
+		std::cin >> b[i];
+		if(b[i] != -1) {
+			a[b[i]] ++;
+		}
+	}
+
+	for(int i = 1; i <= n; i ++) {
+		if(a[i] > 1) {
+			std::cout << "No" << std::endl;
+			return;
+		}
+	}
+	std::cout << "Yes" << std::endl;
+	std::queue<int> q;
+	for(int i = 1; i <= n; i ++) {
+		if(!a[i]) {
+			q.push(i);
+		}
+	}
+	for(int i = 1; i <= n; i ++) {
+		if(b[i] == -1) {
+			std::cout << q.front() << ' ';
+			q.pop();
+		}else {
+			std::cout << b[i] << ' ';
+		}
+	}
+}
+
+signed main() {
+	std::ios::sync_with_stdio(false);
+	std::cin.tie(nullptr), std::cout.tie(nullptr);
+  solve();
+}
+
+```
+## C Rotate and Sum Query
+<LinkPreview href='https://atcoder.jp/contests/abc425/tasks/abc425_c'/>
+
+### 题目描述
+给出数组 $A$ 和$q$次查询,每次查询如下:<br/>
+ - $1$ &nbsp; $c$: 循环 $c$ 次，每次循环都将 $A_{1}$ 放在数组末尾.
+ - $2$ &nbsp; $l$ &nbsp; $r$: 查询区间$[l, r]$的总和
+
+数据范围：
+  - $1\le N\le 2\times 10^5$
+  - $1\le Q\le 2\times 10^5$
+  - $1\le A_i \le 10^9$
+  - $1\le c\le N$
+  - $1\le l\le r \le N$
+
+### 解题思路
+可以发现数据范围较大，无法使用rotate去模拟，但是可以发现每次循环次数 $ct$ 到达 $n$ 后就会回到初始数组，区间总和也只与$ct \% n$有关.<br/>
+我们可以使用变化后的区间 $[l, r]$ 和 $ct$ 去找变化前的区间 $[x, y]$,可以发现需要预处理前缀和 $s$. <br/>
+但是变化前的区间可能会出现 $x > y$，这个区间$[y, x]$的值则是区间外的总和.
+
+### 参考代码
+```cpp
+#include<bits/stdc++.h>
+
+#define int long long
+#define pii std::pair<int,int>
+
+void solve() {
+	int n, q;
+	std::cin >> n >> q;
+	std::vector<int> s(n + 1, 0), a(n + 1, 0);
+	for (int i = 0; i < n; i++) {
+		std::cin >> a[i];
+		s[i] = a[i];
+		if (i) s[i] = s[i - 1] + a[i];
+	}
+	int t, x, y, ct = 0;
+	while (q--) {
+		std::cin >> t >> x;
+		if (t == 1) {
+			ct += x;
+		} else {
+			std::cin >> y;
+			x = (x - 1 + ct) % n;
+			y = (y - 1 + ct) % n;
+			if (x > y) {
+				std::cout << s[y] + s[n - 1] - (x ? s[x - 1] : 0) << std::endl;
+			} else {
+				std::cout << s[y] - (x ? s[x - 1] : 0) << std::endl;
+			}
+		}
+	}
+}
+
+signed main() {
+	std::ios::sync_with_stdio(false);
+	std::cin.tie(nullptr), std::cout.tie(nullptr);
+	solve();
+}
+```
