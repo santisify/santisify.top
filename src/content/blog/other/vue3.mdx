@@ -1,0 +1,249 @@
+---
+title: 'Vue学习笔记（三）'
+tags: ['vue', '技术']
+publishDate: '2025-10-24 21:00:00'
+description: '内置组件'
+heroImage: { src: './assets/vue3.png', color: '#4891B2' }
+language: 'zh-cn'
+---
+# Vue 内置组件学习笔记（核心组件实战整理）
+
+## 一、＜component＞：动态组件切换
+
+### 核心作用
+
+通过 `is` 属性动态渲染不同组件，实现无刷新切换页面 / 功能模块，提升组件复用性。
+
+### 核心属性
+
+- `is`：指定要渲染的组件（值为组件名字符串或组件对象）。
+
+### 实战案例（Tab 标签页）
+
+```vue
+<template>
+  <div>
+    <button @click="currentComponent = 'Home'">首页</button>
+    <button @click="currentComponent = 'List'">列表页</button>
+    <!-- 动态渲染组件 -->
+    <component :is="currentComponent"></component>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import Home from './Home.vue'
+import List from './List.vue'
+
+const currentComponent = ref('Home') // 初始渲染 Home 组件
+</script>
+```
+
+### 常见误区
+
+- `is` 的值需与组件名完全匹配（区分大小写，建议使用 PascalCase 命名组件）。
+- 动态组件外若嵌套 `<keep-alive>`，需确保 `<component>` 是直接子元素，否则缓存失效。
+
+## 二、＜keep-alive＞：组件缓存管理
+
+### 核心作用
+
+缓存不活动的组件实例（而非销毁），保留组件状态（如表单输入、滚动位置），减少重复渲染。
+
+### 核心属性
+
+- `include`：仅缓存名称匹配的组件（值为字符串、正则或数组，匹配组件 `name` 属性）。
+- `exclude`：不缓存名称匹配的组件（规则同上）。
+- `max`：最多缓存的组件实例数量（超出则销毁最早缓存的实例）。
+
+### 实战案例（缓存 Tab 页数据）
+
+```vue
+<template>
+  <div>
+    <button @click="currentComponent = 'UserForm'">用户表单</button>
+    <button @click="currentComponent = 'LogList'">日志列表</button>
+    <!-- 只缓存 UserForm 组件 -->
+    <keep-alive include="UserForm">
+      <component :is="currentComponent"></component>
+    </keep-alive>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import UserForm from './UserForm.vue' // 组件名需设置为 UserForm
+import LogList from './LogList.vue'
+
+const currentComponent = ref('UserForm')
+</script>
+```
+
+### 注意事项
+
+- 缓存的组件不会触发 `created`/`mounted` 等生命周期，需用 `activated`（激活时）、`deactivated`（失活时）替代。
+- 若组件无 `name` 属性，`include`/`exclude` 需匹配组件文件名（不推荐，建议显式定义 `name`）。
+
+## 三、＜slot＞：组件内容分发（插槽）
+
+### 核心作用
+
+允许父组件向子组件传递自定义内容，实现组件的灵活扩展（如卡片头部、列表项操作按钮）。
+
+### 三种用法及案例
+
+#### 1. 默认插槽（无名称）
+
+子组件接收父组件传递的默认内容：
+
+```vue
+<!-- 子组件 Card.vue -->
+<template>
+  <div class="card">
+    <slot></slot> <!-- 父组件内容会插入这里 -->
+  </div>
+</template>
+
+<!-- 父组件使用 -->
+<Card>
+  <p>这是卡片的默认内容</p> <!-- 会被插入到子组件的 <slot> 中 -->
+</Card>
+```
+
+#### 2. 具名插槽（指定名称）
+
+子组件定义多个命名插槽，父组件按需传递内容：
+
+```vue
+<!-- 子组件 Card.vue -->
+<template>
+  <div class="card">
+    <slot name="header"></slot> <!-- 头部插槽 -->
+    <slot></slot> <!-- 默认插槽 -->
+    <slot name="footer"></slot> <!-- 底部插槽 -->
+  </div>
+</template>
+
+<!-- 父组件使用（Vue3 简写 # 替代 v-slot:） -->
+<Card>
+  <template #header>
+    <h3>卡片标题</h3> <!-- 插入 header 插槽 -->
+  </template>
+  <p>卡片正文内容</p> <!-- 插入默认插槽 -->
+  <template #footer>
+    <button>提交</button> <!-- 插入 footer 插槽 -->
+  </template>
+</Card>
+```
+
+#### 3. 作用域插槽（子传父数据）
+
+子组件向父组件传递数据，父组件基于数据自定义渲染：
+
+```vue
+<!-- 子组件 List.vue -->
+<template>
+  <ul>
+    <li v-for="item in list" :key="item.id">
+      <!-- 向父组件传递 item 数据 -->
+      <slot :item="item" :index="index"></slot>
+    </li>
+  </ul>
+</template>
+
+<script setup>
+const list = [
+  { id: 1, name: '张三' },
+  { id: 2, name: '李四' }
+]
+</script>
+
+<!-- 父组件使用 -->
+<List>
+  <!-- 接收子组件传递的 item 数据，自定义渲染列表项 -->
+  <template #default="slotProps">
+    <span>{{ slotProps.index + 1 }}. {{ slotProps.item.name }}</span>
+    <button @click="edit(slotProps.item)">编辑</button>
+  </template>
+</List>
+```
+
+### 关键技巧
+
+- Vue3 中具名插槽可用 `#插槽名` 简写（如 `#header` 替代 `v-slot:header`）。
+- 作用域插槽的参数可解构简化（如 `#default="{ item, index }"`）。
+
+## 四、＜transition＞ 与 ＜transition-group＞：过渡动画
+
+### 核心作用
+
+为组件 / 元素的插入、更新、移除添加过渡动画，提升用户体验。
+
+#### 1. ＜transition＞：单个元素 / 组件过渡
+
+```vue
+<template>
+  <button @click="show = !show">切换</button>
+  <!-- 为 p 标签添加过渡动画 -->
+  <transition name="fade">
+    <p v-if="show">这是一段文本</p>
+  </transition>
+</template>
+
+<style>
+/* 进入/离开的过渡状态 */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+/* 进入开始/离开结束的状态 */
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+</style>
+
+<script setup>
+import { ref } from 'vue'
+const show = ref(true)
+</script>
+```
+
+#### 2. ＜transition-group＞：列表过渡（多个元素）
+
+```vue
+<template>
+  <button @click="addItem">添加项</button>
+  <!-- 为列表项添加过渡 -->
+  <transition-group name="slide" tag="ul">
+    <li v-for="item in list" :key="item.id">
+      {{ item.name }}
+    </li>
+  </transition-group>
+</template>
+
+<style>
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.3s ease;
+}
+.slide-enter-from {
+  transform: translateX(30px);
+  opacity: 0;
+}
+.slide-leave-to {
+  transform: translateX(-30px);
+  opacity: 0;
+}
+</style>
+```
+
+### 核心属性
+
+- `name`：定义过渡类名前缀（如 `name="fade"` 对应类名 `fade-enter-active`）。
+- `tag`（仅 transition-group）：指定渲染的容器标签（默认 `<span>`）。
+
+## 五、综合实战要点
+
+1. **组件组合**：`＜component＞ + ＜keep-alive＞` 实现带缓存的页面切换，`＜slot＞` 实现组件个性化扩展（如后台管理系统的动态页面 + 自定义操作区）。
+2. **问题解决**：
+ - 缓存组件数据刷新：在 `activated` 钩子中手动更新数据。
+ - 插槽数据传递错误：检查作用域插槽的参数名是否与子组件一致。
+3. **学习优先级**：先掌握 `＜component＞` `＜keep-alive＞` `＜slot＞`（日常开发高频使用），再深入 `＜transition＞` 动画细节。
