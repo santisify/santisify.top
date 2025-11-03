@@ -105,7 +105,8 @@ export const integ: IntegrationUserConfig = {
     // Friend logbook
     logbook: [
       { date: '2025-08-29', content: '[Pinpe的云端] accepted' },
-      { date: '2025-09-16', content: '[FKUNのBLOG] accepted' }
+      { date: '2025-09-16', content: '[FKUNのBLOG] accepted' },
+      { date: '2025-11-3', content: '[LiuShen] accepted' }
     ],
     // Yourself link info
     applyTip: [
