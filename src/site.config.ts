@@ -69,6 +69,10 @@ export const theme: ThemeUserConfig = {
         link: 'https://www.travellings.cn/go.html',
         style: 'text-sm'
       },
+      { title: '蜀ICP备2025168877号-1',
+        link: 'https://icp.chinaz.com/%E8%9C%80ICP%E5%A4%872025168877%E5%8F%B7-1',
+        style: 'text-sm'
+      },
       // Privacy Policy link
       {
         title: 'Site Policy',

@@ -8,7 +8,7 @@ language: 'zh-cn'
 ---
 ## API请求
 ### HTTP动词
-```http
+```
 GET:     读取（READ）
 POST:    新建（CREATE）
 PUT:     更新（UPDATE）
@@ -20,21 +20,21 @@ DELETE:  删除（DELETE）
 **宾语** 顾名思义，是一个名词，`URL`作为`API`的宾语是作用`HTTP`的对象，普遍以复数形式存在.
 
 以下为错误示例：
-```http
+```
 /getAllCars
 /createNewCar
 /deleteAllRedCars
 ```
 
 正确示例：
-```HTTP
+```
 /aticles
 /users
 /cars
 ```
 
 #### 煮个栗子
-```http
+```
  GET    /zoos：列出所有动物园
  POST   /zoos：新建一个动物园
  GET    /zoos/ID：获取某个指定动物园的信息
@@ -49,7 +49,7 @@ DELETE:  删除（DELETE）
 通常在数据库中存储着许多数据，我们不可能将所有数据返回给用户，而是选择性的将一些数据返回给用户，而`API`就应该提供一些参数，过滤返回的结果。
 
 下面是一些常见的参数。
-```http
+```
 ?limit=10：指定返回记录的数量
 ?offset=10：指定返回记录的开始位置。
 ?page=2&per_page=100：指定第几页，以及每页的记录数。
@@ -120,7 +120,7 @@ response 的 body直接就是数据，不要做多余的包装。错误实例：
 ```
 
 针对不同操作，服务器向用户返回的结果应该符合以下规范。
-```http
+```
  GET    /collection：返回资源对象的列表（数组）
  GET    /collection/resource：返回单个资源对象
  POST   /collection：返回新生成的资源对象
