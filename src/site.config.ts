@@ -128,7 +128,7 @@ export const integ: IntegrationUserConfig = {
     // server: 'https://v1.hitokoto.cn/?c=i',
     // target: (data) => (data as { hitokoto: string }).hitokoto || 'Error'
     // https://github.com/lukePeavey/quotable
-    server: 'https://api.quotable.io/quotes/random?minLength=100&maxLength=140',
+    server: 'http://api.quotable.io/quotes/random?minLength=100&maxLength=140',
     target: `(data) => data[0].content || 'Error'`
   },
   // UnoCSS typography
