@@ -129,7 +129,7 @@ export const integ: IntegrationUserConfig = {
     // target: (data) => (data as { hitokoto: string }).hitokoto || 'Error'
     // https://github.com/lukePeavey/quotable
     server: 'https://dummyjson.com/quotes/random',
-    target: `(data) => data[0].quote || 'Error'`
+    target: `(data) => data.quote || 'Error'`
   },
   // UnoCSS typography
   // See: https://unocss.dev/presets/typography
