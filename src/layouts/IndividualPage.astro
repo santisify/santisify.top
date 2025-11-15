@@ -23,7 +23,7 @@ const socialImage = heroImage?.src ?? '/images/social-card.png'
 ---
 
 <PageLayout meta={{ title, description, ogImage: socialImage }}>
-  <Button title='Back' href={back ?? '/'} style='back' />
+  <Button title='Back' href={back ?? '/'} variant='back' />
   <main class='mt-6 items-start gap-x-10 md:flex lg:mt-10'>
     {
       !!headings.length && (
@@ -43,19 +43,19 @@ const socialImage = heroImage?.src ?? '/images/social-card.png'
           {
             // Language
             language && (
-              <span class='flex items-center gap-1'>
+            <span class='flex items-center gap-1'>
                 <Icon name='earth' />
-                {language}
+              {language}
               </span>
-            )
+          )
           }
           {
             // Description
             description && (
-              <blockquote class='text-sm italic text-muted-foreground'>
-                <q>{description}</q>
-              </blockquote>
-            )
+            <blockquote class='text-sm italic text-muted-foreground'>
+              <q>{description}</q>
+            </blockquote>
+          )
           }
         </div>
       </div>

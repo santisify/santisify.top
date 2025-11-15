@@ -57,6 +57,8 @@ export const theme: ThemeUserConfig = {
 
   /** Configure the footer of your site. */
   footer: {
+    // Year format
+    year: `©2025 - ${new Date().getFullYear()}`,
     links: [
       // Registration link
       {
@@ -69,7 +71,8 @@ export const theme: ThemeUserConfig = {
         link: 'https://www.travellings.cn/go.html',
         style: 'text-sm'
       },
-      { title: '蜀ICP备2025168877号-1',
+      {
+        title: '蜀ICP备2025168877号-1',
         link: 'https://icp.chinaz.com/%E8%9C%80ICP%E5%A4%872025168877%E5%8F%B7-1',
         style: 'text-sm'
       },
@@ -89,10 +92,16 @@ export const theme: ThemeUserConfig = {
   },
 
   content: {
-    externalLinksContent: ' ↗',
+    /** External links configuration */
+    externalLinks: {
+      content: ' ↗',
+      /** Properties for the external links element */
+      properties: {
+        style: 'user-select:none'
+      }
+    },
     /** Blog page size for pagination (optional) */
     blogPageSize: 8,
-    externalLinkArrow: true, // show external link arrow
     // Currently support weibo, x, bluesky
     share: ['weibo', 'bluesky']
   }
@@ -134,7 +143,11 @@ export const integ: IntegrationUserConfig = {
   // UnoCSS typography
   // See: https://unocss.dev/presets/typography
   typography: {
-    class: 'prose text-base text-muted-foreground'
+    class: 'prose text-base text-muted-foreground',
+    // The style of blockquote font, normal or italic (default to italic in typography)
+    blockquoteStyle: 'italic',
+    // The style of inline code block, code or modern (default to code in typography)
+    inlineCodeBlockStyle: 'code'
   },
   // A lightbox library that can add zoom effect
   // See: https://astro-pure.js.org/docs/integrations/others#medium-zoom

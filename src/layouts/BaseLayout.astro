@@ -15,7 +15,8 @@ interface Props {
 
 const {
   meta: { articleDate, description = config.description, ogImage, title },
-  highlightColor
+  highlightColor,
+  ...props
 } = Astro.props
 ---
 
@@ -37,7 +38,9 @@ const {
     }
     <div class='w-full max-w-[70rem] px-4 sm:px-7 lg:px-10'>
       <Header />
-      <slot />
+      <div class='flex-1 w-full'>
+        <slot />
+      </div>
       <Footer />
     </div>
 

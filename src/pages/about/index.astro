@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets'
 
-import { Comment } from 'astro-pure/advanced'
 import { Button, Collapse, Spoiler, Timeline } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import Substats from '@/components/about/Substats.astro'
@@ -18,7 +17,7 @@ const headings = [
 ]
 ---
 
-<PageLayout title='About' {headings} info='/about'>
+<PageLayout title='About' {headings} comment>
   <p>Developer / Designer</p>
   <p>
     Full-time undergraduate student majoring in Computer Science, skilled in big data and full-stack
@@ -387,5 +386,4 @@ const headings = [
       style='border-radius:unset'
     />
   </a>
-  <Comment slot='bottom' />
 </PageLayout>
