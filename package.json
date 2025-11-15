@@ -22,10 +22,10 @@
     "@astrojs/rss": "^4.0.13",
     "@astrojs/vercel": "^8.2.11",
     "@playform/compress": "^0.1.9",
-    "@unocss/preset-wind3": "^66.5.5",
-    "@unocss/reset": "^66.5.5",
-    "@waline/client": "^3.7.1",
-    "astro": "^5.15.4",
+    "@unocss/preset-wind3": "^66.5.6",
+    "@unocss/reset": "^66.5.6",
+    "@waline/client": "^3.8.0",
+    "astro": "^5.15.7",
     "astro-pure": "1.2.8",
     "katex": "^0.16.25",
     "rehype-katex": "^7.0.1",
@@ -40,6 +40,6 @@
     "eslint-plugin-astro": "^1.5.0",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript-eslint": "^8.46.3"
+    "typescript-eslint": "^8.46.4"
   }
 }

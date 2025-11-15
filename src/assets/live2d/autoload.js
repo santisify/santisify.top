@@ -35,7 +35,7 @@ function loadExternalResource(url, type) {
 (async () => {
   // If you are concerned about display issues on mobile devices, you can use screen.width to determine whether to load
   // 如果担心手机上显示效果不佳，可以根据屏幕宽度来判断是否加载
-  // if (screen.width < 768) return;
+  if (screen.width < 768) return;
 
   // Avoid cross-origin issues with image resources
   // 避免图片资源跨域问题
@@ -56,7 +56,7 @@ function loadExternalResource(url, type) {
   // 配置选项的具体用法见 README.md
   initWidget({
     waifuPath: live2d_path + 'waifu-tips.json',
-    cdnPath: 'https://cdn.jsdelivr.net/gh/fghrsh/live2d_api@master/',
+    cdnPath: 'https://gh-proxy.org/https://github.com/fghrsh/live2d_api/blob/master/',
     cubism2Path: live2d_path + 'live2d.min.js',
     cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
     tools: ['hitokoto', 'asteroids', 'switch-model', 'switch-texture', 'photo', 'quit'],
