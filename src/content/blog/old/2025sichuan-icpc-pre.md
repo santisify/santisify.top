@@ -1,13 +1,13 @@
 ---
 title: '2025省赛预选赛补题'
-tags: [ '题解' ]
+tags: ['题解']
 publishDate: '2025-04-27'
 description: '由成信大出题'
 heroImage: { src: './scenery/8.webp', color: '#4891B2' }
 language: 'zh-cn'
 ---
 
-(cf补题链接)[https://codeforces.com/gym/606649] 
+(cf补题链接)[https://codeforces.com/gym/606649]
 
 ## H
 
@@ -15,8 +15,7 @@ language: 'zh-cn'
 
 > 给定三个数组$A$, $B$, $C$,长度分别为 $n$, $m$, $p$,每个数组取一个数求和，输出前$k$个最大值。
 >
->
-数据范围： $l \le n,m,p \le 1000$, $1 \le k \le min(3000, n \times m \times p)$ , $0 \le A_{i}, B_{i}, C_{i} \le  10000000000$
+> 数据范围： $l \le n,m,p \le 1000$, $1 \le k \le min(3000, n \times m \times p)$ , $0 \le A_{i}, B_{i}, C_{i} \le  10000000000$
 
 ### 解题思路
 
@@ -26,63 +25,63 @@ language: 'zh-cn'
 
 ### 参考代码
 
-```cpp  
-#include<bits/stdc++.h>  
-  
-using i128 = __int128;  
-#define endl '\n'  
-#define int long long  
-#define pii std::pair<int ,int>  
-#define fix(x) std::fixed << std::setprecision(x)  
-const int inf = 1e17 + 50, MAX_N = 1e5 + 50, mod = 1e9 + 7;  
-  
-void solve() {  
-  int n, m, p, k;  
-  std::cin >> n >> m >> p >> k;  
-  std::vector<int> a(n), b(m), c(p);  
-  for(int i = 0; i < n; i++) std::cin >> a[i];  
-  for(int i = 0; i < m; i++) std::cin >> b[i];  
-  for(int i = 0; i < p; i++) std::cin >> c[i];  
-  std::vector<int> ab;  
-  for(int i = 0; i < n; i++) {  
-   for(int j = 0; j < m; j++) {  
-    ab.push_back(a[i] + b[j]);  
-   }  
-  }  
-  std::sort(ab.begin(), ab.end(), std::greater<>());  
-  std::sort(c.begin(), c.end(), std::greater<>());  
-  std::priority_queue<int, std::vector<int>, std::greater<> > pq;  
-  for(int i = 0; i < std::min(k, (int) ab.size()); i++) {  
-   for(int j = 0; j < p; j++) {  
-    int t = ab[i] + c[j];  
-    if (pq.size() == k) {  
-     auto w = pq.top();  
-     if (w < t) {  
-      pq.pop();  
-      pq.push(t);  
-     }  
-    } else {  
-     pq.push(t);  
-    }  
-   }  
-  }  
-  std::vector<int> res;  
-  while (!pq.empty()) {  
-   res.push_back(pq.top());  
-   pq.pop();  
-  }  
-  std::reverse(res.begin(), res.end());  
-  for(auto i : res) {  
-   std::cout << i << endl;  
-  }  
-}  
-  
-signed main() {  
-  std::ios::sync_with_stdio(false);  
-  std::cin.tie(nullptr), std::cout.tie(nullptr);  
-  solve();  
-  return 0;  
-}  
+```cpp
+#include<bits/stdc++.h>
+
+using i128 = __int128;
+#define endl '\n'
+#define int long long
+#define pii std::pair<int ,int>
+#define fix(x) std::fixed << std::setprecision(x)
+const int inf = 1e17 + 50, MAX_N = 1e5 + 50, mod = 1e9 + 7;
+
+void solve() {
+  int n, m, p, k;
+  std::cin >> n >> m >> p >> k;
+  std::vector<int> a(n), b(m), c(p);
+  for(int i = 0; i < n; i++) std::cin >> a[i];
+  for(int i = 0; i < m; i++) std::cin >> b[i];
+  for(int i = 0; i < p; i++) std::cin >> c[i];
+  std::vector<int> ab;
+  for(int i = 0; i < n; i++) {
+   for(int j = 0; j < m; j++) {
+    ab.push_back(a[i] + b[j]);
+   }
+  }
+  std::sort(ab.begin(), ab.end(), std::greater<>());
+  std::sort(c.begin(), c.end(), std::greater<>());
+  std::priority_queue<int, std::vector<int>, std::greater<> > pq;
+  for(int i = 0; i < std::min(k, (int) ab.size()); i++) {
+   for(int j = 0; j < p; j++) {
+    int t = ab[i] + c[j];
+    if (pq.size() == k) {
+     auto w = pq.top();
+     if (w < t) {
+      pq.pop();
+      pq.push(t);
+     }
+    } else {
+     pq.push(t);
+    }
+   }
+  }
+  std::vector<int> res;
+  while (!pq.empty()) {
+   res.push_back(pq.top());
+   pq.pop();
+  }
+  std::reverse(res.begin(), res.end());
+  for(auto i : res) {
+   std::cout << i << endl;
+  }
+}
+
+signed main() {
+  std::ios::sync_with_stdio(false);
+  std::cin.tie(nullptr), std::cout.tie(nullptr);
+  solve();
+  return 0;
+}
 ```
 
 ## E
@@ -101,72 +100,72 @@ signed main() {
 
 ### 参考代码
 
-```cpp  
-#include<bits/stdc++.h>  
-  
-using i128 = __int128;  
-#define int long long  
-#define endl '\n'  
-#define pii std::pair<int ,int>  
-#define fix(x) std::fixed << std::setprecision(x)  
-const int inf = 1e17 + 50, MAX_N = 1e5 + 50, mod = 1e9 + 7;  
-std::mt19937_64 rng(std::chrono::system_clock::now().time_since_epoch().count());  
-std::vector<int> a(MAX_N);  
-struct Node {  
-  int l{}, r{};  
-  std::vector<int> sorted;  
-};  
-  
-Node tr[4 * MAX_N];  
-  
-void build(int u, int l, int r) {  
-  tr[u].l = l;  
-  tr[u].r = r;  
-  tr[u].sorted.clear();  
-  if (l == r) {  
-   tr[u].sorted.push_back(a[l]);  
-   return;  
-  }  
-  int mid = (l + r) / 2;  
-  build(u << 1, l, mid);  
-  build(u << 1 | 1, mid + 1, r);  
-  auto &left = tr[u << 1].sorted;  
-  auto &right = tr[u << 1 | 1].sorted;  
-  tr[u].sorted.resize(left.size() + right.size());  
-  merge(left.begin(), left.end(), right.begin(), right.end(), tr[u].sorted.begin());  
-}  
-  
-int query(int u, int l, int r, int start, int end) {  
-  if (tr[u].r < l || tr[u].l > r) {  
-   return 0;  
-  }  
-  if (l <= tr[u].l && tr[u].r <= r) {  
-   auto &v = tr[u].sorted;  
-   int left_pos = lower_bound(v.begin(), v.end(), start) - v.begin();  
-   int right_pos = upper_bound(v.begin(), v.end(), end) - v.begin();  
-   return right_pos - left_pos;  
-  }  
-  return query(u << 1, l, r, start, end) + query(u << 1 | 1, l, r, start, end);  
-}  
-  
-void solve() {  
-  int N, Q;  
-  std::cin >> N >> Q;  
-  for(int i = 1; i <= N; ++i) {  
-   std::cin >> a[i];  
-  }  
-  build(1, 1, N);  
-  while (Q--) {  
-   int l, r, s, e;  
-   std::cin >> l >> r >> s >> e;  
-   std::cout << query(1, l, r, s, e) << endl;  
-  }  
-}  
-  
-signed main() {  
-  std::ios::sync_with_stdio(false);  
-  std::cin.tie(nullptr), std::cout.tie(nullptr);  
-  solve();  
-  return 0;  
-}  
+```cpp
+#include<bits/stdc++.h>
+
+using i128 = __int128;
+#define int long long
+#define endl '\n'
+#define pii std::pair<int ,int>
+#define fix(x) std::fixed << std::setprecision(x)
+const int inf = 1e17 + 50, MAX_N = 1e5 + 50, mod = 1e9 + 7;
+std::mt19937_64 rng(std::chrono::system_clock::now().time_since_epoch().count());
+std::vector<int> a(MAX_N);
+struct Node {
+  int l{}, r{};
+  std::vector<int> sorted;
+};
+
+Node tr[4 * MAX_N];
+
+void build(int u, int l, int r) {
+  tr[u].l = l;
+  tr[u].r = r;
+  tr[u].sorted.clear();
+  if (l == r) {
+   tr[u].sorted.push_back(a[l]);
+   return;
+  }
+  int mid = (l + r) / 2;
+  build(u << 1, l, mid);
+  build(u << 1 | 1, mid + 1, r);
+  auto &left = tr[u << 1].sorted;
+  auto &right = tr[u << 1 | 1].sorted;
+  tr[u].sorted.resize(left.size() + right.size());
+  merge(left.begin(), left.end(), right.begin(), right.end(), tr[u].sorted.begin());
+}
+
+int query(int u, int l, int r, int start, int end) {
+  if (tr[u].r < l || tr[u].l > r) {
+   return 0;
+  }
+  if (l <= tr[u].l && tr[u].r <= r) {
+   auto &v = tr[u].sorted;
+   int left_pos = lower_bound(v.begin(), v.end(), start) - v.begin();
+   int right_pos = upper_bound(v.begin(), v.end(), end) - v.begin();
+   return right_pos - left_pos;
+  }
+  return query(u << 1, l, r, start, end) + query(u << 1 | 1, l, r, start, end);
+}
+
+void solve() {
+  int N, Q;
+  std::cin >> N >> Q;
+  for(int i = 1; i <= N; ++i) {
+   std::cin >> a[i];
+  }
+  build(1, 1, N);
+  while (Q--) {
+   int l, r, s, e;
+   std::cin >> l >> r >> s >> e;
+   std::cout << query(1, l, r, s, e) << endl;
+  }
+}
+
+signed main() {
+  std::ios::sync_with_stdio(false);
+  std::cin.tie(nullptr), std::cout.tie(nullptr);
+  solve();
+  return 0;
+}
 ```

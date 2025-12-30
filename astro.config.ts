@@ -1,4 +1,5 @@
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
+import vue from '@astrojs/vue'
 import AstroPureIntegration from 'astro-pure'
 import { defineConfig } from 'astro/config'
 import rehypeKatex from 'rehype-katex'
@@ -35,7 +36,7 @@ export default defineConfig({
     service: { entrypoint: 'astro/assets/services/sharp' },
     domains: ['ghchart.rshah.org']
   },
-  integrations: [AstroPureIntegration(config)],
+  integrations: [AstroPureIntegration(config), vue()],
   prefetch: true,
   server: {
     host: true

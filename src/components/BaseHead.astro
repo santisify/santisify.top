@@ -14,56 +14,56 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 const socialImageURL = new URL(ogImage ? ogImage : '/images/social-card.png', Astro.url).href
 ---
 
-<meta charset="utf-8" />
-<meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-<meta content="IE=edge" http-equiv="X-UA-Compatible" />
+<meta charset='utf-8' />
+<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+<meta content='IE=edge' http-equiv='X-UA-Compatible' />
 <title>{siteTitle}</title>
 
 {/* Icons / Favicon */}
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
-<link rel="manifest" href="/favicon/site.webmanifest" />
+<link rel='apple-touch-icon' sizes='180x180' href='/favicon/apple-touch-icon.png' />
+<link rel='icon' type='image/png' sizes='32x32' href='/favicon/favicon-32x32.png' />
+<link rel='icon' type='image/png' sizes='16x16' href='/favicon/favicon-16x16.png' />
+<link rel='manifest' href='/favicon/site.webmanifest' />
 
 {/* Font preloads */}
-<link rel="preload" href="/fonts/Satoshi-Variable.ttf" as="font" type="font/ttf" crossorigin />
+<link rel='preload' href='/fonts/Satoshi-Variable.ttf' as='font' type='font/ttf' crossorigin />
 <link
-  rel="preload"
-  href="/fonts/Satoshi-VariableItalic.ttf"
-  as="font"
-  type="font/ttf"
+  rel='preload'
+  href='/fonts/Satoshi-VariableItalic.ttf'
+  as='font'
+  type='font/ttf'
   crossorigin
 />
 
 {/* Canonical URL */}
-<link rel="canonical" href={canonicalURL} />
+<link rel='canonical' href={canonicalURL} />
 
 {/* Primary Meta Tags */}
-<meta content={siteTitle} name="title" />
-<meta content={description} name="description" />
-<meta content={config.author} name="author" />
+<meta content={siteTitle} name='title' />
+<meta content={description} name='description' />
+<meta content={config.author} name='author' />
 
 {/* Theme Color */}
-<meta content="" name="theme-color" />
+<meta content='' name='theme-color' />
 
 {/* Open Graph / Facebook */}
-<meta content={articleDate ? 'article' : 'website'} property="og:type" />
-<meta content={title} property="og:title" />
-<meta content={description} property="og:description" />
-<meta content={canonicalURL} property="og:url" />
-<meta content={config.title} property="og:site_name" />
-<meta content={config.locale.attrs} property="og:locale" />
-<meta content={socialImageURL} property="og:image" />
-<meta content="1200" property="og:image:width" />
-<meta content="630" property="og:image:height" />
+<meta content={articleDate ? 'article' : 'website'} property='og:type' />
+<meta content={title} property='og:title' />
+<meta content={description} property='og:description' />
+<meta content={canonicalURL} property='og:url' />
+<meta content={config.title} property='og:site_name' />
+<meta content={config.locale.attrs} property='og:locale' />
+<meta content={socialImageURL} property='og:image' />
+<meta content='1200' property='og:image:width' />
+<meta content='630' property='og:image:height' />
 {
   articleDate && (
-  <>
-    <meta content={config.author} property="article:author" />
-    <meta content={articleDate} property="article:published_time" />
-  </>
-    )
-  }
+    <>
+      <meta content={config.author} property='article:author' />
+      <meta content={articleDate} property='article:published_time' />
+    </>
+  )
+}
 
 {/* Twitter */}
 <!--<meta content="summary_large_image" property="twitter:card" />-->
@@ -75,23 +75,23 @@ const socialImageURL = new URL(ogImage ? ogImage : '/images/social-card.png', As
 {/* Telegram channel */}
 <!--<meta name="telegram:channel" content="@cworld0_cn" />-->
 {/* Baidu analyzed */}
-<meta name="baidu-site-verification" content="codeva-JgS539fVDf" />
+<meta name='baidu-site-verification' content='codeva-JgS539fVDf' />
 
 {/* Sitemap */}
-<link href="/sitemap-index.xml" rel="sitemap" />
+<link href='/sitemap-index.xml' rel='sitemap' />
 
 {/* RSS auto-discovery */}
 <link
-  rel="alternate"
-  type="application/rss+xml"
+  rel='alternate'
+  type='application/rss+xml'
   title={config.title}
   href={`${Astro.site}rss.xml`}
 />
 
-<meta content={Astro.generator} name="generator" />
+<meta content={Astro.generator} name='generator' />
 
 {/* Styles */}
-<link rel="stylesheet" href="/styles/global.css" />
+<link rel='stylesheet' href='/styles/global.css' />
 
 {/* View transitions */}
 <!-- <ClientRouter /> -->
@@ -109,19 +109,19 @@ const socialImageURL = new URL(ogImage ? ogImage : '/images/social-card.png', As
 {
   /* Umami analytics & user script*/
   prod && (
-  <>
-    <script
-      is:inline
-      defer
-      src="https://umami.santisify.top/script.js"
-      data-website-id="5398afde-5764-4ebc-843c-f0fa4b99d4e5"
-    />
+    <>
+      <script
+        is:inline
+        defer
+        src='https://umami.santisify.top/script.js'
+        data-website-id='5398afde-5764-4ebc-843c-f0fa4b99d4e5'
+      />
 
-    <script>
-      console.log('%c Santisify Site %c https://santisify.top/',
+      <script>
+        console.log('%c Santisify Site %c https://santisify.top/',
         'color:#fff;background:linear-gradient(90deg,#448bff,#44e9ff);padding:5px 0;',
         'color:#000;background:linear-gradient(90deg,#44e9ff,#ffffff);padding:5px 10px 5px 0px;')
-    </script>
-  </>
-    )
-  }
+      </script>
+    </>
+  )
+}

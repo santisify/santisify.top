@@ -5,55 +5,61 @@
 
 // Recommended to use absolute path for live2d_path parameter
 // live2d_path 参数建议使用绝对路径
-const live2d_path = 'https://unpkg.com/live2d-widgets@1.0.0-rc.6/dist/';
+const live2d_path = 'https://unpkg.com/live2d-widgets@1.0.0-rc.6/dist/'
 // const live2d_path = '/dist/';
 
 // Method to encapsulate asynchronous resource loading
 // 封装异步加载资源的方法
 function loadExternalResource(url, type) {
   return new Promise((resolve, reject) => {
-    let tag;
+    let tag
 
     if (type === 'css') {
-      tag = document.createElement('link');
-      tag.rel = 'stylesheet';
-      tag.href = url;
-    }
-    else if (type === 'js') {
-      tag = document.createElement('script');
-      tag.type = 'module';
-      tag.src = url;
+      // eslint-disable-next-line no-undef
+      tag = document.createElement('link')
+      tag.rel = 'stylesheet'
+      tag.href = url
+    } else if (type === 'js') {
+      // eslint-disable-next-line no-undef
+      tag = document.createElement('script')
+      tag.type = 'module'
+      tag.src = url
     }
     if (tag) {
-      tag.onload = () => resolve(url);
-      tag.onerror = () => reject(url);
-      document.head.appendChild(tag);
+      tag.onload = () => resolve(url)
+      tag.onerror = () => reject(url)
+      // eslint-disable-next-line no-undef
+      document.head.appendChild(tag)
     }
-  });
+  })
 }
 
-(async () => {
+;(async () => {
   // If you are concerned about display issues on mobile devices, you can use screen.width to determine whether to load
   // 如果担心手机上显示效果不佳，可以根据屏幕宽度来判断是否加载
-  if (screen.width < 768) return;
+  // eslint-disable-next-line no-undef
+  if (screen.width < 768) return
 
   // Avoid cross-origin issues with image resources
   // 避免图片资源跨域问题
-  const OriginalImage = window.Image;
-  window.Image = function(...args) {
-    const img = new OriginalImage(...args);
-    img.crossOrigin = "anonymous";
-    return img;
-  };
-  window.Image.prototype = OriginalImage.prototype;
+  const OriginalImage = window.Image
+  // eslint-disable-next-line no-undef
+  window.Image = function (...args) {
+    const img = new OriginalImage(...args)
+    img.crossOrigin = 'anonymous'
+    return img
+  }
+  // eslint-disable-next-line no-undef
+  window.Image.prototype = OriginalImage.prototype
   // Load waifu.css and waifu-tips.js
   // 加载 waifu.css 和 waifu-tips.js
   await Promise.all([
     loadExternalResource(live2d_path + 'waifu.css', 'css'),
     loadExternalResource(live2d_path + 'waifu-tips.js', 'js')
-  ]);
+  ])
   // For detailed usage of configuration options, see README.en.md
   // 配置选项的具体用法见 README.md
+  // eslint-disable-next-line no-undef
   initWidget({
     waifuPath: live2d_path + 'waifu-tips.json',
     cdnPath: 'https://gh-proxy.org/https://github.com/fghrsh/live2d_api/blob/master/',
@@ -61,11 +67,17 @@ function loadExternalResource(url, type) {
     cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
     tools: ['hitokoto', 'asteroids', 'switch-model', 'switch-texture', 'photo', 'quit'],
     logLevel: 'warn',
-    drag: true,
-  });
-})();
+    drag: true
+  })
+})()
 
-console.log(`\n%cLive2D%cWidget%c\n`, 'padding: 8px; background: #cd3e45; font-weight: bold; font-size: large; color: white;', 'padding: 8px; background: #ff5450; font-size: large; color: #eee;', '');
+// eslint-disable-next-line no-undef
+console.log(
+  `\n%cLive2D%cWidget%c\n`,
+  'padding: 8px; background: #cd3e45; font-weight: bold; font-size: large; color: white;',
+  'padding: 8px; background: #ff5450; font-size: large; color: #eee;',
+  ''
+)
 
 /*
 く__,.ヘヽ.        /  ,ー､ 〉

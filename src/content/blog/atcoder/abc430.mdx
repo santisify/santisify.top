@@ -1,20 +1,24 @@
 ---
 title: 'AtCoder Beginner Contest 430'
-tags: [ 'atcoder', '题解' ]
+tags: ['atcoder', '题解']
 publishDate: '2025-11-1 20:00:00'
 description: 'abc430 (A---C)'
 heroImage: { src: './assets/3.webp' }
 language: 'zh-cn'
 ---
+
 import { LinkPreview } from 'astro-pure/advanced'
 
 ## A Candy Cookie Law
-<LinkPreview href='https://atcoder.jp/contests/abc430/tasks/abc430_a'/>
+
+<LinkPreview href='https://atcoder.jp/contests/abc430/tasks/abc430_a' />
 
 ### 题目描述
+
 给四个数字$A$, $B$, $C$, $D$, 若 $C \ge A$的同时 $D \ge B$,输出 $No$.
 
 ### 参考代码
+
 ```cpp
 #include<bits/stdc++.h>
 
@@ -42,15 +46,19 @@ signed main() {
 ```
 
 ## B Count Subgrid
-<LinkPreview href='https://atcoder.jp/contests/abc430/tasks/abc430_b'/>
+
+<LinkPreview href='https://atcoder.jp/contests/abc430/tasks/abc430_b' />
 
 ### 题目描述
+
 $N \times N$ 的矩阵中包含多少种不同的 $M \times M$ 的子矩阵.
 
 ### 解题思路
+
 遍历矩阵，将每个子矩阵都转化为字符串存入 $map$，$map$ 大小即为答案.
 
 ### 参考代码
+
 ```cpp
 #include<bits/stdc++.h>
 
@@ -89,17 +97,22 @@ signed main() {
 }
 
 ```
+
 ## C Truck Driver
-<LinkPreview href='https://atcoder.jp/contests/abc430/tasks/abc430_c'/>
+
+<LinkPreview href='https://atcoder.jp/contests/abc430/tasks/abc430_c' />
 
 ### 题目描述
+
 一个字符串 $S$ 中存在多少个数对$[l, r]$，使得这个子串($S_{l}, S_{l+1} \cdots S_{r}$),满足字符 $a$ 个数 $ct_a \ge A$, 字符 $b$ 个数 $ct_b < B$
 
 ### 解题思路
+
 数据范围不允许使用暴力，那么只能使用二分，循环左边，二分右区间，二分条件就是$ct_a \ge A, ct_b < B$,但是我们不能直接一个二分查找，可以想到在一个区间内可能存在多个满足条件的值.<br/>
 我们只有分别二分满足$ct_a=A, ct_b=B$的位置 $la, lb$，然后去取得两个的交集，其中，$lb$ 是有可能小于 $la$ 的.
 
 ### 参考代码
+
 ```cpp
 #include<bits/stdc++.h>
 

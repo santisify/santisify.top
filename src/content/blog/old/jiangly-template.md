@@ -1,14 +1,13 @@
 ---
 title: jiangly算法模板收集
-tags: [ '算法模板', '算法' ]
+tags: ['算法模板', '算法']
 publishDate: '2024-08-08 23:52:44'
 description: 'jly在cf比赛上的模板'
 heroImage: { src: './img/jiangly-cf-avatar.jpg', color: '#4891B2' }
 language: 'zh-cn'
 ---
 
-声明
-==
+# 声明
 
 > **2024.03.31** Update：新增《Splay（其三）》。
 
@@ -28,12 +27,11 @@ language: 'zh-cn'
 
 自用！非本人原创，仅作整理归档。大部分代码来自于 [CodeForces Jiangly](https://codeforces.com/submissions/jiangly) 的提交，部分来自于GYM、牛客、Atcoder。[文章博客链接](https://www.cnblogs.com/WIDA/p/17633758.html)，[文章 GitHub 链接](https://github.com/hh2048/XCPC/tree/main/03%20-%20jiangly%E6%A8%A1%E6%9D%BF%E6%94%B6%E9%9B%86)。
 
-灵感参考链接：[beiyouwuyanzu/cf\_code\_jiangly](https://github.com/beiyouwuyanzu/cf_code_jiangly)
+灵感参考链接：[beiyouwuyanzu/cf_code_jiangly](https://github.com/beiyouwuyanzu/cf_code_jiangly)
 
-* * *
+---
 
-目录
-==
+# 目录
 
 目录
 
@@ -95,13 +93,11 @@ language: 'zh-cn'
   - [06B - AC自动机（AhoCorasick 新版）](#06b---ac自动机ahocorasick-新版)
   - [07 - 随机生成模底 字符串哈希（例题）](#07---随机生成模底-字符串哈希例题)
 
-* * *
+---
 
-一、杂类
-====
+# 一、杂类
 
-01 - int128 输出流自定义
-------------------
+## 01 - int128 输出流自定义
 
 [2023-03-20](https://codeforces.com/contest/1806/submission/198413531)
 
@@ -119,8 +115,7 @@ std::ostream &operator<<(std::ostream &os, i128 n) {
 }
 ```
 
-02 - 常用库函数重载
-------------
+## 02 - 常用库函数重载
 
 ```cpp
 using i64 = long long;
@@ -133,7 +128,7 @@ i64 ceilDiv(i64 n, i64 m) {
         return n / m;
     }
 }
- 
+
 i64 floorDiv(i64 n, i64 m) {
     if (n >= 0) {
         return n / m;
@@ -154,13 +149,11 @@ i128 gcd(i128 a, i128 b) {
 }
 ```
 
-* * *
+---
 
-二、图与网络
-======
+# 二、图与网络
 
-01 - 强连通分量缩点（SCC）
------------------
+## 01 - 强连通分量缩点（SCC）
 
 [2023-06-18](https://codeforces.com/contest/1835/submission/210147209)
 
@@ -171,12 +164,12 @@ struct SCC {
     std::vector<int> stk;
     std::vector<int> dfn, low, bel;
     int cur, cnt;
-    
+
     SCC() {}
     SCC(int n) {
         init(n);
     }
-    
+
     void init(int n) {
         this->n = n;
         adj.assign(n, {});
@@ -186,15 +179,15 @@ struct SCC {
         stk.clear();
         cur = cnt = 0;
     }
-    
+
     void addEdge(int u, int v) {
         adj[u].push_back(v);
     }
-    
+
     void dfs(int x) {
         dfn[x] = low[x] = cur++;
         stk.push_back(x);
-        
+
         for (auto y : adj[x]) {
             if (dfn[y] == -1) {
                 dfs(y);
@@ -203,7 +196,7 @@ struct SCC {
                 low[x] = std::min(low[x], dfn[y]);
             }
         }
-        
+
         if (dfn[x] == low[x]) {
             int y;
             do {
@@ -214,7 +207,7 @@ struct SCC {
             cnt++;
         }
     }
-    
+
     std::vector<int> work() {
         for (int i = 0; i < n; i++) {
             if (dfn[i] == -1) {
@@ -226,8 +219,7 @@ struct SCC {
 };
 ```
 
-02 - 割边与割边缩点（EBCC）
-------------------
+## 02 - 割边与割边缩点（EBCC）
 
 [2023-05-11](https://codeforces.com/contest/118/submission/205426518)
 
@@ -240,12 +232,12 @@ struct EBCC {
     std::vector<int> stk;
     std::vector<int> dfn, low, bel;
     int cur, cnt;
-    
+
     EBCC() {}
     EBCC(int n) {
         init(n);
     }
-    
+
     void init(int n) {
         this->n = n;
         adj.assign(n, {});
@@ -255,16 +247,16 @@ struct EBCC {
         stk.clear();
         cur = cnt = 0;
     }
-    
+
     void addEdge(int u, int v) {
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
-    
+
     void dfs(int x, int p) {
         dfn[x] = low[x] = cur++;
         stk.push_back(x);
-        
+
         for (auto y : adj[x]) {
             if (y == p) {
                 continue;
@@ -278,7 +270,7 @@ struct EBCC {
                 low[x] = std::min(low[x], dfn[y]);
             }
         }
-        
+
         if (dfn[x] == low[x]) {
             int y;
             do {
@@ -289,12 +281,12 @@ struct EBCC {
             cnt++;
         }
     }
-    
+
     std::vector<int> work() {
         dfs(0, -1);
         return bel;
     }
-    
+
     struct Graph {
         int n;
         std::vector<std::pair<int, int>> edges;
@@ -321,8 +313,7 @@ struct EBCC {
 };
 ```
 
-03 - 二分图最大权匹配（MaxAssignment 基于KM）【久远】
--------------------------------------
+## 03 - 二分图最大权匹配（MaxAssignment 基于KM）【久远】
 
 [2022-04-10](https://atcoder.jp/contests/abc247/submissions/30867023)
 
@@ -338,7 +329,7 @@ struct MaxAssignment {
                 for (auto x : a[i])
                     assert(x >= 0);
             }
-            
+
             auto update = [&](int x) {
                 for (int y = 0; y < ny; ++y) {
                     if (lx[x] + ly[y] - a[x][y] < slack[y]) {
@@ -347,7 +338,7 @@ struct MaxAssignment {
                     }
                 }
             };
-            
+
             costs.resize(nx + 1);
             costs[0] = 0;
             lx.assign(nx, std::numeric_limits<T>::max());
@@ -361,7 +352,7 @@ struct MaxAssignment {
                 visy.assign(ny, false);
                 slack.assign(ny, std::numeric_limits<T>::max());
                 p.assign(nx, -1);
-                
+
                 for (int x = 0; x < nx; ++x) {
                     if (xy[x] == -1) {
                         que.push(x);
@@ -369,7 +360,7 @@ struct MaxAssignment {
                         update(x);
                     }
                 }
-                
+
                 int ex, ey;
                 bool found = false;
                 while (!found) {
@@ -393,7 +384,7 @@ struct MaxAssignment {
                     }
                     if (found)
                         break;
-                    
+
                     T delta = std::numeric_limits<T>::max();
                     for (int y = 0; y < ny; ++y)
                         if (!visy[y])
@@ -423,7 +414,7 @@ struct MaxAssignment {
                         }
                     }
                 }
-                
+
                 costs[cur + 1] = costs[cur];
                 for (int x = ex, y = ey, ty; x != -1; x = p[x], y = ty) {
                     costs[cur + 1] += a[x][y];
@@ -452,8 +443,7 @@ struct MaxAssignment {
 };
 ```
 
-04 - 一般图最大匹配（Graph 带花树算法）【久远】
------------------------------
+## 04 - 一般图最大匹配（Graph 带花树算法）【久远】
 
 [2021-12-24](https://codeforces.com/contest/1615/submission/140509278)
 
@@ -468,14 +458,14 @@ struct Graph {
     }
     std::vector<int> findMatching() {
         std::vector<int> match(n, -1), vis(n), link(n), f(n), dep(n);
-        
+
         // disjoint set union
         auto find = [&](int u) {
             while (f[u] != u)
                 u = f[u] = f[f[u]];
             return u;
         };
-        
+
         auto lca = [&](int u, int v) {
             u = find(u);
             v = find(v);
@@ -486,7 +476,7 @@ struct Graph {
             }
             return u;
         };
-        
+
         std::queue<int> que;
         auto blossom = [&](int u, int v, int p) {
             while (find(u) != p) {
@@ -500,32 +490,32 @@ struct Graph {
                 u = link[v];
             }
         };
-        
+
         // find an augmenting path starting from u and augment (if exist)
         auto augment = [&](int u) {
-            
+
             while (!que.empty())
                 que.pop();
-            
+
             std::iota(f.begin(), f.end(), 0);
-            
+
             // vis = 0 corresponds to inner vertices, vis = 1 corresponds to outer vertices
             std::fill(vis.begin(), vis.end(), -1);
-            
+
             que.push(u);
             vis[u] = 1;
             dep[u] = 0;
-            
+
             while (!que.empty()){
                 int u = que.front();
                 que.pop();
                 for (auto v : e[u]) {
                     if (vis[v] == -1) {
-                        
+
                         vis[v] = 0;
                         link[v] = u;
                         dep[v] = dep[u] + 1;
-                        
+
                         // found an augmenting path
                         if (match[v] == -1) {
                             for (int x = v, y = u, temp; y != -1; x = temp, y = x == -1 ? -1 : link[x]) {
@@ -535,11 +525,11 @@ struct Graph {
                             }
                             return;
                         }
-                        
+
                         vis[match[v]] = 1;
                         dep[match[v]] = dep[u] + 2;
                         que.push(match[v]);
-                        
+
                     } else if (vis[v] == 1 && find(v) != find(u)) {
                         // found a blossom
                         int p = lca(u, v);
@@ -548,12 +538,12 @@ struct Graph {
                     }
                 }
             }
-            
+
         };
-        
+
         // find a maximal matching greedily (decrease constant)
         auto greedy = [&]() {
-            
+
             for (int u = 0; u < n; ++u) {
                 if (match[u] != -1)
                     continue;
@@ -566,20 +556,19 @@ struct Graph {
                 }
             }
         };
-        
+
         greedy();
-        
+
         for (int u = 0; u < n; ++u)
             if (match[u] == -1)
                 augment(u);
-        
+
         return match;
     }
 };
 ```
 
-05 - TwoSat（2-Sat）
-------------------
+## 05 - TwoSat（2-Sat）
 
 [2023-09-29](https://atcoder.jp/contests/arc161/submissions/46031530)
 
@@ -629,8 +618,7 @@ struct TwoSat {
 };
 ```
 
-06A - 最大流（Flow 旧版其一，整数应用）
--------------------------
+## 06A - 最大流（Flow 旧版其一，整数应用）
 
 [2022-09-03](https://codeforces.com/contest/1717/submission/170688062)
 
@@ -647,7 +635,7 @@ struct Flow {
     std::vector<std::vector<int>> g;
     std::vector<int> cur, h;
     Flow(int n) : n(n), g(n) {}
-    
+
     bool bfs(int s, int t) {
         h.assign(n, -1);
         std::queue<int> que;
@@ -669,7 +657,7 @@ struct Flow {
         }
         return false;
     }
-    
+
     T dfs(int u, int t, T f) {
         if (u == t) {
             return f;
@@ -707,8 +695,7 @@ struct Flow {
 };
 ```
 
-06B - 最大流（Flow 旧版其二，浮点数应用）
---------------------------
+## 06B - 最大流（Flow 旧版其二，浮点数应用）
 
 [2022-04-09](https://cf.dianhsu.com/gym/104288/submission/201412765)
 
@@ -725,7 +712,7 @@ struct Flow {
     std::vector<std::vector<int>> g;
     std::vector<int> cur, h;
     Flow(int n) : n(n), g(n) {}
-    
+
     bool bfs(int s, int t) {
         h.assign(n, -1);
         std::queue<int> que;
@@ -747,7 +734,7 @@ struct Flow {
         }
         return false;
     }
-    
+
     T dfs(int u, int t, T f) {
         if (u == t) {
             return f;
@@ -787,8 +774,7 @@ struct Flow {
 };
 ```
 
-06C - 最大流（MaxFlow 新版）
----------------------
+## 06C - 最大流（MaxFlow 新版）
 
 [2023-07-21](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=62915815)
 
@@ -801,17 +787,17 @@ struct MaxFlow {
         T cap;
         _Edge(int to, T cap) : to(to), cap(cap) {}
     };
-    
+
     int n;
     std::vector<_Edge> e;
     std::vector<std::vector<int>> g;
     std::vector<int> cur, h;
-    
+
     MaxFlow() {}
     MaxFlow(int n) {
         init(n);
     }
-    
+
     void init(int n) {
         this->n = n;
         e.clear();
@@ -819,7 +805,7 @@ struct MaxFlow {
         cur.resize(n);
         h.resize(n);
     }
-    
+
     bool bfs(int s, int t) {
         h.assign(n, -1);
         std::queue<int> que;
@@ -841,7 +827,7 @@ struct MaxFlow {
         }
         return false;
     }
-    
+
     T dfs(int u, int t, T f) {
         if (u == t) {
             return f;
@@ -876,7 +862,7 @@ struct MaxFlow {
         }
         return ans;
     }
-    
+
     std::vector<bool> minCut() {
         std::vector<bool> c(n);
         for (int i = 0; i < n; i++) {
@@ -884,7 +870,7 @@ struct MaxFlow {
         }
         return c;
     }
-    
+
     struct Edge {
         int from;
         int to;
@@ -906,8 +892,7 @@ struct MaxFlow {
 };
 ```
 
-07A - 费用流（MCFGraph 最小费用可行流）
----------------------------
+## 07A - 费用流（MCFGraph 最小费用可行流）
 
 [2022-12-12](https://codeforces.com/contest/1766/submission/184974697)
 
@@ -980,8 +965,7 @@ struct MCFGraph {
 };
 ```
 
-07B - 费用流（MCFGraph 最小费用最大流）
----------------------------
+## 07B - 费用流（MCFGraph 最小费用最大流）
 
 代码同上，但是需要注释掉建边限制。以下为参考：
 
@@ -1010,8 +994,7 @@ void addEdge(int u, int v, int c, int f) { // 最大流
 }
 ```
 
-08 - 树链剖分（HLD）
---------------
+## 08 - 树链剖分（HLD）
 
 [2023-08-31](https://codeforces.com/contest/1863/submission/221214363)
 
@@ -1021,7 +1004,7 @@ struct HLD {
     std::vector<int> siz, top, dep, parent, in, out, seq;
     std::vector<std::vector<int>> adj;
     int cur;
-    
+
     HLD() {}
     HLD(int n) {
         init(n);
@@ -1053,7 +1036,7 @@ struct HLD {
         if (parent[u] != -1) {
             adj[u].erase(std::find(adj[u].begin(), adj[u].end(), parent[u]));
         }
-        
+
         siz[u] = 1;
         for (auto &v : adj[u]) {
             parent[v] = u;
@@ -1084,29 +1067,29 @@ struct HLD {
         }
         return dep[u] < dep[v] ? u : v;
     }
-    
+
     int dist(int u, int v) {
         return dep[u] + dep[v] - 2 * dep[lca(u, v)];
     }
-    
+
     int jump(int u, int k) {
         if (dep[u] < k) {
             return -1;
         }
-        
+
         int d = dep[u] - k;
-        
+
         while (dep[top[u]] > d) {
             u = parent[top[u]];
         }
-        
+
         return seq[in[u] - dep[u] + d];
     }
-    
+
     bool isAncester(int u, int v) {
         return in[u] <= in[v] && in[v] < out[u];
     }
-    
+
     int rootedParent(int u, int v) {
         std::swap(u, v);
         if (u == v) {
@@ -1120,7 +1103,7 @@ struct HLD {
         }) - 1;
         return *it;
     }
-    
+
     int rootedSize(int u, int v) {
         if (u == v) {
             return n;
@@ -1130,20 +1113,18 @@ struct HLD {
         }
         return n - siz[rootedParent(u, v)];
     }
-    
+
     int rootedLca(int a, int b, int c) {
         return lca(a, b) ^ lca(b, c) ^ lca(c, a);
     }
 };
 ```
 
-* * *
+---
 
-三、数论、几何、多项式
-===========
+# 三、数论、几何、多项式
 
-01 - 快速幂
---------
+## 01 - 快速幂
 
 [2023-10-09](https://atcoder.jp/contests/tenka1-2017/submissions/46411797)
 
@@ -1159,8 +1140,7 @@ int power(int a, i64 b, int p) {
 }
 ```
 
-02 - 欧拉筛
---------
+## 02 - 欧拉筛
 
 [2023-08-29](https://cf.dianhsu.com/gym/104479/submission/220987267)
 
@@ -1170,13 +1150,13 @@ std::vector<int> minp, primes;
 void sieve(int n) {
     minp.assign(n + 1, 0);
     primes.clear();
-    
+
     for (int i = 2; i <= n; i++) {
         if (minp[i] == 0) {
             minp[i] = i;
             primes.push_back(i);
         }
-        
+
         for (auto p : primes) {
             if (i * p > n) {
                 break;
@@ -1190,8 +1170,7 @@ void sieve(int n) {
 }
 ```
 
-03 - 莫比乌斯函数筛（莫比乌斯函数/反演）
------------------------
+## 03 - 莫比乌斯函数筛（莫比乌斯函数/反演）
 
 [2023-03-04](https://atcoder.jp/contests/tupc2022/submissions/39391116)
 
@@ -1206,7 +1185,7 @@ void sieve(int n) {
     minp.assign(n + 1, 0);
     mu.resize(n);
     primes.clear();
-    
+
     mu[1] = 1;
     for (int i = 2; i <= n; i++) {
         if (minp[i] == 0) {
@@ -1214,7 +1193,7 @@ void sieve(int n) {
             minp[i] = i;
             primes.push_back(i);
         }
-        
+
         for (auto p : primes) {
             if (i * p > n) {
                 break;
@@ -1226,7 +1205,7 @@ void sieve(int n) {
             mu[i * p] = -mu[i];
         }
     }
-    
+
     for (int i = 1; i <= n; i++) {
         mu[i] += mu[i - 1];
     }
@@ -1254,31 +1233,30 @@ Z sumMu(int n) {
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
-    
+
     sieve(N);
-    
+
     int L, R;
     std::cin >> L >> R;
     L -= 1;
-    
+
     Z ans = 0;
     for (int l = 1, r; l <= R; l = r + 1) {
         r = R / (R / l);
         if (l <= L) {
             r = std::min(r, L / (L / l));
         }
-        
+
         ans += (power(Z(2), R / l - L / l) - 1) * (sumMu(r) - sumMu(l - 1));
     }
-    
+
     std::cout << ans << "\n";
-    
+
     return 0;
 }
 ```
 
-04 - 求解单个数的欧拉函数
----------------
+## 04 - 求解单个数的欧拉函数
 
 [2023-10-09](https://atcoder.jp/contests/tenka1-2017/submissions/46411797)
 
@@ -1300,8 +1278,7 @@ int phi(int n) {
 }
 ```
 
-05 - 扩展欧几里得（exGCD）
-------------------
+## 05 - 扩展欧几里得（exGCD）
 
 [2023-10-09](https://atcoder.jp/contests/tenka1-2017/submissions/46411797)
 
@@ -1317,8 +1294,7 @@ int exgcd(int a, int b, int &x, int &y) {
 }
 ```
 
-06 - 组合数（Comb+MInt & MLong）
----------------------------
+## 06 - 组合数（Comb+MInt & MLong）
 
 [2023-08-26](https://codeforces.com/contest/1864/submission/220584872)
 
@@ -1328,19 +1304,19 @@ struct Comb {
     std::vector<Z> _fac;
     std::vector<Z> _invfac;
     std::vector<Z> _inv;
-    
+
     Comb() : n{0}, _fac{1}, _invfac{1}, _inv{0} {}
     Comb(int n) : Comb() {
         init(n);
     }
-    
+
     void init(int m) {
         m = std::min(m, Z::getMod() - 1);
         if (m <= n) return;
         _fac.resize(m + 1);
         _invfac.resize(m + 1);
         _inv.resize(m + 1);
-        
+
         for (int i = n + 1; i <= m; i++) {
             _fac[i] = _fac[i - 1] * i;
         }
@@ -1351,7 +1327,7 @@ struct Comb {
         }
         n = m;
     }
-    
+
     Z fac(int m) {
         if (m > n) init(2 * m);
         return _fac[m];
@@ -1371,8 +1347,7 @@ struct Comb {
 } comb;
 ```
 
-07 - 二项式（Binomial 任意模数计算）
--------------------------
+## 07 - 二项式（Binomial 任意模数计算）
 
 [2023-08-22](https://codeforces.com/contest/896/submission/219861532)
 
@@ -1497,8 +1472,7 @@ public:
 };
 ```
 
-08 - 素数测试与因式分解（Miller-Rabin & Pollard-Rho）
-------------------------------------------
+## 08 - 素数测试与因式分解（Miller-Rabin & Pollard-Rho）
 
 [2023-05-16](https://cf.dianhsu.com/gym/104354/submission/206130894)
 
@@ -1593,8 +1567,7 @@ std::vector<i64> factorize(i64 n) {
 }
 ```
 
-09 - 平面几何
----------
+## 09 - 平面几何
 
 [2023-07-17](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=62808640)
 
@@ -1606,7 +1579,7 @@ struct Point {
     T x;
     T y;
     Point(T x_ = 0, T y_ = 0) : x(x_), y(y_) {}
-    
+
     template<class U>
     operator Point<U>() {
         return Point<U>(U(x), U(y));
@@ -1717,7 +1690,7 @@ bool pointInPolygon(Point<T> a, std::vector<Point<T>> p) {
             return true;
         }
     }
-    
+
     int t = 0;
     for (int i = 0; i < n; i++) {
         auto u = p[i];
@@ -1729,7 +1702,7 @@ bool pointInPolygon(Point<T> a, std::vector<Point<T>> p) {
             t ^= 1;
         }
     }
-    
+
     return t == 1;
 }
 
@@ -1779,11 +1752,11 @@ std::tuple<int, Point<T>, Point<T>> segmentIntersection(Line<T> l1, Line<T> l2) 
     auto cp2 = cross(l2.a - l1.b, l2.b - l1.b);
     auto cp3 = cross(l1.a - l2.a, l1.b - l2.a);
     auto cp4 = cross(l1.a - l2.b, l1.b - l2.b);
-    
+
     if ((cp1 > 0 && cp2 > 0) || (cp1 < 0 && cp2 < 0) || (cp3 > 0 && cp4 > 0) || (cp3 < 0 && cp4 < 0)) {
         return {0, Point<T>(), Point<T>()};
     }
-    
+
     Point p = lineIntersection(l1, l2);
     if (cp1 != 0 && cp2 != 0 && cp3 != 0 && cp4 != 0) {
         return {1, p, p};
@@ -1806,7 +1779,7 @@ bool segmentInPolygon(Line<T> l, std::vector<Point<T>> p) {
         auto v = p[(i + 1) % n];
         auto w = p[(i + 2) % n];
         auto [t, p1, p2] = segmentIntersection(l, Line(u, v));
-        
+
         if (t == 1) {
             return false;
         }
@@ -1874,14 +1847,14 @@ std::vector<Point<T>> hp(std::vector<Line<T>> lines) {
     std::sort(lines.begin(), lines.end(), [&](auto l1, auto l2) {
         auto d1 = l1.b - l1.a;
         auto d2 = l2.b - l2.a;
-        
+
         if (sgn(d1) != sgn(d2)) {
             return sgn(d1) == 1;
         }
-        
+
         return cross(d1, d2) > 0;
     });
-    
+
     std::deque<Line<T>> ls;
     std::deque<Point<T>> ps;
     for (auto l : lines) {
@@ -1889,20 +1862,20 @@ std::vector<Point<T>> hp(std::vector<Line<T>> lines) {
             ls.push_back(l);
             continue;
         }
-        
+
         while (!ps.empty() && !pointOnLineLeft(ps.back(), l)) {
             ps.pop_back();
             ls.pop_back();
         }
-        
+
         while (!ps.empty() && !pointOnLineLeft(ps[0], l)) {
             ps.pop_front();
             ls.pop_front();
         }
-        
+
         if (cross(l.b - l.a, ls.back().b - ls.back().a) == 0) {
             if (dot(l.b - l.a, ls.back().b - ls.back().a) > 0) {
-                
+
                 if (!pointOnLineLeft(ls.back().a, l)) {
                     assert(ls.size() == 1);
                     ls[0] = l;
@@ -1911,11 +1884,11 @@ std::vector<Point<T>> hp(std::vector<Line<T>> lines) {
             }
             return {};
         }
-        
+
         ps.push_back(lineIntersection(ls.back(), l));
         ls.push_back(l);
     }
-    
+
     while (!ps.empty() && !pointOnLineLeft(ps.back(), ls[0])) {
         ps.pop_back();
         ls.pop_back();
@@ -1924,13 +1897,12 @@ std::vector<Point<T>> hp(std::vector<Line<T>> lines) {
         return {};
     }
     ps.push_back(lineIntersection(ls[0], ls.back()));
-    
+
     return std::vector(ps.begin(), ps.end());
 }
 ```
 
-10 - 静态凸包
----------
+## 10 - 静态凸包
 
 [2023-04-09](https://cf.dianhsu.com/gym/104288/submission/201412835)
 
@@ -1988,7 +1960,7 @@ std::vector<Point> getHull(std::vector<Point> p) {
     if (p.size() <= 1) {
         return p;
     }
-    
+
     for (auto a : p) {
         while (h.size() > 1 && cross(a - h.back(), a - h[h.size() - 2]) <= 0) {
             h.pop_back();
@@ -1999,7 +1971,7 @@ std::vector<Point> getHull(std::vector<Point> p) {
         l.push_back(a);
         h.push_back(a);
     }
-    
+
     l.pop_back();
     std::reverse(h.begin(), h.end());
     h.pop_back();
@@ -2008,8 +1980,7 @@ std::vector<Point> getHull(std::vector<Point> p) {
 }
 ```
 
-11A - 多项式相关（Poly 旧版）
---------------------
+## 11A - 多项式相关（Poly 旧版）
 
 [2023-02-06](https://atcoder.jp/contests/arc155/submissions/38664055)
 
@@ -2020,7 +1991,7 @@ std::vector<int> rev;
 std::vector<Z> roots{0, 1};
 void dft(std::vector<Z> &a) {
     int n = a.size();
-    
+
     if (int(rev.size()) != n) {
         int k = __builtin_ctz(n) - 1;
         rev.resize(n);
@@ -2028,7 +1999,7 @@ void dft(std::vector<Z> &a) {
             rev[i] = rev[i >> 1] >> 1 | (i & 1) << k;
         }
     }
-    
+
     for (int i = 0; i < n; i++) {
         if (rev[i] < i) {
             std::swap(a[i], a[rev[i]]);
@@ -2286,8 +2257,7 @@ struct Poly {
 };
 ```
 
-11B - 多项式相关（Poly+MInt & MLong 新版）
----------------------------------
+## 11B - 多项式相关（Poly+MInt & MLong 新版）
 
 [2023-09-20](https://atcoder.jp/contests/arc163/submissions/45737810)
 
@@ -2320,7 +2290,7 @@ constexpr MInt<998244353> primitiveRoot<998244353> {31};
 template<int P>
 constexpr void dft(std::vector<MInt<P>> &a) {
     int n = a.size();
-    
+
     if (int(rev.size()) != n) {
         int k = __builtin_ctz(n) - 1;
         rev.resize(n);
@@ -2328,7 +2298,7 @@ constexpr void dft(std::vector<MInt<P>> &a) {
             rev[i] = rev[i >> 1] >> 1 | (i & 1) << k;
         }
     }
-    
+
     for (int i = 0; i < n; i++) {
         if (rev[i] < i) {
             std::swap(a[i], a[rev[i]]);
@@ -2372,23 +2342,23 @@ constexpr void idft(std::vector<MInt<P>> &a) {
 template<int P = 998244353>
 struct Poly : public std::vector<MInt<P>> {
     using Value = MInt<P>;
-    
+
     Poly() : std::vector<Value>() {}
     explicit constexpr Poly(int n) : std::vector<Value>(n) {}
-    
+
     explicit constexpr Poly(const std::vector<Value> &a) : std::vector<Value>(a) {}
     constexpr Poly(const std::initializer_list<Value> &a) : std::vector<Value>(a) {}
-    
+
     template<class InputIt, class = std::_RequireInputIter<InputIt>>
     explicit constexpr Poly(InputIt first, InputIt last) : std::vector<Value>(first, last) {}
-    
+
     template<class F>
     explicit constexpr Poly(int n, F f) : std::vector<Value>(n) {
         for (int i = 0; i < n; i++) {
             (*this)[i] = f(i);
         }
     }
-    
+
     constexpr Poly shift(int k) const {
         if (k >= 0) {
             auto b = *this;
@@ -2668,19 +2638,19 @@ struct Comb {
     std::vector<Z> _fac;
     std::vector<Z> _invfac;
     std::vector<Z> _inv;
-    
+
     Comb() : n{0}, _fac{1}, _invfac{1}, _inv{0} {}
     Comb(int n) : Comb() {
         init(n);
     }
-    
+
     void init(int m) {
         m = std::min(m, Z::getMod() - 1);
         if (m <= n) return;
         _fac.resize(m + 1);
         _invfac.resize(m + 1);
         _inv.resize(m + 1);
-        
+
         for (int i = n + 1; i <= m; i++) {
             _fac[i] = _fac[i - 1] * i;
         }
@@ -2691,7 +2661,7 @@ struct Comb {
         }
         n = m;
     }
-    
+
     Z fac(int m) {
         if (m > n) init(2 * m);
         return _fac[m];
@@ -2744,13 +2714,11 @@ Poly<P> get(int n, int m) {
 }
 ```
 
-* * *
+---
 
-四、数据结构
-======
+# 四、数据结构
 
-01A - 树状数组（Fenwick 旧版）
-----------------------
+## 01A - 树状数组（Fenwick 旧版）
 
 [2023-08-11](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=63382128)
 
@@ -2759,22 +2727,22 @@ template <typename T>
 struct Fenwick {
     int n;
     std::vector<T> a;
-    
+
     Fenwick(int n = 0) {
         init(n);
     }
-    
+
     void init(int n) {
         this->n = n;
         a.assign(n, T());
     }
-    
+
     void add(int x, T v) {
         for (int i = x + 1; i <= n; i += i & -i) {
             a[i - 1] += v;
         }
     }
-    
+
     T sum(int x) {
         auto ans = T();
         for (int i = x; i > 0; i -= i & -i) {
@@ -2782,11 +2750,11 @@ struct Fenwick {
         }
         return ans;
     }
-    
+
     T rangeSum(int l, int r) {
         return sum(r) - sum(l);
     }
-    
+
     int kth(T k) {
         int x = 0;
         for (int i = 1 << std::__lg(n); i; i /= 2) {
@@ -2800,8 +2768,7 @@ struct Fenwick {
 };
 ```
 
-01B - 树状数组（Fenwick 新版）
-----------------------
+## 01B - 树状数组（Fenwick 新版）
 
 [2023-12-28](https://codeforces.com/contest/1915/submission/239262801)
 
@@ -2810,22 +2777,22 @@ template <typename T>
 struct Fenwick {
     int n;
     std::vector<T> a;
-    
+
     Fenwick(int n_ = 0) {
         init(n_);
     }
-    
+
     void init(int n_) {
         n = n_;
         a.assign(n, T{});
     }
-    
+
     void add(int x, const T &v) {
         for (int i = x + 1; i <= n; i += i & -i) {
             a[i - 1] = a[i - 1] + v;
         }
     }
-    
+
     T sum(int x) {
         T ans{};
         for (int i = x; i > 0; i -= i & -i) {
@@ -2833,11 +2800,11 @@ struct Fenwick {
         }
         return ans;
     }
-    
+
     T rangeSum(int l, int r) {
         return sum(r) - sum(l);
     }
-    
+
     int select(const T &k) {
         int x = 0;
         T cur{};
@@ -2852,37 +2819,36 @@ struct Fenwick {
 };
 ```
 
-02 - 并查集（DSU）
--------------
+## 02 - 并查集（DSU）
 
 [2023-08-04](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=63239142)
 
 ```cpp
 struct DSU {
     std::vector<int> f, siz;
-    
+
     DSU() {}
     DSU(int n) {
         init(n);
     }
-    
+
     void init(int n) {
         f.resize(n);
         std::iota(f.begin(), f.end(), 0);
         siz.assign(n, 1);
     }
-    
+
     int find(int x) {
         while (x != f[x]) {
             x = f[x] = f[f[x]];
         }
         return x;
     }
-    
+
     bool same(int x, int y) {
         return find(x) == find(y);
     }
-    
+
     bool merge(int x, int y) {
         x = find(x);
         y = find(y);
@@ -2893,15 +2859,14 @@ struct DSU {
         f[y] = x;
         return true;
     }
-    
+
     int size(int x) {
         return siz[find(x)];
     }
 };
 ```
 
-03A - 线段树（SegmentTree 基础区间加乘）
------------------------------
+## 03A - 线段树（SegmentTree 基础区间加乘）
 
 [2023-10-18](https://cf.dianhsu.com/gym/104417/submission/223800089)
 
@@ -2925,7 +2890,7 @@ struct SegmentTree {
         mul(2 * p + 1, tag[p]);
         tag[p] = 1;
     }
-    
+
     int query(int p, int l, int r, int x, int y) {
         if (l >= y || r <= x) {
             return 0;
@@ -2937,11 +2902,11 @@ struct SegmentTree {
         push(p);
         return (query(2 * p, l, m, x, y) + query(2 * p + 1, m, r, x, y)) % P;
     }
-    
+
     int query(int x, int y) {
         return query(1, 0, n, x, y);
     }
-    
+
     void rangeMul(int p, int l, int r, int x, int y, int v) {
         if (l >= y || r <= x) {
             return;
@@ -2955,11 +2920,11 @@ struct SegmentTree {
         rangeMul(2 * p + 1, m, r, x, y, v);
         pull(p);
     }
-    
+
     void rangeMul(int x, int y, int v) {
         rangeMul(1, 0, n, x, y, v);
     }
-    
+
     void add(int p, int l, int r, int x, int v) {
         if (r - l == 1) {
             sum[p] = (sum[p] + v) % P;
@@ -2974,15 +2939,14 @@ struct SegmentTree {
         }
         pull(p);
     }
-    
+
     void add(int x, int v) {
         add(1, 0, n, x, v);
     }
 };
 ```
 
-03B - 线段树（SegmentTree+Info 查找前驱后继）
-----------------------------------
+## 03B - 线段树（SegmentTree+Info 查找前驱后继）
 
 [2023-08-11](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=63382128)
 
@@ -3103,8 +3067,7 @@ Info operator+(Info a, Info b) {
 }
 ```
 
-03C - 线段树（SegmentTree+Info+Merge 区间合并）
---------------------------------------
+## 03C - 线段树（SegmentTree+Info+Merge 区间合并）
 
 [2022-04-23](https://codeforces.com/contest/1672/submission/154766851)
 
@@ -3228,8 +3191,7 @@ Info operator+(Info a, Info b) {
 }
 ```
 
-04A - 懒标记线段树（LazySegmentTree 基础区间修改）
-------------------------------------
+## 04A - 懒标记线段树（LazySegmentTree 基础区间修改）
 
 [2023-07-17](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=62804432)
 
@@ -3338,7 +3300,7 @@ constexpr i64 inf = 1E18;
 
 struct Tag {
     i64 add = 0;
-    
+
     void apply(Tag t) {
         add += t.add;
     }
@@ -3349,7 +3311,7 @@ struct Info {
     i64 max = -inf;
     i64 sum = 0;
     i64 act = 0;
-    
+
     void apply(Tag t) {
         min += t.add;
         max += t.add;
@@ -3367,8 +3329,7 @@ Info operator+(Info a, Info b) {
 }
 ```
 
-04B - 懒标记线段树（LazySegmentTree 查找前驱后继）
-------------------------------------
+## 04B - 懒标记线段树（LazySegmentTree 查找前驱后继）
 
 [2023-07-17](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=62804432)
 
@@ -3535,8 +3496,7 @@ Info operator+(Info a, Info b) {
 }
 ```
 
-04C - 懒标记线段树（LazySegmentTree 二分修改）
-----------------------------------
+## 04C - 懒标记线段树（LazySegmentTree 二分修改）
 
 [2023-03-03](https://atcoder.jp/contests/joi2023yo2/submissions/39363123)
 
@@ -3667,7 +3627,7 @@ struct LazySegmentTree {
 
 struct Tag {
     int add = 0;
-    
+
     void apply(Tag t) & {
         add += t.add;
     }
@@ -3681,7 +3641,7 @@ struct Info {
     int difr = inf;
     int maxlowl = -inf;
     int maxlowr = -inf;
-    
+
     void apply(Tag t) & {
         if (max != -1) {
             max += t.add;
@@ -3706,7 +3666,7 @@ Info operator+(Info a, Info b) {
         c.maxl = a.maxl;
         c.maxr = b.maxr;
     }
-    
+
     c.difl = std::min(a.difl, b.difl);
     c.difr = std::min(a.difr, b.difr);
     if (a.max != -1) {
@@ -3715,7 +3675,7 @@ Info operator+(Info a, Info b) {
     if (b.max != -1) {
         c.difr = std::min(c.difr, b.max - a.maxlowr);
     }
-    
+
     if (a.max == -1) {
         c.maxlowl = std::max(a.maxlowl, b.maxlowl);
     } else {
@@ -3730,8 +3690,7 @@ Info operator+(Info a, Info b) {
 }
 ```
 
-05A - 取模类（MLong & MInt）
------------------------
+## 05A - 取模类（MLong & MInt）
 
 [2022-06-12](https://codeforces.com/contest/1697/submission/160317720)
 
@@ -3819,8 +3778,7 @@ struct Z {
 };
 ```
 
-05B - 取模类（MLong & MInt 新版）
---------------------------
+## 05B - 取模类（MLong & MInt 新版）
 
 [2023-08-14](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=63433564)
 
@@ -3853,7 +3811,7 @@ struct MLong {
     i64 x;
     constexpr MLong() : x{} {}
     constexpr MLong(i64 x) : x{norm(x % getMod())} {}
-    
+
     static i64 Mod;
     constexpr static i64 getMod() {
         if (P > 0) {
@@ -3949,7 +3907,7 @@ struct MInt {
     int x;
     constexpr MInt() : x{} {}
     constexpr MInt(i64 x) : x{norm(x % getMod())} {}
-    
+
     static int Mod;
     constexpr static int getMod() {
         if (P > 0) {
@@ -4047,8 +4005,7 @@ constexpr int P = 1000000007;
 using Z = MInt<P>;
 ```
 
-06 - 状压RMQ（RMQ）
----------------
+## 06 - 状压RMQ（RMQ）
 
 [2023-03-02](https://atcoder.jp/contests/joi2022ho/submissions/39351739)
 
@@ -4110,7 +4067,7 @@ struct RMQ {
                 stk[j] = s;
             }
         }
-    } 
+    }
     T operator()(int l, int r) {
         if (l / B != (r - 1) / B) {
             T ans = std::min(suf[l], pre[r - 1], cmp);
@@ -4129,8 +4086,7 @@ struct RMQ {
 };
 ```
 
-07 - Splay
-----------
+## 07 - Splay
 
 [2023-02-15](https://atcoder.jp/contests/joi2023ho/submissions/38901674)
 
@@ -4256,7 +4212,7 @@ void insert(Tree *&t, Tree *x, Tree *p = nullptr) {
         x->p = p;
         return;
     }
-    
+
     push(t);
     if (x->val < t->val) {
         insert(t->ch[0], x, t);
@@ -4291,14 +4247,14 @@ std::pair<Tree *, Tree *> split(Tree *t, int x) {
             i = i->ch[1];
         }
     }
-    
+
     splay(j);
     if (!v) {
         return {j, nullptr};
     }
-    
+
     splay(v);
-    
+
     Tree *u = v->ch[0];
     if (u) {
         v->ch[0] = u->p = nullptr;
@@ -4438,7 +4394,7 @@ struct Matrix : std::array<std::array<i64, 4>, 4> {
         }
     }
 };
- 
+
 Matrix operator*(const Matrix &a, const Matrix &b) {
     Matrix c(inf);
     for (int i = 0; i < 3; i++) {
@@ -4452,7 +4408,7 @@ Matrix operator*(const Matrix &a, const Matrix &b) {
     c[3][3] = 0;
     return c;
 }
- 
+
 struct Node {
     Node *ch[2], *p;
     i64 sumg = 0;
@@ -4465,7 +4421,7 @@ struct Node {
     Matrix prd;
     std::array<i64, 4> ans{};
     Node() : ch{nullptr, nullptr}, p(nullptr) {}
-    
+
     void update() {
         mat = Matrix(inf);
         mat[0][0] = b + h - g + sumg;
@@ -4475,7 +4431,7 @@ struct Node {
     }
 };
 void push(Node *t) {
-    
+
 }
 void pull(Node *t) {
     t->prd = (t->ch[0] ? t->ch[0]->prd : Matrix()) * t->mat * (t->ch[1] ? t->ch[1]->prd : Matrix());
@@ -4521,7 +4477,7 @@ void splay(Node *t) {
     }
     pull(t);
 }
- 
+
 std::array<i64, 4> get(Node *t) {
     std::array<i64, 4> ans;
     ans.fill(inf);
@@ -4533,7 +4489,7 @@ std::array<i64, 4> get(Node *t) {
     }
     return ans;
 }
- 
+
 void access(Node *t) {
     std::array<i64, 4> old{};
     for (Node *i = t, *q = nullptr; i; q = i, i = i->p) {
@@ -4556,8 +4512,7 @@ void access(Node *t) {
 }
 ```
 
-08 - 其他平衡树
-----------
+## 08 - 其他平衡树
 
 [2023-08-04](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=63246177)
 
@@ -4567,7 +4522,7 @@ struct Node {
     Node *r = nullptr;
     int sum = 0;
     int sumodd = 0;
-    
+
     Node(Node *t) {
         if (t) {
             *this = *t;
@@ -4744,7 +4699,7 @@ Node *merge(Node *a, Node *b) {
     if (!b) {
         return a;
     }
-    
+
     if (a->w < b->w) {
         a->r = merge(a->r, b);
         pull(a);
@@ -4882,8 +4837,7 @@ Node *merge(Node *t1, Node *t2, int l, int r) {
 }
 ```
 
-09 - 分数四则运算（Frac）
------------------
+## 09 - 分数四则运算（Frac）
 
 [2023-04-23](https://codeforces.com/contest/598/submission/203186397)
 
@@ -4971,8 +4925,7 @@ struct Frac {
 };
 ```
 
-10 - 线性基（Basis）
----------------
+## 10 - 线性基（Basis）
 
 [2023-12-03](https://codeforces.com/contest/1902/submission/235594491)
 
@@ -4980,11 +4933,11 @@ struct Frac {
 struct Basis {
     int a[20] {};
     int t[20] {};
-    
+
     Basis() {
         std::fill(t, t + 20, -1);
     }
-    
+
     void add(int x, int y = 1E9) {
         for (int i = 0; i < 20; i++) {
             if (x >> i & 1) {
@@ -4996,7 +4949,7 @@ struct Basis {
             }
         }
     }
-    
+
     bool query(int x, int y = 0) {
         for (int i = 0; i < 20; i++) {
             if ((x >> i & 1) && t[i] >= y) {
@@ -5008,13 +4961,11 @@ struct Basis {
 };
 ```
 
-* * *
+---
 
-五、字符串
-=====
+# 五、字符串
 
-01 - 马拉车（Manacher）
-------------------
+## 01 - 马拉车（Manacher）
 
 [2023-05-14](https://codeforces.com/contest/1827/submission/205865086)
 
@@ -5042,8 +4993,7 @@ std::vector<int> manacher(std::string s) {
 }
 ```
 
-02 - Z函数
---------
+## 02 - Z函数
 
 [2023-08-11](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=63378373)
 
@@ -5065,8 +5015,7 @@ std::vector<int> zFunction(std::string s) {
 }
 ```
 
-03 - 后缀数组（SA）
--------------
+## 03 - 后缀数组（SA）
 
 [2023-03-14](https://atcoder.jp/contests/discovery2016-qual/submissions/39727257)
 
@@ -5120,8 +5069,7 @@ struct SuffixArray {
 };
 ```
 
-04A - 后缀自动机（SuffixAutomaton 旧版）
--------------------------------
+## 04A - 后缀自动机（SuffixAutomaton 旧版）
 
 [2022-08-17](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=53409023&returnHomeType=1&uid=329687984)
 
@@ -5168,8 +5116,7 @@ struct SuffixAutomaton {
 };
 ```
 
-04B - 后缀自动机（SAM 新版）
--------------------
+## 04B - 后缀自动机（SAM 新版）
 
 [2023-05-27](https://cf.dianhsu.com/gym/104353/submission/207318083)
 
@@ -5224,31 +5171,30 @@ struct SAM {
     int extend(int p, char c, char offset = 'a') {
         return extend(p, c - offset);
     }
-    
+
     int next(int p, int x) {
         return t[p].next[x];
     }
-    
+
     int next(int p, char c, char offset = 'a') {
         return next(p, c - 'a');
     }
-    
+
     int link(int p) {
         return t[p].link;
     }
-    
+
     int len(int p) {
         return t[p].len;
     }
-    
+
     int size() {
         return t.size();
     }
 };
 ```
 
-05 - 回文自动机（PAM）
----------------
+## 05 - 回文自动机（PAM）
 
 [2023-05-19](https://ac.nowcoder.com/acm/contest/view-submission?submissionId=62237107&returnHomeType=1&uid=329687984)
 
@@ -5278,55 +5224,54 @@ struct PAM {
         t.emplace_back();
         return t.size() - 1;
     }
-     
+
     bool add(char c, char offset = 'a') {
         int pos = s.size();
         s += c;
         int let = c - offset;
         int cur = suff, curlen = 0;
- 
+
         while (true) {
             curlen = t[cur].len;
             if (pos - 1 - curlen >= 0 && s[pos - 1 - curlen] == s[pos])
-                break;  
+                break;
             cur = t[cur].link;
-        }       
-        if (t[cur].next[let]) {  
+        }
+        if (t[cur].next[let]) {
             suff = t[cur].next[let];
             return false;
         }
-         
+
         int num = newNode();
         suff = num;
         t[num].len = t[cur].len + 2;
         t[cur].next[let] = num;
- 
+
         if (t[num].len == 1) {
             t[num].link = 1;
             t[num].cnt = 1;
             return true;
         }
- 
+
         while (true) {
             cur = t[cur].link;
             curlen = t[cur].len;
             if (pos - 1 - curlen >= 0 && s[pos - 1 - curlen] == s[pos]) {
                 t[num].link = t[cur].next[let];
                 break;
-            }       
-        }           
- 
+            }
+        }
+
         t[num].cnt = 1 + t[t[num].link].cnt;
- 
+
         return true;
     }
 };
- 
+
 PAM pam;
 ```
 
-06A - AC自动机（AC 旧版）
-------------------
+## 06A - AC自动机（AC 旧版）
 
 [2021-07-07](https://codeforces.com/contest/710/submission/121661266)
 
@@ -5359,7 +5304,7 @@ struct AC {
         x = {newNode(), newNode()};
         std::fill(node[x[0]].next, node[x[0]].next + A, x[1]);
         node[x[1]].fail = x[0];
-        
+
         for (int i = 0; i < int(s.size()); i++) {
             int p = x[1];
             for (int j = 0; j < int(s[i].length()); j++) {
@@ -5373,7 +5318,7 @@ struct AC {
             }
             node[p].sum += w[i];
         }
-        
+
         std::queue<int> que;
         que.push(x[1]);
         while (!que.empty()) {
@@ -5408,8 +5353,7 @@ struct AC {
 };
 ```
 
-06B - AC自动机（AhoCorasick 新版）
----------------------------
+## 06B - AC自动机（AhoCorasick 新版）
 
 [2023-04-07](https://codeforces.com/contest/1801/submission/201155712)
 
@@ -5422,24 +5366,24 @@ struct AhoCorasick {
         std::array<int, ALPHABET> next;
         Node() : link{}, next{} {}
     };
-    
+
     std::vector<Node> t;
-    
+
     AhoCorasick() {
         init();
     }
-    
+
     void init() {
         t.assign(2, Node());
         t[0].next.fill(1);
         t[0].len = -1;
     }
-    
+
     int newNode() {
         t.emplace_back();
         return t.size() - 1;
     }
-    
+
     int add(const std::vector<int> &a) {
         int p = 1;
         for (auto x : a) {
@@ -5451,7 +5395,7 @@ struct AhoCorasick {
         }
         return p;
     }
-    
+
     int add(const std::string &a, char offset = 'a') {
         std::vector<int> b(a.size());
         for (int i = 0; i < a.size(); i++) {
@@ -5459,15 +5403,15 @@ struct AhoCorasick {
         }
         return add(b);
     }
-    
+
     void work() {
         std::queue<int> q;
         q.push(1);
-        
+
         while (!q.empty()) {
             int x = q.front();
             q.pop();
-            
+
             for (int i = 0; i < ALPHABET; i++) {
                 if (t[x].next[i] == 0) {
                     t[x].next[i] = t[t[x].link].next[i];
@@ -5478,31 +5422,30 @@ struct AhoCorasick {
             }
         }
     }
-    
+
     int next(int p, int x) {
         return t[p].next[x];
     }
-    
+
     int next(int p, char c, char offset = 'a') {
         return next(p, c - 'a');
     }
-    
+
     int link(int p) {
         return t[p].link;
     }
-    
+
     int len(int p) {
         return t[p].len;
     }
-    
+
     int size() {
         return t.size();
     }
 };
 ```
 
-07 - 随机生成模底 字符串哈希（例题）
----------------------
+## 07 - 随机生成模底 字符串哈希（例题）
 
 [2022-06-09](https://codeforces.com/contest/1598/submission/160006998)
 
@@ -5535,17 +5478,17 @@ using Hash = std::array<int, 2>;
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
-    
+
     std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
-    
+
     const int P = findPrime(rng() % 900000000 + 100000000);
-    
+
     std::string s, x;
     std::cin >> s >> x;
-    
+
     int n = s.length();
     int m = x.length();
-    
+
     std::vector<int> h(n + 1), p(n + 1);
     for (int i = 0; i < n; i++) {
         h[i + 1] = (10LL * h[i] + s[i] - '0') % P;
@@ -5554,16 +5497,16 @@ int main() {
     for (int i = 0; i < n; i++) {
         p[i + 1] = 10LL * p[i] % P;
     }
-    
+
     auto get = [&](int l, int r) {
         return (h[r] + 1LL * (P - h[l]) * p[r - l]) % P;
     };
-    
+
     int px = 0;
     for (auto c : x) {
         px = (10LL * px + c - '0') % P;
     }
-    
+
     for (int i = 0; i <= n - 2 * (m - 1); i++) {
         if ((get(i, i + m - 1) + get(i + m - 1, i + 2 * m - 2)) % P == px) {
             std::cout << i + 1 << " " << i + m - 1 << "\n";
@@ -5571,10 +5514,10 @@ int main() {
             return 0;
         }
     }
-    
+
     std::vector<int> z(m + 1), f(n + 1);
     z[0] = m;
-    
+
     for (int i = 1, j = -1; i < m; i++) {
         if (j != -1) {
             z[i] = std::max(0, std::min(j + z[j] - i, z[i - j]));
@@ -5597,10 +5540,10 @@ int main() {
             j = i;
         }
     }
-    
+
     for (int i = 0; i + m <= n; i++) {
         int l = std::min(m, f[i]);
-        
+
         for (auto j : { m - l, m - l - 1 }) {
             if (j <= 0) {
                 continue;
@@ -5617,7 +5560,7 @@ int main() {
             }
         }
     }
-    
+
     return 0;
 }
 ```

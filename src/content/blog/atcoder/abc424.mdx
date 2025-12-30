@@ -1,19 +1,24 @@
 ---
 title: 'AtCoder Beginner Contest 424'
-tags: [ 'atcoder', '题解' ]
+tags: ['atcoder', '题解']
 publishDate: '2025-9-20 20:00:00'
 description: 'abc424 (A---D)'
 heroImage: { src: './assets/1.webp', color: '#4891B2' }
 language: 'zh-cn'
 ---
+
 import { LinkPreview } from 'astro-pure/advanced'
 
 ## A Isosceles
-<LinkPreview href='https://atcoder.jp/contests/abc424/tasks/abc424_a'/>
+
+<LinkPreview href='https://atcoder.jp/contests/abc424/tasks/abc424_a' />
 
 ### 题目描述
+
 给出三角形的三个边$a$, $b$, $c$，判断三角形是否为等腰三角形。
+
 ### 参考代码
+
 ```cpp
 #include<bits/stdc++.h>
 
@@ -40,16 +45,20 @@ signed main() {
 ```
 
 ## B Perfect
-<LinkPreview href='https://atcoder.jp/contests/abc424/tasks/abc424_b'/>
+
+<LinkPreview href='https://atcoder.jp/contests/abc424/tasks/abc424_b' />
 
 ### 题目描述
+
 $n$个人，$m$个题，总共$k$次提交，每次提交都是第$A_{i}$人完成第$B_{i}$题。<br/>
 输出完成所有题的人的编号，有多个按最后一个题的完成顺序输出。
 
 ### 解题思路
+
 直接统计完成题的数目，当数目达到$m$时，直接输出编号。
 
 ### 参考代码
+
 ```cpp
 #include<bits/stdc++.h>
 
@@ -79,17 +88,22 @@ signed main() {
 }
 
 ```
+
 ## C New Skill Acquired
-<LinkPreview href='https://atcoder.jp/contests/abc424/tasks/abc424_c'/>
+
+<LinkPreview href='https://atcoder.jp/contests/abc424/tasks/abc424_c' />
 
 ### 题目描述
+
 $n$个数对，数对${A_{i}, B_{i}}$表示到达点$A_{i}$或者$B_{i}$才可到达点$i$（即$A_{i} \rightarrow i，B_{i} \rightarrow i$）,$A_{i} = 0$ $B_{i} = 0$表示$i$点可直接到达.<br/>
 问：最多能到达多少个点。
+
 ### 解题思路
+
 题目描述很明了，直接建图，再$dfs$或$bfs$搜索即可.
 
-
 ### 参考代码
+
 <strong>bfs</strong>
 ```cpp
 #include<bits/stdc++.h>
@@ -98,53 +112,60 @@ $n$个数对，数对${A_{i}, B_{i}}$表示到达点$A_{i}$或者$B_{i}$才可�
 #define pii std::pair<int,int>
 
 void solve() {
-    int n;
-    std::cin >> n;
-    std::queue<int> q;
-    std::vector<bool> vis(n + 1, false);
-    std::vector g(n + 1, std::vector<int>());
-    for (int i = 0, x, y; i < n; i ++) {
-        std::cin >> x >> y;
-        if (!x) {
-            q.push(i + 1);
-            vis[i + 1] = true;
-        }
-        g[x].push_back(i + 1), g[y].push_back(i + 1);
-    }
-    while (!q.empty()) {
-        auto u = q.front();
-        q.pop();
-        for (auto v: g[u]) {
-            if (!vis[v]) vis[v] = true, q.push(v);
-        }
-    }
-    int ans = 0;
-    for (int i = 1; i <= n; i ++) {
-        ans += vis[i];
-    }
+int n;
+std::cin >> n;
+std::queue<int> q;
+std::vector<bool> vis(n + 1, false);
+std::vector g(n + 1, std::vector<int>());
+for (int i = 0, x, y; i < n; i ++) {
+std::cin >> x >> y;
+if (!x) {
+q.push(i + 1);
+vis[i + 1] = true;
+}
+g[x].push_back(i + 1), g[y].push_back(i + 1);
+}
+while (!q.empty()) {
+auto u = q.front();
+q.pop();
+for (auto v: g[u]) {
+if (!vis[v]) vis[v] = true, q.push(v);
+}
+}
+int ans = 0;
+for (int i = 1; i <= n; i ++) {
+ans += vis[i];
+}
 
     std::cout << ans << std::endl;
+
 }
 
 signed main() {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr), std::cout.tie(nullptr);
-    int _ = 1;
-    // std::cin >> _;
-    while (_ --) solve();
+std::ios::sync*with_stdio(false);
+std::cin.tie(nullptr), std::cout.tie(nullptr);
+int * = 1;
+// std::cin >> _;
+while (_ --) solve();
 }
 
     ```
 
 ## D 2x2 Erasing 2
-<LinkPreview href='https://atcoder.jp/contests/abc424/tasks/abc424_d'/>
+
+<LinkPreview href='https://atcoder.jp/contests/abc424/tasks/abc424_d' />
 
 ### 题目描述
+
 给定$n * m$的矩阵，要求修改矩阵，使得不出现$2 * 2$的 '#' 的矩阵。<br/>
 输出最小操作数。
+
 ### 解题思路
+
 可以发现数据最大为 $100$ 组 $7 * 7$ 的矩阵，可以直接暴力$dfs$.
+
 ### 参考代码
+
 ```cpp
 #include<bits/stdc++.h>
 

@@ -1,11 +1,12 @@
 ---
 title: 'Goodbye2023'
-tags: [ '题解', 'codeforces' ]
+tags: ['题解', 'codeforces']
 publishDate: '2023-12-31 23:44:55'
 description: 'codeforces-goodbye2023(A-C)'
 heroImage: { src: './scenery/8.webp', color: '#4891B2' }
 language: 'zh-cn'
 ---
+
 ## A [2023](https://codeforces.com/contest/1916/problem/A)
 
 ### 题目描述
@@ -59,7 +60,7 @@ signed main() {
 
 ---
 
-## B  [Two Divisors](https://codeforces.com/contest/1916/problem/B)
+## B [Two Divisors](https://codeforces.com/contest/1916/problem/B)
 
 ### 题目描述
 
@@ -104,7 +105,7 @@ signed main() {
 
 ---
 
-## C  [Training Before the Olympiad](https://codeforces.com/contest/1916/problem/C)
+## C [Training Before the Olympiad](https://codeforces.com/contest/1916/problem/C)
 
 ### 题目描述
 

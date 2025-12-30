@@ -43,19 +43,19 @@ const socialImage = heroImage?.src ?? '/images/social-card.png'
           {
             // Language
             language && (
-            <span class='flex items-center gap-1'>
+              <span class='flex items-center gap-1'>
                 <Icon name='earth' />
-              {language}
+                {language}
               </span>
-          )
+            )
           }
           {
             // Description
             description && (
-            <blockquote class='text-sm italic text-muted-foreground'>
-              <q>{description}</q>
-            </blockquote>
-          )
+              <blockquote class='text-sm italic text-muted-foreground'>
+                <q>{description}</q>
+              </blockquote>
+            )
           }
         </div>
       </div>

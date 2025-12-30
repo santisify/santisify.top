@@ -9,6 +9,7 @@ const {
   class: className
 } = Astro.props
 ---
+
 <uma-info
   class={cn(
     'grid grid-cols-1 gap-3 rounded-xl border px-3 py-2 sm:grid-cols-2 sm:px-4 sm:py-3 sm:gap-x-4',
@@ -18,36 +19,68 @@ const {
   data-username={username}
   data-password={password}
   data-website-id={websiteId}
->
+  >
   <p>
-    <span class="text-foreground">Today</span>
-    <span class="float-end">
-      <span id="today_uv">???</span> users, <span id="today_pv">???</span> visits
+    <span class='text-foreground'>Today</span>
+    <span class='float-end'>
+      <span id='today_uv'>???</span> users, <span id='today_pv'>???</span> visits
     </span>
   </p>
   <p>
-    <span class="text-foreground">Yesterday</span>
-    <span class="float-end">
-      <span id="yesterday_uv">???</span> users, <span id="yesterday_pv">???</span> visits
+    <span class='text-foreground'>Yesterday</span>
+    <span class='float-end'>
+      <span id='yesterday_uv'>???</span> users, <span id='yesterday_pv'>???</span> visits
     </span>
   </p>
   <p>
-    <span class="text-foreground">Last Month</span>
-    <span class="float-end"><span id="last_month_pv">???</span> visits</span>
+    <span class='text-foreground'>Last Month</span>
+    <span class='float-end'><span id='last_month_pv'>???</span> visits</span>
   </p>
   <p>
-    <span class="text-foreground">Last Year</span>
-    <span class="float-end"><span id="last_year_pv">???</span> visits</span>
+    <span class='text-foreground'>Last Year</span>
+    <span class='float-end'><span id='last_year_pv'>???</span> visits</span>
   </p>
 </uma-info>
 
 <script>
-  // 全局Token管理
+  // 缓存管理器，避免短时间内重复请求
+  const umamiCacheManager = {
+    cache: new Map(),
+    cacheTimeout: 5 * 60 * 1000, // 5分钟缓存有效期
+
+    getCacheKey(umamiUrl: string, websiteId: string, dateRanges: { type: string, startAt: number, endAt: number }[]): string {
+      // 生成基于URL、网站ID和日期范围的缓存键
+      const rangesKey = dateRanges.map(range => `${range.type}:${range.startAt}-${range.endAt}`).join('|')
+      return `${umamiUrl}|${websiteId}|${rangesKey}`
+    },
+
+    getCachedData(cacheKey: string) {
+      const cached = this.cache.get(cacheKey)
+      if (cached && Date.now() < cached.expiry) {
+        return cached.data
+      }
+      // 清除过期缓存
+      this.cache.delete(cacheKey)
+      return null
+    },
+
+    setCachedData(cacheKey: string, data: any) {
+      this.cache.set(cacheKey, {
+        data,
+        expiry: Date.now() + this.cacheTimeout
+      })
+    }
+  }
+
   const umamiTokenManager = {
     token: null,
     tokenExpiry: null,
 
-    async getAuthToken(baseUrl: string, username: string, password: string): Promise<string | null> {
+    async getAuthToken(
+      baseUrl: string,
+      username: string,
+      password: string
+    ): Promise<string | null> {
       try {
         // 检查是否有有效的token
         if (this.token && this.tokenExpiry && Date.now() < this.tokenExpiry) {
@@ -58,7 +91,7 @@ const {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            Accept: 'application/json'
           },
           body: JSON.stringify({ username, password })
         })
@@ -69,8 +102,7 @@ const {
 
         const authData = await response.json()
         this.token = authData.token
-        // 设置token过期时间（假设token有效期为24小时）
-        this.tokenExpiry = Date.now() + (24 * 60 * 60 * 1000)
+        this.tokenExpiry = Date.now() + 24 * 60 * 60 * 1000
 
         return this.token
       } catch (error) {
@@ -104,49 +136,93 @@ const {
   }
 
   class UmaInfo extends HTMLElement {
-    // 获取Umami统计数据
-    async fetchUmamiDataWithAuth(
+    // 优化：批量获取Umami统计数据，支持缓存
+    async fetchBulkUmamiData(
       baseUrl: string,
       websiteId: string,
       username: string,
       password: string,
-      startAt: number,
-      endAt: number
-    ): Promise<UmamiStatsResponse | null> {
+      dateRanges: { type: string, startAt: number, endAt: number }[]
+    ): Promise<Record<string, UmamiStatsResponse | null>> {
       try {
+        // 检查缓存
+        const cacheKey = umamiCacheManager.getCacheKey(baseUrl, websiteId, dateRanges)
+        const cachedData = umamiCacheManager.getCachedData(cacheKey)
+        if (cachedData) {
+          console.log('Using cached Umami data')
+          return cachedData
+        }
+
         const token = await umamiTokenManager.getAuthToken(baseUrl, username, password)
         if (!token) {
           throw new Error('No authentication token available')
         }
 
-        const url = new URL(`${baseUrl}/api/websites/${websiteId}/stats`)
-        url.searchParams.append('startAt', startAt.toString())
-        url.searchParams.append('endAt', endAt.toString())
+        // 对每个日期范围发起并行请求
+        const requests = dateRanges.map(async (range) => {
+          const url = new URL(`${baseUrl}/api/websites/${websiteId}/stats`)
+          url.searchParams.append('startAt', range.startAt.toString())
+          url.searchParams.append('endAt', range.endAt.toString())
 
-        const response = await fetch(url.toString(), {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+          const response = await fetch(url.toString(), {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            }
+          })
+
+          if (response.status === 401) {
+            // Token过期，清除后重试
+            umamiTokenManager.clearToken()
+            // 重新获取token后重试
+            const newToken = await umamiTokenManager.getAuthToken(baseUrl, username, password)
+            if (!newToken) {
+              throw new Error('No authentication token available after refresh')
+            }
+
+            const retryResponse = await fetch(url.toString(), {
+              headers: {
+                Authorization: `Bearer ${newToken}`,
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+              }
+            })
+
+            if (!retryResponse.ok) {
+              const errorText = await retryResponse.text()
+              console.error(`API request failed after token refresh: ${retryResponse.status}`, errorText)
+              return null
+            }
+
+            return await retryResponse.json()
           }
+
+          if (!response.ok) {
+            const errorText = await response.text()
+            console.error(`API request failed: ${response.status}`, errorText)
+            return null
+          }
+
+          return await response.json()
+          // 添加类型断言
+        }) as Promise<UmamiStatsResponse | null>[]
+
+        const results = await Promise.all(requests)
+
+        // 构建返回结果对象
+        const resultObject: Record<string, UmamiStatsResponse | null> = {}
+        dateRanges.forEach((range, index) => {
+          resultObject[range.type] = results[index] || null
         })
 
-        if (response.status === 401) {
-          // Token过期，清除后重试
-          umamiTokenManager.clearToken()
-          return this.fetchUmamiDataWithAuth(baseUrl, websiteId, username, password, startAt, endAt)
-        }
+        // 存储到缓存
+        umamiCacheManager.setCachedData(cacheKey, resultObject)
 
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.error(`API request failed: ${response.status}`, errorText)
-          throw new Error(`API request failed: ${response.status}`)
-        }
-
-        return await response.json()
+        return resultObject
       } catch (error) {
-        console.error('Failed to fetch Umami data:', error)
-        return null
+        console.error('Failed to fetch bulk Umami data:', error)
+        return {}
       }
     }
 
@@ -155,7 +231,6 @@ const {
         const username = this.dataset.username
         const password = this.dataset.password
         const websiteId = this.dataset.websiteId
-
         if (!username || !password || !websiteId) {
           throw new Error('Missing authentication credentials or website ID')
         }
@@ -166,26 +241,29 @@ const {
         const lastMonthRange = this.getDateRange('lastMonth')
         const lastYearRange = this.getDateRange('lastYear')
 
-        // 并行获取所有数据
-        const [
-          todayData,
-          yesterdayData,
-          lastMonthData,
-          lastYearData
-        ] = await Promise.all([
-          this.fetchUmamiDataWithAuth(umamiUrl, websiteId, username, password, todayRange.start, todayRange.end),
-          this.fetchUmamiDataWithAuth(umamiUrl, websiteId, username, password, yesterdayRange.start, yesterdayRange.end),
-          this.fetchUmamiDataWithAuth(umamiUrl, websiteId, username, password, lastMonthRange.start, lastMonthRange.end),
-          this.fetchUmamiDataWithAuth(umamiUrl, websiteId, username, password, lastYearRange.start, lastYearRange.end)
-        ])
+        // 定义所有日期范围
+        const dateRanges = [
+          { type: 'today', startAt: todayRange.start, endAt: todayRange.end },
+          { type: 'yesterday', startAt: yesterdayRange.start, endAt: yesterdayRange.end },
+          { type: 'lastMonth', startAt: lastMonthRange.start, endAt: lastMonthRange.end },
+          { type: 'lastYear', startAt: lastYearRange.start, endAt: lastYearRange.end }
+        ]
 
+        // 批量获取数据
+        const bulkData = await this.fetchBulkUmamiData(
+          umamiUrl,
+          websiteId,
+          username,
+          password,
+          dateRanges
+        )
         return {
-          today_uv: todayData?.visitors?.value || 0,
-          today_pv: todayData?.pageviews?.value || 0,
-          yesterday_uv: yesterdayData?.visitors?.value || 0,
-          yesterday_pv: yesterdayData?.pageviews?.value || 0,
-          last_month_pv: lastMonthData?.pageviews?.value || 0,
-          last_year_pv: lastYearData?.pageviews?.value || 0
+          today_uv: Number(bulkData['today']?.visitors) || 0,
+          today_pv: Number(bulkData['today']?.pageviews) || 0,
+          yesterday_uv: Number(bulkData['yesterday']?.visitors) || 0,
+          yesterday_pv: Number(bulkData['yesterday']?.pageviews) || 0,
+          last_month_pv: Number(bulkData['lastMonth']?.pageviews) || 0,
+          last_year_pv: Number(bulkData['lastYear']?.pageviews) || 0
         }
       } catch (e) {
         console.error('Failed to fetch Umami data:', e)
@@ -194,7 +272,7 @@ const {
     }
 
     // 辅助方法：获取日期范围（返回时间戳）
-    getDateRange(type: 'today' | 'yesterday' | 'lastMonth' | 'lastYear'): { start: number; end: number } {
+    getDateRange(type: 'today' | 'yesterday' | 'lastMonth' | 'lastYear'): { start: number, end: number } {
       const now = new Date()
       const start = new Date()
       const end = new Date()
@@ -238,6 +316,7 @@ const {
 
       try {
         const umamiData = await this.fetchUmami(this.dataset.message)
+
         if (!umamiData) {
           console.error('Failed to fetch Umami data')
           return
@@ -257,7 +336,6 @@ const {
         updateElement('yesterday_pv', umamiData.yesterday_pv)
         updateElement('last_month_pv', umamiData.last_month_pv)
         updateElement('last_year_pv', umamiData.last_year_pv)
-
       } catch (e) {
         console.error('Error setting Umami data:', e)
       }

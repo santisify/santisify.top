@@ -6,6 +6,7 @@ description: ''
 heroImage: { src: './iv/logo.svg', color: '#4891B2' }
 language: 'zh-cn'
 ---
+
 ## 配置环境
 
 首先我们得先配置好环境 </br>
@@ -15,22 +16,26 @@ language: 'zh-cn'
 ![image.png](https://s2.loli.net/2025/01/18/YuBtGxPNjUenr6q.png)
 下载好后我们需要创建项目
 ![image.png](https://s2.loli.net/2025/01/18/HjckQeP8LGXhWMi.png)
-框选的位置一定要修改(language有误，应该选择kotlin) 
+框选的位置一定要修改(language有误，应该选择kotlin)
 ![image.png](https://s2.loli.net/2025/01/18/aPnIcXe45WJU8xl.png)
 可能会提示下载SDK，直接下载就行了</br>
 创建好后，我们需要修改gradle镜像源
 ![image.png](https://s2.loli.net/2025/01/18/BgOMHLoG7StkyQf.png)
 将框选的地址换为
-``` bash
+
+```bash
 https://mirrors.cloud.tencent.com/gradle/gradle-8.2-all.zip
 ```
+
 修改后，重新加载gradle项目即可
 
 ## 项目搭建
+
 首先我们找到文件`app\src\main\java\com\example\myapplication\MainActivity`</br>
 若没有修改项目名称，那路径就和我一样的
 ![image.png](https://s2.loli.net/2025/01/18/jw8aYu3sxOZClW1.png)
 将以下代码复制到上面的文件中,项目名称不同下述代码的第一行不用复制，粘贴的时候要保留原有的第一行
+
 ```kotlin
 package com.example.myapplication
 
@@ -151,6 +156,7 @@ class MainActivity : ComponentActivity() {
 打开文件 `app\src\main\res\layout\activity_main.xml`
 ![image.png](https://s2.loli.net/2025/01/18/VDlGNUHtMqvuFiO.png)
 粘贴以下代码
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -171,8 +177,7 @@ class MainActivity : ComponentActivity() {
 ```
 
 ## 生成apk
-点击菜单栏的 ``Build -> Build Apk(s)``</br>
+
+点击菜单栏的 `Build -> Build Apk(s)`</br>
 生成的安装包会在项目根目录下的**app\build\outputs\apk\debug**里面</br>
 至于如何修改Apk的名称和图标，大家可以自行百度或AI
-
-

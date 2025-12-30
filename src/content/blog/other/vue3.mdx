@@ -6,6 +6,7 @@ description: '内置组件'
 heroImage: { src: './assets/vue3.png', color: '#4891B2' }
 language: 'zh-cn'
 ---
+
 # Vue 内置组件学习笔记（核心组件实战整理）
 
 ## 一、＜component＞：动态组件切换
@@ -32,6 +33,7 @@ language: 'zh-cn'
 
 <script setup>
 import { ref } from 'vue'
+
 import Home from './Home.vue'
 import List from './List.vue'
 
@@ -72,8 +74,9 @@ const currentComponent = ref('Home') // 初始渲染 Home 组件
 
 <script setup>
 import { ref } from 'vue'
-import UserForm from './UserForm.vue' // 组件名需设置为 UserForm
+
 import LogList from './LogList.vue'
+import UserForm from './UserForm.vue' // 组件名需设置为 UserForm
 
 const currentComponent = ref('UserForm')
 </script>
@@ -100,7 +103,8 @@ const currentComponent = ref('UserForm')
 <!-- 子组件 Card.vue -->
 <template>
   <div class="card">
-    <slot></slot> <!-- 父组件内容会插入这里 -->
+    <slot></slot>
+    <!-- 父组件内容会插入这里 -->
   </div>
 </template>
 
@@ -118,9 +122,12 @@ const currentComponent = ref('UserForm')
 <!-- 子组件 Card.vue -->
 <template>
   <div class="card">
-    <slot name="header"></slot> <!-- 头部插槽 -->
-    <slot></slot> <!-- 默认插槽 -->
-    <slot name="footer"></slot> <!-- 底部插槽 -->
+    <slot name="header"></slot>
+    <!-- 头部插槽 -->
+    <slot></slot>
+    <!-- 默认插槽 -->
+    <slot name="footer"></slot>
+    <!-- 底部插槽 -->
   </div>
 </template>
 
@@ -192,17 +199,20 @@ const list = [
 
 <style>
 /* 进入/离开的过渡状态 */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s ease;
 }
 /* 进入开始/离开结束的状态 */
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 </style>
 
 <script setup>
 import { ref } from 'vue'
+
 const show = ref(true)
 </script>
 ```
@@ -221,7 +231,8 @@ const show = ref(true)
 </template>
 
 <style>
-.slide-enter-active, .slide-leave-active {
+.slide-enter-active,
+.slide-leave-active {
   transition: transform 0.3s ease;
 }
 .slide-enter-from {
@@ -244,6 +255,8 @@ const show = ref(true)
 
 1. **组件组合**：`＜component＞ + ＜keep-alive＞` 实现带缓存的页面切换，`＜slot＞` 实现组件个性化扩展（如后台管理系统的动态页面 + 自定义操作区）。
 2. **问题解决**：
- - 缓存组件数据刷新：在 `activated` 钩子中手动更新数据。
- - 插槽数据传递错误：检查作用域插槽的参数名是否与子组件一致。
+
+- 缓存组件数据刷新：在 `activated` 钩子中手动更新数据。
+- 插槽数据传递错误：检查作用域插槽的参数名是否与子组件一致。
+
 3. **学习优先级**：先掌握 `＜component＞` `＜keep-alive＞` `＜slot＞`（日常开发高频使用），再深入 `＜transition＞` 动画细节。
