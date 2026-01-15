@@ -5,12 +5,6 @@
       "desc": "Common links included in circle friends",
       "link_list": [
         {
-          "name": "santisify",
-          "link": "https://blog.lazy-boy-acmer.cn",
-          "avatar": "https://blog.lazy-boy-acmer.cn/assets/imgs/avater.webp",
-          "intro": "hexo-theme-anzhiyu blog"
-        },
-        {
           "name": "Pinpe",
           "link": "https://pinpe.top",
           "avatar": "https://pinpe.top/head.jpg",

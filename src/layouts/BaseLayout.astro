@@ -6,6 +6,7 @@ import config from '@/site-config'
 
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseLayout /> component.
+import '@/assets/styles/global.css'
 import '@/assets/styles/app.css'
 
 interface Props {
@@ -26,7 +27,7 @@ const {
     <ThemeProvider />
   </head>
 
-  <body class='flex justify-center bg-background text-foreground'>
+  <body class='flex justify-center bg-background text-foreground' {...props}>
     {
       highlightColor && (
         <div
@@ -36,7 +37,9 @@ const {
         />
       )
     }
-    <div class='w-full max-w-[70rem] px-4 sm:px-7 lg:px-10'>
+    <div
+      class='w-full max-w-[70rem] px-4 sm:px-7 lg:px-10 min-h-[100dvh] flex flex-col justify-between'
+    >
       <Header />
       <div class='flex-1 w-full'>
         <slot />
@@ -47,7 +50,12 @@ const {
     {/* Set highlight color */}
     <style define:vars={{ highlightColor }}>
       :global(.highlight) {
-        color: var(--highlightColor, hsl(var(--primary) / var(--un-text-opacity))) !important;
+        --highlight-fg: color-mix(
+          in srgb,
+          var(--highlightColor) 40%,
+          hsl(var(--foreground)/var(--un-text-opacity, 1))
+        );
+        color: var(--highlight-fg, hsl(var(--primary) / var(--un-text-opacity))) !important;
       }
       :global(.highlight-bg) {
         background-color: var(
@@ -56,6 +64,5 @@ const {
         ) !important;
       }
     </style>
-    <script src='../assets/live2d/autoload.js'></script>
   </body>
 </html>

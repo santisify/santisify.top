@@ -11,6 +11,7 @@ export const theme: ThemeUserConfig = {
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
   favicon: '/favicon/favicon.ico',
   /** Specify the default language for this site. */
+  socialCard: '/images/social-card.png',
   locale: {
     lang: 'en-US',
     attrs: 'en_US',
@@ -101,7 +102,7 @@ export const theme: ThemeUserConfig = {
       }
     },
     /** Blog page size for pagination (optional) */
-    blogPageSize: 8,
+    blogPageSize: 12,
     // Currently support weibo, x, bluesky
     share: ['weibo', 'bluesky']
   }
