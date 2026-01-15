@@ -1,6 +1,8 @@
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import AstroPureIntegration from 'astro-pure'
 import { defineConfig, fontProviders } from 'astro/config'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
 
 // Local integrations
 import rehypeAutolinkHeadings from './src/plugins/rehype-auto-link-headings.ts'
@@ -34,7 +36,11 @@ export default defineConfig({
     host: true
   },
   markdown: {
+    remarkPlugins: [
+      remarkMath
+    ],
     rehypePlugins: [
+      rehypeKatex,
       rehypeHeadingIds,
       [
         rehypeAutolinkHeadings,
