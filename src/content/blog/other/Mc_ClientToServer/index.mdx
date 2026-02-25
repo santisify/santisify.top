@@ -1,0 +1,78 @@
+---
+title: 'MC服务端打包（由客户端推导）'
+tags: [ '分享', 'MC' ]
+publishDate: '2026-2-25 12:00:00'
+description: '还在为想玩的整合包无法开服而烦劳吗？不妨来看看这篇文章'
+heroImage: { src: './Mc_ClientToServer.jpg', color: '#4891B2' }
+language: 'zh-cn'
+---
+
+> 想要快速搭建Minecraft服务器却苦于繁琐的配置流程？ServerPackCreator正是您需要的解决方案。这款开源工具能够将Forge、Fabric、Quilt、LegacyFabric和NeoForge模组包一键转换为对应的服务器包，大幅简化服务器部署过程。
+>
+> 无论您是模组开发者、服务器管理员还是普通玩家，都能通过这款工具轻松创建专业级的Minecraft服务器环境。
+
+## 为什么选择ServerPackCreator？
+> 传统Minecraft服务器搭建需要手动处理大量配置文件和模组兼容性问题，而ServerPackCreator通过自动化流程彻底改变了这一现状。
+>
+> 您不再需要逐个检查模组兼容性、手动配置启动参数或担心版本冲突问题。该工具支持主流模组加载器，能够智能识别并排除客户端专用模组，确保生成的服务器包既完整又稳定。
+
+## 快速上手
+`ServerPackCreator`官方提供了三种使用方法，当然我们选择最简单的GUI。<br/>
+### 安装ServerPackCreator
+首先我们需要下载安装包,以下为安装包列表链接.根据个人的操作系统进行选择.
+
+import { Card } from 'astro-pure/user'
+
+<Card
+  as='a'
+  href='https://github.com/Griefed/ServerPackCreator/releases'
+  heading='Griefed/ServerPackCreator'
+  subheading='Create a server pack from a Minecraft Forge, NeoForge, Fabric, LegacyFabric or Quilt modpack!'
+>
+Click Me!!!
+</Card>
+
+根据安装提示进行安装即可
+
+### 服务端包制作
+
+首先你需要使用MC启动器安装好需要打包的整合包的实例.
+![[1.png]](./1.png)
+  1. 选择需要打包的整合包。
+  2. 确认MC版本，模组加载器及版本。
+  3. 生成服务包。<br/>
+
+随即就会出现这个窗口,点击是就会跳转到对应的服务包
+![[2.png]](./2.png)
+
+### 安装模组加载器服务端
+
+我们需要到对应的模组加载器官网下载一个`.jar`文件，我么需要使用这个`.jar`文件构建服务端，此外我们也需要对应的java版本（可以去搜索一下）。<br/>
+这里我以`neoforge`为例
+![[3.png]](./3.png)
+
+下载后放在之前打包好的服务端文件夹中。如下图所示：
+![[4.png]](./4.png)
+为了方便区分可以将上述图片中后缀为`.bat, .sh, .ps1`的文件删掉。<br/>
+现在需要下载服务端的包了，每个模组加载器的命令不一致需要参考加载器官方的使用文档。<br/>
+打开终端执行命令，这个步骤需要保证安装了`java`,终端打开打包好的服务端文件夹。执行一下命令：
+```shell
+java -jar ./neoforge-21.1.172-installer.jar --installServer
+```
+**需要将`neoforge-21.1.172-installer.jar`换为自己对应的文件名称**<br/>
+
+执行完成后会发现有后缀为`sh`或`bat`的文件生成，现在新建一个文件命名为`eula.txt`，至于有什么用可以自己查询下官方的解释，内容为：
+```
+eula=true
+```
+如果你是`windows`系统可以直接双击`.bat`后缀的文件，`linux`系统在终端执行*bash ./run.sh*(run.sh 替换为实际名称)
+
+### 问题解决
+当然不可能是一帆风顺的，除非你运气好......<br/>
+每个人的问题都千奇百怪，那么就需要ai来帮我们解决问题了，在文件中打开`logs`将里面的`latest.log`文件内容发给ai,具体哪种算是报错呢？下面是无问题页面
+![[5.png]](./5.png)
+命令行底部有一个箭头或者有一个名称为`Minecreaft Server`的窗口即为正确。<br/>
+
+## 部署
+选择合适的服务器，如果是新手可以尝试使用面板安装。<br/>
+部署时只需要将无问题的服务端文件上传到服务器，最后执行上述生成的`run.sh`或`run.bat`文件即可。最后配置一下端口即可。
