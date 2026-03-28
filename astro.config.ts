@@ -25,8 +25,8 @@ import config from './src/site.config.ts'
 export default defineConfig({
   site: 'https://santisify.top',
   trailingSlash: 'never',
-  adapter: vercel(),
-  output: 'server',
+  adapter: vercel({ imageService: true }),
+  // output: 'server',
   image: {
     responsiveStyles: true,
     service: { entrypoint: 'astro/assets/services/sharp' },
