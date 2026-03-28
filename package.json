@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:check": "astro check --watch & astro dev",
-    "build": "astro-pure check && astro check && astro build",
+    "build": "rm -rf .vercel .astro .qoder dist && astro build",
     "preview": "astro preview",
     "sync": "astro sync",
     "check": "astro check",
