@@ -1,7 +1,7 @@
 import type { CardListData, Config, IntegrationUserConfig, ThemeUserConfig } from 'astro-pure/types'
 
 export const theme: ThemeUserConfig = {
-  // === Basic configuration ===
+  // [Basic]
   /** Title for your website. Will be used in metadata and as browser tab title. */
   title: 'santisify Site',
   /** Will be used in index page & copyright declaration */
@@ -10,8 +10,9 @@ export const theme: ThemeUserConfig = {
   description: 'to simplify technology to its purest, most powerful form.',
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
   favicon: '/favicon/favicon.ico',
-  /** Specify the default language for this site. */
+  /** The default social card image for your site which should be a path to an image in the `public/` directory. */
   socialCard: '/images/social-card.png',
+  /** Specify the default language for this site. */
   locale: {
     lang: 'en-US',
     attrs: 'en_US',
@@ -25,11 +26,10 @@ export const theme: ThemeUserConfig = {
   },
   /** Set a logo image to show in the homepage. */
   logo: {
-    src: 'src/assets/avatar.png',
+    src: '/src/assets/avatar.png',
     alt: 'Avatar'
   },
 
-  // === Global configuration ===
   titleDelimiter: '•',
   prerender: true,
   npmCDN: 'https://cdn.jsdelivr.net/npm',
@@ -92,6 +92,7 @@ export const theme: ThemeUserConfig = {
     }
   },
 
+  // [Content]
   content: {
     /** External links configuration */
     externalLinks: {
@@ -127,19 +128,25 @@ export const integ: IntegrationUserConfig = {
         name: 'Avatar',
         val: 'https://cn.cravatar.com/avatar/737CF21C04FCD75BADF35BE0A797DE8A?s=200'
       }
-    ]
+    ],
+    // Cache avatars in `public/avatars/` to improve user experience.
+    cacheAvatar: false
   },
   // Enable page search function
   pagefind: true,
   // Add a random quote to the footer (default on homepage footer)
   // See: https://astro-pure.js.org/docs/integrations/advanced#web-content-render
+  // [Quote]
   quote: {
+    // - Hitokoto
     // https://developer.hitokoto.cn/sentence/#%E8%AF%B7%E6%B1%82%E5%9C%B0%E5%9D%80
     // server: 'https://v1.hitokoto.cn/?c=i',
     // target: (data) => (data as { hitokoto: string }).hitokoto || 'Error'
     // https://github.com/lukePeavey/quotable
+    // target: `(data) => data[0].content || 'Error'`
+    // - DummyJSON
     server: 'https://dummyjson.com/quotes/random',
-    target: `(data) => data.quote || 'Error'`
+    target: `(data) => (data.quote.length > 80 ? \`\${data.quote.slice(0, 80)}...\` : data.quote || 'Error')`
   },
   // UnoCSS typography
   // See: https://unocss.dev/presets/typography
@@ -147,9 +154,10 @@ export const integ: IntegrationUserConfig = {
     class: 'prose text-base text-muted-foreground',
     // The style of blockquote font, normal or italic (default to italic in typography)
     blockquoteStyle: 'italic',
-    // The style of inline code block, code or modern (default to code in typography)
-    inlineCodeBlockStyle: 'code'
+    // The style of inline code block `code` / `modern` (default to code in typography)
+    inlineCodeBlockStyle: 'modern'
   },
+  // [Lightbox]
   // A lightbox library that can add zoom effect
   // See: https://astro-pure.js.org/docs/integrations/others#medium-zoom
   mediumZoom: {

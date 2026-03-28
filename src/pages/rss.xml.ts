@@ -23,7 +23,7 @@ const renderContent = async (post: CollectionEntry<'blog'>, site: URL) => {
     /**
      * @param {Root} tree
      */
-    return async function (tree: Root) {
+    return async (tree: Root) => {
       const promises: Promise<void>[] = []
       visit(tree, 'image', (node) => {
         if (node.url.startsWith('/images')) {
