@@ -1,0 +1,182 @@
+[
+  {
+    "protocol": "https",
+    "hostname": "**.top",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.com",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.cn",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.fun",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.cc",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.net",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.org",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.io",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.xyz",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.info",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.biz",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.me",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.co",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.uk",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.de",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.jp",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.ru",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.fr",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.top",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.com",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.cn",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.fun",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.cc",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.net",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.org",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.io",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.xyz",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.info",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.biz",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.me",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.co",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.uk",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.de",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.jp",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.ru",
+    "pathname": "/**"
+  },
+  {
+    "protocol": "https",
+    "hostname": "**.**.fr",
+    "pathname": "/**"
+  }
+]

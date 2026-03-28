@@ -5,6 +5,7 @@ import { defineConfig, fontProviders } from 'astro/config'
 import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 
+import remotePatter from './public/remotePatter.json'
 // Local integrations
 import rehypeAutolinkHeadings from './src/plugins/rehype-auto-link-headings.ts'
 import {
@@ -26,14 +27,14 @@ export default defineConfig({
   site: 'https://santisify.top',
   trailingSlash: 'never',
   adapter: vercel({
-    devImageService: 'sharp',
+    // devImageService: 'sharp',
     imageService: true
   }),
   output: 'server',
   image: {
     responsiveStyles: true,
     service: { entrypoint: 'astro/assets/services/sharp' },
-    domains: ['*.*.*', "*.*", "*.*.*.*"]
+    remotePatterns: remotePatter
   },
   integrations: [AstroPureIntegration(config)],
   prefetch: true,
