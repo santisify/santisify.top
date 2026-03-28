@@ -25,10 +25,10 @@ import config from './src/site.config.ts'
 export default defineConfig({
   site: 'https://santisify.top',
   trailingSlash: 'never',
-  }),
   adapter: vercel({
     devImageService: 'sharp',
     imageService: true
+  }),
   output: 'server',
   image: {
     responsiveStyles: true,
