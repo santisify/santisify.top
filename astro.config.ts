@@ -33,16 +33,7 @@ export default defineConfig({
   image: {
     responsiveStyles: true,
     service: { entrypoint: 'astro/assets/services/sharp' },
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**'
-      },
-      {
-        protocol: 'http',
-        hostname: '**'
-      }
-    ]
+    domains: ['*.*.*', "*.*", "*.*.*.*"]
   },
   integrations: [AstroPureIntegration(config)],
   prefetch: true,
