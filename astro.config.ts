@@ -25,12 +25,24 @@ import config from './src/site.config.ts'
 export default defineConfig({
   site: 'https://santisify.top',
   trailingSlash: 'never',
-  adapter: vercel(),
+  adapter: vercel({
+    devImageService: 'sharp',
+    imageService: true
+  }),
   output: 'server',
   image: {
     responsiveStyles: true,
     service: { entrypoint: 'astro/assets/services/sharp' },
-    domains: ['ghchart.rshah.org']
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**'
+      },
+      {
+        protocol: 'http',
+        hostname: '**'
+      }
+    ]
   },
   integrations: [AstroPureIntegration(config)],
   prefetch: true,
