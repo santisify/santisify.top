@@ -37,7 +37,7 @@ Sify Gist 提供三种可见性设置，满足不同场景需求：
 支持 JavaScript、TypeScript、Python、Go、Rust、Java 等 34+ 种编程语言的语法高亮，使用业界领先的 Prism.js 渲染引擎，让代码展示清晰易读。
 
 <div id="sify-gist-3U26wj_XEH5O"></div>
-<script src="https://gist.santisify.top/api/gists/3U26wj_XEH5O/embed.js"></script>
+<script src="https://gist.santisify.top/api/gists/3U26wj_XEH5O/embed.js?theme=dark"></script>
 
 ### ✨ 强大的编辑体验
 
