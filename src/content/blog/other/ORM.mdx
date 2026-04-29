@@ -1,0 +1,126 @@
+---
+title: 'ORM configuration(后续更新)'
+tags: ['ORM', '技术', '配置']
+publishDate: '2026-4-29 22:00:00'
+description: ''
+heroImage: { src: './assets/ORM.webp', color: '#4891B2' }
+language: 'zh-cn'
+---
+## nestjs + Mikro-ORM(v7)
+当然首先是来安装
+### Installation
+```bash
+pnpm add @mikro-orm/core @mikro-orm/nestjs @mikro-orm/mysql @mikro-orm/reflection
+pnpm add tsx dotenv @mikro-orm/cli -D
+```
+### CLI Configuration
+`.env.example`
+```
+MIKRO_ORM_HOST=localhost
+MIKRO_ORM_PORT=3306
+MIKRO_ORM_USER=root
+MIKRO_ORM_PASSWORD=123456
+MIKRO_ORM_DB_NAME=demo
+```
+`mikro-orm.config.ts || src/mikro-orm.config.ts`
+```ts
+import 'dotenv/config';
+import { defineConfig, MySqlDriver } from '@mikro-orm/mysql';
+import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
+
+export default defineConfig({
+  driver: MySqlDriver,
+  dbName: process.env.MIKRO_ORM_DB_NAME,
+  host: process.env.MIKRO_ORM_HOST,
+  port: Number(process.env.MIKRO_ORM_PORT) ?? 3306,
+  user: process.env.MIKRO_ORM_USER,
+  password: process.env.MIKRO_ORM_PASSWORD,
+
+  entities: ['dist/**/*.entity.js'],
+  entitiesTs: ['src/**/*.entity.ts'],
+  metadataProvider: TsMorphMetadataProvider,
+  debug: true,
+});
+```
+### Test CLI
+```bash
+npx mikro-orm debug
+```
+执行上述命令后会出现一些相关信息：
+```
+Current MikroORM CLI configuration
+ - dependencies:
+   - mikro-orm 7.0.11
+   - node 24.13.0
+   - typescript 5.9.3
+ - package.json found
+ - TypeScript support enabled (tsx)
+ - searched config paths:
+   - /home/santisify/code/webstorm/nestdemo/src/mikro-orm.config.ts (not found)
+   - /home/santisify/code/webstorm/nestdemo/mikro-orm.config.ts (found)
+   - /home/santisify/code/webstorm/nestdemo/dist/mikro-orm.config.js (not found)
+   - /home/santisify/code/webstorm/nestdemo/mikro-orm.config.js (not found)
+ - searched for config name: default
+ - configuration found
+ - driver dependencies:
+   - kysely 0.28.16
+   - mysql2 3.22.0
+ - database connection successful
+ - will use `entities` array (contains 0 references and 1 paths)
+   - /home/santisify/code/webstorm/nestdemo/dist/**/*.entity.js (found)
+ - could use `entitiesTs` array (contains 0 references and 1 paths)
+   - /home/santisify/code/webstorm/nestdemo/src/**/*.entity.ts (found)
+```
+### Database linkage
+
+在对应的entity文件中添加装饰器(主键:`@PrimaryKey()`， 其他：`@Property()`)，可自动对字段进行类型推断，当然也可以自己设置(`@Property({type:'text'})`),例如：
+```ts
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
+
+@Entity()
+export class User {
+  @PrimaryKey()
+  id: number;
+
+  @Property({ type:'text' })
+  username: string;
+
+  @Property()
+  email: string;
+
+  @Property()
+  password: string;
+}
+```
+
+以下代码为`mikro-orm`创建迁移计划,并非修改数据库.
+```bash
+npx mikro-orm migration:create
+```
+执行后你会得到一个全新的文件夹:
+```tree
+./src/migrations/
+├── Migration20260423123341.ts
+└── .snapshot-nestdemo.json
+```
+其中文件`Migration20260423123341.ts`, 数据库也会有相关的文件名记录,内容如下:
+```ts
+import { Migration } from '@mikro-orm/migrations';
+
+export class Migration20260423123341 extends Migration {
+  override up(): void | Promise<void> {
+    this.addSql(
+      `create table \`user\` (\`id\` int unsigned not null auto_increment primary key, \`username\` varchar(255) not null, \`email\` varchar(255) not null, \`password\` varchar(255) not null) default character set utf8mb4 engine = InnoDB;`,
+    );
+  }
+
+  override down(): void | Promise<void> {
+    this.addSql(`drop table if exists \`user\`;`);
+  }
+}
+```
+**TIPS**:必记命令
+```bash
+npx mikro-orm migration:up  //迁移到最新版本,对应上方up函数
+npx mikro-orm migration:down  //回退一个版本对应上方down函数
+```
