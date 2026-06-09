@@ -18,13 +18,12 @@ const headings = [
 ---
 
 <PageLayout title='About' {headings} comment>
-  <p>Developer / Designer</p>
+  <p>个人开发者 / 后端开发(个人倾向)</p>
   <p>
-    Full-time undergraduate student majoring in Computer Science, skilled in big data and full-stack
-    web development. Passionate about UI/UX design and photography during leisure time.
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我是一名将于2026年毕业的计算机科学与技术专业本科生，拥有三年算法竞赛训练经验，曾多次在睿抗机器人开发者大赛、百度之星、四川省大学生程序设计竞赛、ICPC邀请赛及蓝桥杯等赛事中斩获国家级与省级奖项。具备扎实的数据结构与算法功底，能够高效解决复杂编程问题，同时掌握完整的前后端分离项目独立开发能力——从需求分析、系统架构设计、数据库建模到编码实现与测试部署。此外，我熟悉运用AI辅助开发工具，注重代码规范与交付质量，兼具业务理解力与团队协作精神，善于将实际需求转化为可靠的技术方案。持续学习、乐于分享，希望能在技术的世界里不断创造有价值的作品。
   </p>
   <p>
-    My motto: to simplify technology to its purest, most powerful form.
+    座右铭: to simplify technology to its purest, most powerful form.
     <Spoiler>将技术简化为其最纯粹、最强大的形式。</Spoiler>
   </p>
   <Button title='Sponsor Me' class='w-fit' href='/projects#sponsorship' style='ahead' />
@@ -32,63 +31,26 @@ const headings = [
   {/* general-talk */}
   <h2 id='hobbies'>Hobbies</h2>
   <ul>
-    <li><b>Coding</b>: favorite editors are Vscode, Webstorm, IDEA, Pycharm, Clion.</li>
-    <li><b>Creation</b>: Adobe Suit is quite proficient, with late stage UI OCD.</li>
     <li>
-      <b>Music</b>: A wide range of preferences like J-pop, K-pop, electronic music and minority
-      languages. I'd like to try new songs online using Apple Music or occasionally use NetEase
-      sometimes.
+      <b>Coding</b>: Webstrom(前端、nodejs后端)、IDEA(Java)、Clion(C\C++\QT)、Vscode(万能编辑器).
     </li>
     <li>
-      <b>Game</b>: Often play Crossfire ,Honkai series and rhythm games.
+      <b>Music</b>: 热衷于邓紫棋、贾斯汀·比伯(Justin Bieber)的歌曲，以及轻音乐.
+    </li>
+    <li>
+      <b>Game</b>:
+      大学前热衷于射击类游戏，但是到大学学了计算机后，莫名其妙爱上了二次元，目前以及以前经常玩的游戏：战双帕弥什、鸣潮、崩坏星穹铁道、原神(老登、已退坑)、崩坏三、CFM(死忠粉)、当然还有方块世界MC
+    </li>
+    <li>
+      <b>Animation</b>:
+      不是很喜欢番剧类的，比较喜欢国漫，目前在看的有：斗罗大陆2、遮天、吞噬星空、完美世界、剑来(乱来)
     </li>
   </ul>
 
   {/* tools */}
   <h2 id='tools'>Tools</h2>
-  <p>Current support tools as follow:</p>
-  <ToolSection
-    class='mb-5'
-    title='Creation'
-    tools={[
-      {
-        name: 'Photoshop',
-        description: 'Picture Editing',
-        href: 'https://www.adobe.com/products/photoshop',
-        icon: import('@/assets/tools/photoshop.svg?raw')
-      },
-      {
-        name: 'Lightroom Classic',
-        description: 'Photo Toning',
-        href: 'https://www.adobe.com/products/photoshop-lightroom.html',
-        icon: import('@/assets/tools/lightroom.svg?raw')
-      },
-      {
-        name: 'Premiere Pro',
-        description: 'Video Editing',
-        href: 'https://www.adobe.com/products/premiere',
-        icon: import('@/assets/tools/premiere.svg?raw')
-      },
-      {
-        name: 'Animate',
-        description: 'Making animation',
-        href: 'https://www.adobe.com/products/animate',
-        icon: import('@/assets/tools/animate.svg?raw')
-      },
-      {
-        name: 'Audition',
-        description: 'Audio Edition',
-        href: 'https://www.adobe.com/products/audition',
-        icon: import('@/assets/tools/audition.svg?raw')
-      },
-      {
-        name: 'Davinci',
-        description: 'Video Creation',
-        href: 'http://www.blackmagicdesign.com/products/davinciresolve',
-        icon: import('@/assets/tools/davinci.svg?raw')
-      }
-    ]}
-  />
+  <p>当前主要使用工具如下:</p>
+
   <ToolSection
     class='mb-5'
     title='Productivity'
@@ -101,19 +63,25 @@ const headings = [
       },
       {
         name: 'Chrome',
-        description: 'Browser',
+        description: '浏览器',
         href: 'https://www.google.com/intl/zh-cn/chrome/',
         icon: import('@/assets/tools/chrome.svg?raw')
       },
       {
-        name: 'Apifox',
-        href: 'https://apifox.com/',
+        name: 'Zen',
+        description: '浏览器',
+        href: 'https://zen-browser.app/',
+        icon: import('@/assets/tools/zen.svg?raw')
+      },
+      {
+        name: 'Bruno',
+        href: 'https://www.usebruno.com/',
         description: 'API tool',
-        icon: import('@/assets/tools/apifox.svg?raw')
+        icon: import('@/assets/tools/bruno.svg?raw')
       },
       {
         name: 'GitKraken',
-        href: '',
+        href: 'https://www.gitkraken.com/',
         description: 'Git tool',
         icon: import('@/assets/tools/gitkraken.svg?raw')
       }
@@ -172,16 +140,16 @@ const headings = [
     title='Environment'
     tools={[
       {
-        name: 'Arch Linux',
-        description: 'Linux Distribution',
-        href: 'https://archlinux.org/',
-        icon: import('@/assets/tools/archlinux.svg?raw')
+        name: 'Ubuntu',
+        description: '主力操作系统，版本:26.04LTS',
+        href: 'https://ubuntu.com/',
+        icon: import('@/assets/tools/ubuntu.svg?raw')
       },
       {
-        name: 'Windows 11',
-        description: 'Lenovo Legion',
-        href: 'https://www.microsoft.com/en-us/windows/windows-11',
-        icon: import('@/assets/tools/windows11.svg?raw')
+        name: 'Arch Linux',
+        description: '偶尔掏出来折腾一下',
+        href: 'https://archlinux.org/',
+        icon: import('@/assets/tools/archlinux.svg?raw')
       }
     ]}
   />
@@ -189,7 +157,7 @@ const headings = [
   {/* social-networks */}
   <h2 id='social-networks'>Social Networks</h2>
   <p>
-    The main network usernames include <code>santisify</code>, <code>lazy-boy</code>.
+    我的主要网名 <code>santisify</code>, <code>lazy-boy(部分网站无法修改用户名而保留)</code>.
   </p>
   <Substats
     stats={[
@@ -199,32 +167,6 @@ const headings = [
         link: 'https://github.com/santisify',
         text: 'followers',
         api: 'github/santisify'
-      },
-      {
-        platform: 'Bilibili',
-        icon: 'bilibili',
-        color: '#fe7398',
-        link: 'https://space.bilibili.com/3493295600700218',
-        text: 'fans',
-        api: 'bilibili/3493295600700218',
-        count: 10
-      },
-      {
-        platform: 'Weibo',
-        icon: 'weibo',
-        color: '#e71f19',
-        link: 'https://weibo.com/u/7573439882',
-        text: 'followers'
-        // api: 'weibo/7573439882'
-      },
-      {
-        platform: 'Zhihu',
-        icon: 'zhihu',
-        color: '#0084ff',
-        link: 'https://www.zhihu.com/people/Lazy_boy_/',
-        text: 'followers',
-        // api: 'zhihu/Lazy_boy_',
-        count: 6
       },
       {
         platform: 'Steam',
@@ -239,151 +181,129 @@ const headings = [
 
   {/* gossips */}
   <h2 id='gossips'>Gossips</h2>
-  <Collapse title='The Story Behind Santisify'>
+  <Collapse title='Santisify 背后的故事'>
     <ul>
       <li>
         <p>
-          The name <strong>Santisify</strong> is a purposeful fusion of two foundational concepts:
-          <strong>Sanctity</strong> and <strong>Simplify</strong>. It is more than just a brand; it
-          is a declaration of our mission and a reflection of the value we strive to deliver to
-          every user.
+          <strong>Santisify</strong> 这个名字是有意融合了两个基础概念：
+          <strong>圣洁（Sanctity）</strong> 与 <strong>简化（Simplify）</strong
+          >。它不仅仅是一个昵称，更是一份使命宣言，也是我们努力为每位用户传递的价值的体现。
         </p>
       </li>
       <li>
         <p>
-          <strong>Sanctity</strong> represents our core ambition. In an increasingly complex and often
-          chaotic digital landscape, we champion what is pure, reliable, and trustworthy. We believe
-          your data, your attention, and your digital experience should be treated with integrity and
-          respect. "Sanctity" embodies our commitment to creating a pristine and secure environment—a
-          sanctuary where quality is paramount and your trust is sacred.
+          <strong>圣洁</strong> 代表我们的核心抱负。在日益复杂且常常混乱的数字环境中，我们倡导纯净、可靠和可信赖的事物。我们坚信，你的数据、你的注意力以及你的数字体验应得到诚信与尊重的对待。“圣洁”体现了我们致力于创造一个纯净、安全的环境——一个品质至上、你的信任神圣不可侵犯的庇护所。
         </p>
       </li>
       <li>
         <p>
-          <strong>Simplify</strong> represents our method for achieving that ambition. Technology should
-          empower, not overwhelm. It should remove barriers, not create them. We are dedicated to the
-          relentless pursuit of elegance through simplicity. We distill complex processes into intuitive
-          actions, eliminate unnecessary clutter, and design with profound clarity. We transform the
-          daunting into the effortless.
+          <strong>简化</strong> 代表我们实现这一抱负的方法。技术应当赋能，而非令人不知所措；应当消除障碍，而非制造障碍。我们致力于通过简洁来追求优雅。我们将复杂的过程提炼为直观的操作，消除不必要的杂乱，并以深刻的清晰度进行设计。我们将令人生畏的挑战转化为轻而易举的体验。
         </p>
       </li>
       <li>
         <p>
-          Thus, <strong>Santisify</strong> was born: <strong
-            >to simplify technology to its purest, most powerful form.</strong
-          > It is the act of purifying the user experience. Our name is a promise—a pledge to cleanse
-          digital interaction of its frustrations and to sanctify it with seamless, intelligent, and
-          empowering simplicity.
+          于是，<strong>Santisify</strong> 应运而生：<strong
+            >将技术简化至其最纯粹、最强大的形态。</strong
+          >
+          这是一种净化用户体验的行为。我们的名字是一个承诺——承诺清除数字交互中的挫折感，并以无缝、智能且赋能的简洁性使其变得圣洁。
         </p>
       </li>
       <li>
-        <p>Welcome to a state of purified performance. Welcome to Santisify.</p>
+        <p>欢迎来到净化性能的境界。欢迎来到 Santisify。</p>
       </li>
     </ul>
   </Collapse>
-  <Collapse title='About your avatar?'>
+  <Collapse title='关于我的头像？'>
     <ul>
       <li>
         <p>
-          Shape and Image: The main body is an image similar to a cloud or a cute little animal. The
-          lines are concise and smooth, and the outline is round and soft, giving people a cute and
-          lovely feeling. There are no sharp edges and corners, which can quickly arouse people's
-          affection and conform to the public's aesthetic preference for cute - style images.
+          形状与形象：主体形象类似云朵或可爱的小动物。线条简洁流畅，轮廓圆润柔和，给人以可爱、讨人喜欢的感觉。没有尖锐的棱角，能迅速唤起人们的好感，符合大众对可爱风格形象的审美偏好。
         </p>
       </li>
       <li>
         <p>
-          Color Application: It uses a light blue background, which is fresh and elegant. The main
-          image is mainly light pink and white, with details such as pink blush. The color
-          saturation is low, and the overall color tone is soft, creating a warm and healing
-          atmosphere, which is very comfortable visually.
+          色彩运用：采用浅蓝色背景，清新淡雅。主体形象以浅粉色和白色为主，并配有粉色腮红等细节。色彩饱和度低，整体色调柔和，营造出温暖治愈的氛围，视觉上非常舒适。
         </p>
       </li>
       <li>
         <p>
-          Element Integration: The angel halo element is integrated into it. The halo has a luminous
-          effect, adding a touch of "holiness" to the originally cute image. It echoes the text
-          "santisify" below (which has the meaning tendency of sanctifying and purifying), giving
-          the cute image an additional layer of unique meaning and interest, and making the design
-          more layered and connotative.
+          元素融合：融入了天使光环元素。光环具有发光效果，为原本可爱的形象增添了一丝“圣洁”感。这与下方的“santisify”文字（含有圣洁、净化的意义倾向）相呼应，为可爱的形象赋予了一层独特的趣味和内涵，使设计更具层次感和意蕴。
         </p>
       </li>
       <li>
         <p>
-          Style Orientation: The whole design belongs to the healing and cute style. From the shape
-          to the color and then to the element combination, it all revolves around creating a
-          relaxed, pleasant and warm visual experience. It can well attract the audience who like
-          the cute and warm style, and is convenient to convey a friendly and cute personal image
-          and emotion in social scenarios.
+          风格定位：整体设计属于治愈系可爱风格。从造型到色彩再到元素组合，都围绕营造轻松、愉悦、温暖的视觉体验展开。能很好地吸引喜欢可爱温暖风格的受众，并便于在社交场景中传递友好、可爱的个人形象与情感。
         </p>
       </li>
     </ul>
-  </Collapse>
-
-  <Collapse title='What kind of music or rhythm games are playing?'>
-    I have tried almost all the games in the music game circle. Commonly played include Cytus II,
-    Lanota, Musedash, etc. I have played Yang Chun Bai Xue, Phigros, Rhythm Doctor, and Ice and Fire
-    Dance before.
   </Collapse>
 
   {/* about-blog */}
-  <h2 id='about-blog'>About Blog</h2>
-  <p>Visit statistics:</p>
+  <h2 id='about-blog'>关于博客</h2>
+  <p>访问统计：</p>
   <Umami class='not-prose' />
-  <p>Website history:</p>
+  <p>网站历程：</p>
   <Timeline
     events={[
-      { date: '2025-01-01', content: 'Moved to Vercel and open source it on Github' },
+      {
+        date: '不知道多久',
+        content:
+          '购买了第一个域名<a target="_blank">lazy-boy-acmer.cn</a>，使用Hexo + Anzhiyu主题构建第一个博客'
+      },
+      {
+        date: '2024-10-20',
+        content:
+          '网站成功加入 <a href="https://www.travellings.cn/" target="_blank">开往（Travellings）</a>'
+      },
       {
         date: '2025-01-01',
-        content:
-          'Website successfully signed and joined <a href="https://www.travellings.cn/" target="_blank"> travellings</a>'
+        content: '迁移至 Vercel，并在 Github 上开源'
       },
       {
         date: '2025-04-23',
         content:
-          'Bought new domain <a href="https://santisify.top/" target="_blank">santisify.top</a> with new redesigned theme <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a>'
+          '购买了新域名 <a href="https://santisify.top/" target="_blank">santisify.top</a>，并重新设计了主题 <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a>'
       },
       {
         date: '2025-07-18',
         content:
-          'Website refactored using <a href="https://astro.build/" target="_blank">Astro</a> and <a href="https://github.com/srleom/astro-theme-resume" target="_blank">Astro Theme Resume</a> (Old one is saved at <a href="https://blog.lazy-boy-acmer.cn/" target="_blank">blog.lazy-boy-acmer.cn</a>)'
+          '使用 <a href="https://astro.build/" target="_blank">Astro</a> 和 <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a> 对网站进行了重构(部分重构)'
+      },
+      {
+        date: '2026-6-1',
+        content:
+          '发布自己的astro主题，虽然不是很完善，需要好好打磨一下<a href="https://astro-theme-sify-demo.vercel.app/" target="_blank">astro-theme-sify</a>'
+      },
+      {
+        date: '2026-6-9',
+        content:
+          '因为毕业，到领取学位证有足够时间，好好打理一下博客，于是有了这个历史。完全重构博客.'
       }
     ]}
   />
-  <p>
-    The smooth operation and personalized customization of website also rely on the resources and
-    technical support provided by the following excellent projects/service providers:
-  </p>
+  <p>网站的稳定运行和个性化定制也离不开以下优秀项目/服务商提供的资源和技术支持：</p>
   <ul>
-    <li>Domain: <a href='https://santisify.top/' target='_blank'>santisify.top</a></li>
+    <li>域名：<a href='https://www.huaweicloud.com/' target='_blank'>华为云</a></li>
     <li>
-      Framework & Theme: <a href='https://astro.build/' target='_blank'>Astro</a> + <a
+      框架与主题：<a href='https://astro.build/' target='_blank'>Astro</a> + <a
         href='https://github.com/cworld1/astro-theme-pure'
         target='_blank'>Astro Theme Pure</a
       >
     </li>
-
-    <li>Comment system: <a href='https://waline.js.org' target='_blank'>Waline</a></li>
+    <li>评论系统：<a href='https://waline.js.org' target='_blank'>Waline</a></li>
     <li>
-      Analytics: <a href='https://github.com/umami-software/umami' target='_blank'>Umami</a>
+      分析工具：<a href='https://github.com/umami-software/umami' target='_blank'>Umami</a>
     </li>
     <li>
-      Other statistics: <a href='https://github.com/spencerwooo/substats' target='_blank'
-        >Substats</a
-      > & <a href='https://github.com/willow-god/Friend-Circle-Lite' target='_blank'
-        >Friend Circle Lite</a
+      其他统计：<a href='https://github.com/spencerwooo/substats' target='_blank'>Substats</a> 与 <a
+        href='https://github.com/willow-god/Friend-Circle-Lite'
+        target='_blank'>友圈轻量版（Friend Circle Lite）</a
       >
     </li>
+    <li>
+      主题：<a href='https://github.com/cworld1/astro-theme-pure' target='_blank'
+        >astro-theme-pure</a
+      > powerd by <a href='https://cworld0.com/' target='_blank'>CWorld</a>
+    </li>
   </ul>
-  <p>... and one thing I have been insisting on so far:</p>
-  <a href='https://notbyai.fyi/' target='_blank'>
-    <Image
-      src={notByAIImage}
-      alt='Written by Human Not by AI'
-      width='131'
-      height='42'
-      style='border-radius:unset'
-    />
-  </a>
 </PageLayout>
