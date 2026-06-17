@@ -101,16 +101,13 @@ const { class: className } = Astro.props
   }
 
   /* Fix long text and links overflow */
-  #waline :global(.wl-content, .wl-text, .wl-comment-text, .wl-item, .wl-card-item, a) {
+  #waline :global(.wl-content, .wl-text, .wl-comment-text, .wl-item, .wl-card-item) {
     max-width: 100%;
   }
   #waline :global(.wl-meta, .wl-content, .wl-text, .wl-comment-text) {
     word-wrap: break-word;
     word-break: break-word;
     overflow-wrap: anywhere;
-  }
-  #waline :global(a) {
-    display: inline-block;
   }
 
   /* Reaction buttons */
@@ -162,5 +159,18 @@ const { class: className } = Astro.props
   }
   :global(.dark) #waline :global(.wl-reaction img) {
     filter: invert(75%);
+  }
+  #waline :global(.wl-editor) {
+    background-image: url('../../assets/texteare-gif.gif');
+    background-size: 20%;
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-color: rgba(255, 255, 255, 0);
+    resize: vertical
+  }
+  #waline :global(.wl-editor:focus) {
+    background-position-x: 800px;
+    background-position-y: 1000px;
+    transition: all 0.2s ease-in-out 0s;
   }
 </style>
