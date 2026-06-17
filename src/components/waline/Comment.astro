@@ -39,7 +39,7 @@ const { class: className } = Astro.props
       ).__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false
 
       const emoji = walineConfig.emoji?.map(
-        (preset) => `${config.npmCDN}/@waline/emojis@1.2.0/${preset}` as WalineEmojiPresets
+        (preset) => `${config.npmCDN}/@waline/emojis@1.4.0/${preset}` as WalineEmojiPresets
       )
 
       walineInit({
@@ -172,5 +172,35 @@ const { class: className } = Astro.props
     background-position-x: 800px;
     background-position-y: 1000px;
     transition: all 0.2s ease-in-out 0s;
+  }
+  #waline :global(.wl-header) {
+    overflow: visible;
+  }
+  #waline :global(.wl-header-item) {
+    position: relative;
+  }
+  #waline :global(.wl-header-item:nth-child(1):before) {
+    content: '输入QQ号会自动获取昵称和头像🐧';
+  }
+  #waline :global(.wl-header-item:nth-child(2):before) {
+    content: '收到回复将通过的邮箱提醒您📧';
+  }
+  #waline :global(.wl-header-item:nth-child(3):before) {
+    content: '可以通过昵称访问您的网站🔗';
+  }
+  #waline :global(.wl-header-item:focus-within::before) {
+    display: block;
+  }
+  #waline :global(.wl-header-item::before) {
+    display: none;
+    position: absolute;
+    top: -31px;
+    white-space: nowrap;
+    border-radius: 10px;
+    left: 50%;
+    transform: translate(-50%);
+    padding: 0px 18px;
+    background: var(--waline-bg-color);
+    color: var(--waline-color);
   }
 </style>
