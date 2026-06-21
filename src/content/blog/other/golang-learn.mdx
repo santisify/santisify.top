@@ -2,8 +2,9 @@
 title: 'golang学习之路：从入门到实践'
 tags: [ '分享', 'golang' ]
 publishDate: '2026-06-19 21:00:00'
-description: ''
-# heroImage: { src: './assets/cf10.jpg', color: '#4891B2' }
+updatedDate: '2026-06-21 21:00:00'
+description: '记录个人学习Go的过程'
+heroImage: { src: './assets/golang.png' }
 language: 'zh-cn'
 
 ---
@@ -141,3 +142,220 @@ case <-time.After(3 * time.Second):
 }
 
 ``` 
+
+## 函数和方法
+
+```go
+//函数定义
+func add(a int, b int) int {
+	return a + b
+}
+//函数调用
+result := add(3, 5) //output: 8
+//方法定义
+type Rectangle struct {
+	width  float64
+	height float64
+}
+func (r Rectangle) Area() float64 {
+	return r.width * r.height
+}
+//方法调用
+rect := Rectangle{width: 4, height: 5}
+area := rect.Area() //output: 20
+
+// 匿名函数
+func() {
+	fmt.Println("This is an anonymous function")
+}() //output: This is an anonymous function
+
+// 闭包
+func makeAdder(x int) func(int) int {
+	return func(y int) int {
+		return x + y
+	}
+}
+add5 := makeAdder(5)
+result := add5(3) //output: 8
+
+//可变参数
+func sum(nums ...int) int {
+	total := 0
+	for _, num := range nums {
+		total += num
+	}
+	return total
+}
+result := sum(1, 2, 3, 4) //output: 10
+```
+
+## 指针
+
+```go
+//指针定义
+var p *int //定义一个指向int类型的指针
+//指针赋值
+x := 10
+p = &x //将变量x的地址赋值给指针p
+//指针解引用
+value := *p //通过指针p获取x的值 output: 10
+//指针修改值
+*p = 20 //通过指针p修改x的值
+fmt.Println(x) //output: 20
+
+//指针与函数
+func increment(n *int) {
+	*n++ //通过指针n修改传入的值
+}
+num := 5
+increment(&num) //传入num的地址
+fmt.Println(num) //output: 6	
+
+//指针与结构体
+type Point struct {
+	x int
+	y int
+}
+p1 := Point{x: 1, y: 2}
+p2 := &p1 //创建一个指向p1的指针
+p2.x = 3 //通过指针p2修改p1的x值
+fmt.Println(p1) //output: {3 2}
+
+//指针与切片
+func modifySlice(s []int) {
+	s[0] = 100 //修改切片的第一个元素
+}
+slice := []int{1, 2, 3}
+modifySlice(slice) //传入切片
+fmt.Println(slice) //output: [100 2 3]
+
+//二级指针
+x := 10
+p := &x
+pp := &p
+fmt.Println("x:", x, "p:", p, "pp:", pp, "**pp:", **pp) //output: x: 10 p:随机地址 pp: 随机地址 **pp: 10
+```
+
+## 错误处理
+
+```go
+//error类型
+type error interface {
+	Error() string
+}
+
+//defer语句
+func example() {
+	defer fmt.Println("This will be printed last")
+	fmt.Println("This will be printed first")
+}//output: This will be printed first \n This will be printed last
+
+//panic和recover
+func example() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from panic:", r)
+		}
+	}()
+	panic("Something went wrong") //触发panic
+	fmt.Println("This will not be printed")
+}//output: Recovered from panic: Something went wrong
+```
+Error样例：
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+	"time"
+)
+
+const (
+	TimeFmt = "2006-01-02 15:04:05"
+)
+
+func main() {
+	username, err := queryDatabase(100)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(username)
+	}
+
+	err = readFile("test.txt")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	a := []int{2, 4, 1, 24, 4, 32, 1, 243, 65, 43, 765, 23, 234}
+	res, err := safeAccess(a, 100)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(res)
+	}
+
+	defres := deferReturn()
+	fmt.Println("deferResult:", defres)
+}
+
+type BusinessError struct {
+	Code    int
+	Message string
+	Time    time.Time
+}
+
+func (e *BusinessError) Error() string {
+	return fmt.Sprintf("错误代码: %d \n 消息: %s \n 时间:%s \n",
+		e.Code, e.Message, e.Time.Format(TimeFmt))
+}
+
+func queryDatabase(userID int) (string, error) {
+	if userID <= 0 {
+		return "", &BusinessError{
+			Code:    400,
+			Message: "用户不存在",
+			Time:    time.Now(),
+		}
+	}
+	if userID == 999 { //数据库连接超时
+		return "", &BusinessError{
+			Code:    401,
+			Message: "数据库连接超时",
+			Time:    time.Now(),
+		}
+	}
+	return "李四", nil
+}
+
+func readFile(fileName string) error {
+	file, err := os.Open(fileName)
+	if err != nil {
+		return fmt.Errorf("打开文件失败: %w", err)
+	}
+	defer file.Close()
+	buf := make([]byte, 1024)
+	_, err = file.Read(buf)
+	if err != nil {
+		return fmt.Errorf("读取文件失败: %w", err)
+	}
+	return nil
+}
+
+func safeAccess(arr []int, index int) (result int, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("panic: %v", r)
+		}
+	}()
+	return arr[index], nil
+}
+
+func deferReturn() (result int) {  
+	defer func() {  // [!code highlight:4]
+		result++
+	}()
+	return 10
+}
+```
