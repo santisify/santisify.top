@@ -32,7 +32,7 @@ export const theme: ThemeUserConfig = {
 
   titleDelimiter: '•',
   prerender: true,
-  npmCDN: 'https://cdn.jsdelivr.net/npm',
+  npmCDN: 'https://unpkg.com/',
 
   // Still in test
   head: [

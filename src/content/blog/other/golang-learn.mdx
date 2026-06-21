@@ -1,0 +1,143 @@
+---
+title: 'golang学习之路：从入门到实践'
+tags: [ '分享', 'golang' ]
+publishDate: '2026-06-19 21:00:00'
+description: ''
+# heroImage: { src: './assets/cf10.jpg', color: '#4891B2' }
+language: 'zh-cn'
+
+---
+
+本人比较看重go的简洁性、跨平台不依赖运行时环境以及高并发（都是相对于Java），同时，我也比较侧重于后端开发，毕竟大部分理工男（懂的都懂）
+
+我也算是开始自己的go语言学习了，但愿不要想java那样......
+
+## 基础语法
+
+### 变量和常量数据类型
+
+```go
+//常量定义
+const (
+	StatusOK           = iota + 1    //iota是go语言的一个预定义标识符，表示常量生成器，在const关键字出现时被重置为0，并在每个const声明中自动递增。     
+	StatusBadRequest                 //2
+	StatusUnauthorized               //3
+	MB                 = 1024 * 1024 //1048576
+)
+
+//变量定义
+func main() {
+	var str1 string = "Hello Go 1" //标准定义
+	var str2 = "Hello Go 2"        //类型推断
+
+	str3 := "Hello Go 3"          //短定义（通常用于函数中）
+	fmt.Println(str1, str2, str3) //output：Hello Go 1 Hello Go 2 Hello Go 3
+	str1, str2 = str2, str1       //交换str1与str2的值
+	fmt.Println(str1, str2, str3) // output：Hello Go 2 Hello Go 1 Hello Go 3
+}
+
+//空值
+func testNonInitValue() {
+	var a int
+	var b string
+	var c float64
+	fmt.Println(a, b, c) //output: 0 “” 0
+	//上一行b输出的结果代表b的值是一个空字符串，而不是null或者undefined。
+}
+
+
+//至于类型转换，认真学过Java都知道
+...略
+
+//类型自定义
+type ll int64 // 定义一个新的类型ll，它的底层类型是int64
+//为ll类型实现String方法，使其满足fmt.Stringer接口
+func (l ll) String() string {
+	return fmt.Sprintf("%d", l)
+}
+//结构体
+type UserValue struct {
+	name  string
+	age   int
+	email string
+}
+//同理，结构体也可以实现String方法
+func (u UserValue) String() string {
+	return fmt.Sprintf("name:%s, age:%d, email:%s)", u.name, u.age, u.email)
+}
+// slice
+var arr [3]int       //只定义，为使用 output: 0,0,0
+b := [3]int{1, 2, 3} //临时定义，并且附上初值 output:1,2,3
+var c []int          //不定长
+c1 = append(c, 1,2,3,4,5)
+c2 := []int{1,2,3,4,5}
+sc1 := make([]int, 0, len(c1)) // make函数创建一个长度为0，容量为len(c1)的切片
+sc2 := new ([]int) // new函数创建一个指向长度为0的切片的指针
+
+//map 键值对
+m1 := map[string]int{"a": 1, "b": 2} //定义并初始化一个map output: map[a:1 b:2]
+m2 := make(map[string]int)              //使用make函数创建一个空的map
+m2["c"] = 3 //向map中添加一个键值对
+for k, v := range m1 { // 使用range关键字遍历map，k代表键，v代表值
+    fmt.Printf("key: %s, value: %d\n", k, v) //output: key: a, value: 1 \n key: b, value: 2
+}
+```
+
+### 流程控制
+
+```go
+//if语句
+if x > 0 {
+    fmt.Println("x is positive")
+} else if x < 0 {
+    fmt.Println("x is negative")
+} else {
+    fmt.Println("x is zero")
+}
+
+//switch语句
+switch day := time.Now().Weekday(); day {
+case time.Monday:
+    fmt.Println("It's Monday")
+case time.Tuesday:
+    fmt.Println("It's Tuesday")
+default:
+    fmt.Println("It's another day")
+}
+
+//for循环
+for i := 0; i < 5; i++ {
+    fmt.Println(i) //output: 0 1 2 3 4
+}
+
+//goto语句
+func example() {
+    fmt.Println("Start")
+    goto Skip
+    fmt.Println("This will be skipped")
+Skip:
+    fmt.Println("End")
+}
+//output: Start \n End
+
+//select语句
+ch1 := make(chan string)
+ch2 := make(chan string)
+go func() {
+    time.Sleep(1 * time.Second)
+    ch1 <- "Hello from channel 1"
+}()
+go func() {
+    time.Sleep(2 * time.Second)
+    ch2 <- "Hello from channel 2"
+}()
+select {
+case msg1 := <-ch1: 
+    fmt.Println(msg1) //output: Hello from channel 1
+case msg2 := <-ch2:
+    fmt.Println(msg2) //output: Hello from channel 2
+case <-time.After(3 * time.Second):
+    fmt.Println("Timeout")
+}
+
+``` 
