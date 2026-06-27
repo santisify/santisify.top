@@ -2,7 +2,7 @@
 title: 'golang学习之路：从入门到实践'
 tags: [ '分享', 'golang' ]
 publishDate: '2026-06-19 21:00:00'
-updatedDate: '2026-06-21 21:00:00'
+updatedDate: '2026-06-27 16:00:00'
 description: '记录个人学习Go的过程'
 heroImage: { src: './assets/golang.png' }
 language: 'zh-cn'
@@ -359,3 +359,541 @@ func deferReturn() (result int) {
 	return 10
 }
 ```
+
+## 方法
+
+方法定义：
+
+绑定一个已定义类型的函数称为方法。方法与函数的区别在于，方法有一个特殊的接收者参数，它表示调用该方法的实例。接收者可以是值类型或指针类型。
+
+已定义类型须为我们自己定义的类型，不能是内置类型（如int、string等），也不能是其他包中定义的类型。
+
+```go
+func (接收者 接收者类型) 方法名(参数列表) 返回值列表 {
+	// 方法体
+}
+```
+接收者类型：值接收者（不改变参数值），指针接收者（改变参数值）
+
+样例：
+```go
+package main
+
+import "fmt"
+
+type BankAccount struct {
+	AccountNumber string
+	AccountHolder string
+	Balance       float64
+	IsActive      bool
+}
+
+func (acc BankAccount) GetAccountInfo() string {
+	status := "active"
+	if !acc.IsActive {
+		status = "unactive"
+	}
+	return fmt.Sprintf("账号:%s, 持有人:%s , 余额:%.3f, 状态: %s",
+		acc.AccountNumber, acc.AccountHolder, acc.Balance, status)
+}
+
+func (acc *BankAccount) Deposit(amount float64) error {
+	if !acc.IsActive {
+		return fmt.Errorf("账号已冻结，无法存款")
+	}
+
+	if amount <= 0 {
+		return fmt.Errorf("存款金额必须大于0")
+	}
+	acc.Balance += amount
+	return nil
+}
+
+func (acc *BankAccount) Withdraw(amount float64) error {
+	if !acc.IsActive {
+		return fmt.Errorf("账号已冻结，无法取款")
+	}
+	if amount <= 0 {
+		return fmt.Errorf("取款金额必须大于0")
+	}
+	if amount > acc.Balance {
+		return fmt.Errorf("取款金额不能大于余额")
+	}
+	acc.Balance -= amount
+	return nil
+}
+
+func (acc *BankAccount) Freeze() {
+	acc.IsActive = false
+}
+
+func (acc *BankAccount) Unfreeze() {
+	acc.IsActive = true
+}
+
+func main() {
+	acc := BankAccount{
+		AccountNumber: "654819854",
+		AccountHolder: "李四",
+		IsActive:      true,
+		Balance:       1000.0,
+	}
+
+	fmt.Println(acc.GetAccountInfo())
+
+	if err := acc.Deposit(1000.0); err != nil {
+		fmt.Println("存款失败", err)
+	}
+	fmt.Println("存款成功，余额:", acc.Balance)
+
+	if err := acc.Withdraw(acc.Balance); err != nil {
+		fmt.Println("取款失败", err)
+	}
+	fmt.Println("取款成功，余额:", acc.Balance)
+
+	acc.Freeze()
+	if err := acc.Deposit(500.0); err != nil {
+		fmt.Println("存款失败", err)
+	}
+
+	acc.Unfreeze()
+	if err := acc.Deposit(500.0); err != nil {
+		fmt.Println("存款失败", err)
+	}
+}
+
+```
+
+## 接口
+
+接口定义：
+
+接口为Go语言中实现多态的重要特性，它定义一组方法的签名，但不进行具体实现
+
+若一个类型实现了接口中的所有方法，则该类型实现了该接口，不需要显示声明
+```go
+type 接口名 interface {
+	方法1(参数列表) 返回值列表
+	方法2(参数列表) 返回值列表
+	...
+}
+
+//空接口
+var x interface{} 
+//空接口可以存储任意类型的值, 类似于Object(Java) any(Typescript)
+x := "Hello, World!"
+```
+样例：
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+type Payment interface {
+	Pay(amount float64) (string, error)
+	Refund(trcID string, amount float64) (string, error)
+	Query(trcID string) (string, error)
+}
+
+type AliPay struct {
+	AppID      string
+	AppSecret  string
+	MerchantID string
+}
+
+func (acc AliPay) Pay(amount float64) (string, error) {
+	return fmt.Sprintf("ALIPAY-%d", time.Now().Unix()), nil
+}
+
+func (acc AliPay) Refund(trcID string, amount float64) (string, error) {
+	return fmt.Sprintf("ALIPAY_REFUND-%s", trcID), nil
+}
+
+func (acc AliPay) Query(trcID string) (string, error) {
+	return "交易成功", nil
+}
+
+type WechatPay struct {
+	AppID      string
+	AppSecret  string
+	MerchantID string
+}
+
+func (acc WechatPay) Pay(amount float64) (string, error) {
+	return fmt.Sprintf("WECHAT-%d", time.Now().Unix()), nil
+}
+
+func (acc WechatPay) Refund(trcID string, amount float64) (string, error) {
+	return fmt.Sprintf("WECHAT_REFUND-%s", trcID), nil
+}
+
+func (acc WechatPay) Query(trcID string) (string, error) {
+	return "交易成功", nil
+}
+
+func ProcessPayment(pay Payment, amount float64) (string, error) {
+	fmt.Println("开始处理支付请求...")
+	trsID, err := pay.Pay(amount)
+	if err != nil {
+		return "", err
+	}
+	fmt.Printf("支付成功, 交易号: %s\n", trsID)
+	return trsID, nil
+}
+
+func main() {
+	ali := AliPay{
+		AppID:      "alipay",
+		AppSecret:  "alisecret",
+		MerchantID: "ali_merchant",
+	}
+
+	wechat := WechatPay{
+		AppID:      "wechat",
+		AppSecret:  "wechatsecret",
+		MerchantID: "wedchat_merchant",
+	}
+
+	trs := []struct {
+		Payment Payment
+		Amount  float64
+		Name    string
+	}{
+		{ali, 100, "支付宝"},
+		{wechat, 100, "微信"},
+	}
+
+	for _, t := range trs {
+		trID, err := ProcessPayment(t.Payment, t.Amount)
+		if err != nil {
+			fmt.Println("支付失败, 错误信息:", err)
+		}
+		fmt.Println("p: 支付成功, 交易号:", trID)
+	}
+
+	//空接口
+	var x interface{}
+	x = 123
+	EmptyInterface(x)
+	x = "hello"
+	EmptyInterface(x)
+}
+
+func EmptyInterface(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Println("int:", v)
+	case string:
+		fmt.Println("string:", v)
+	default:
+		fmt.Println("unknown")
+	}
+}
+```
+
+## Go面向对象
+
+Go语言虽然不是传统意义上的面向对象语言，但它支持一些面向对象的特性，如结构体、方法和接口等。
+
+组合替代继承：Go语言不支持类的继承，但可以通过组合来实现类似的功能。通过将一个结构体嵌入到另一个结构体中，可以实现代码复用和行为扩展。
+
+样例1
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+type BaseUser struct {
+	ID        int64
+	UserName  string
+	Email     string
+	CreatedAt time.Time
+}
+
+func (u BaseUser) GetCreateDate() string {
+	return u.CreatedAt.Format("2006-01-02")
+}
+
+func (u *BaseUser) DisplayBasicInfo() {
+	fmt.Printf("ID: %d Name: %s Email: %s CreateAt: %s", u.ID, u.UserName, u.Email, u.GetCreateDate())
+}
+
+type Address struct {
+	Province string
+	City     string
+	Street   string
+	Detail   string
+}
+
+func (a Address) GetFullAddress() string {
+	return fmt.Sprintf("%s%s%s%s", a.Province, a.City, a.Street, a.Detail)
+}
+
+type NormalUser struct {
+	BaseUser
+	Address []Address
+}
+
+func (n *NormalUser) DisplayBasicInfo() {
+	fmt.Printf("ID: %d Name: %s Email: %s", n.ID, n.UserName, n.Email)
+}
+
+func (n *NormalUser) AddAddress(address Address) {
+	n.Address = append(n.Address, address)
+}
+
+type VIPUser struct {
+	BaseUser
+	Address    []Address
+	VIPLevel   int
+	Discount   float64
+	ExpireTime time.Time
+}
+
+func (vu *VIPUser) AddAddress(address Address) {
+	vu.Address = append(vu.Address, address)
+}
+
+func (vu *VIPUser) IsVipValid() bool {
+	return vu.ExpireTime.After(time.Now())
+}
+
+func (vu *VIPUser) GetDiscount() float64 {
+	if vu.IsVipValid() {
+		return vu.Discount
+	}
+	return 1.0
+}
+
+type UserService struct {
+}
+
+const (
+	UserTypeNormal = "normal"
+	UserTypeVip    = "vip"
+)
+
+func getUserId() int64 {
+	return time.Now().Unix()
+}
+
+func (s *UserService) CreateUser(username, email string, userType string) (interface{}, error) {
+	baseUser := BaseUser{
+		ID:        getUserId(),
+		UserName:  username,
+		Email:     email,
+		CreatedAt: time.Now(),
+	}
+
+	switch userType {
+	case UserTypeNormal:
+		normalUser := NormalUser{
+			BaseUser: baseUser,
+			Address:  []Address{},
+		}
+		return normalUser, nil
+	case UserTypeVip:
+		vipUser := VIPUser{
+			BaseUser:   baseUser,
+			VIPLevel:   1,
+			Discount:   0.9,
+			ExpireTime: time.Now().AddDate(0, 0, 30),
+		}
+		return vipUser, nil
+	default:
+		return 0, fmt.Errorf("unknown user type: %s", userType)
+	}
+}
+
+func main() {
+	ser := &UserService{}
+	normalUser, err := ser.CreateUser("张三", "zhangsan@example.com", UserTypeNormal)
+	if err != nil {
+		fmt.Println("normalUsr: ", err)
+		return
+	}
+
+	vipUser, err := ser.CreateUser("李四", "lisi@example.com", UserTypeVip)
+	if err != nil {
+		fmt.Println("vipUsr: ", err)
+		return
+	}
+
+	nUser := normalUser.(NormalUser)
+	nUser.AddAddress(Address{
+		Province: "四川省",
+		City:     "成都市",
+		Street:   "物流大道",
+		Detail:   "物流大道666号",
+	})
+	nUser.DisplayBasicInfo()
+
+	users := []interface{}{nUser, vipUser}
+	for _, user := range users {
+		switch u := user.(type) {
+		case NormalUser:
+			fmt.Println("普通用户")
+			fmt.Println("用户ID:", u.ID)
+			fmt.Println("用户名:", u.UserName)
+			fmt.Println("邮箱:", u.Email)
+			fmt.Println("创建时间:", u.GetCreateDate())
+			fmt.Println("地址:")
+			for _, addr := range u.Address {
+				fmt.Println(" -", addr.GetFullAddress())
+			}
+		case VIPUser:
+			fmt.Println("普通用户")
+			fmt.Println("用户ID:", u.ID)
+			fmt.Println("用户名:", u.UserName)
+			fmt.Println("邮箱:", u.Email)
+			fmt.Println("创建时间:", u.GetCreateDate())
+			fmt.Println("VIP等级:", u.VIPLevel)
+			fmt.Println("折扣:", u.Discount)
+			fmt.Println("VIP状态:", u.IsVipValid())
+			fmt.Println("地址:")
+			for _, addr := range u.Address {
+				addr.GetFullAddress()
+			}
+		}
+	}
+}
+```
+
+样例2：
+```go
+package main
+
+import (
+	"fmt"
+)
+
+type Notifier interface {
+	Notify(message string) error
+}
+
+type EmailNotifier struct {
+	SMTPHost string
+	Port     string
+}
+
+func (e *EmailNotifier) Notify(message string) error {
+	fmt.Printf("发送邮件成功: %s\n", message)
+	return nil
+}
+
+type SmsNotifier struct {
+	APIKey   string
+	TmplCode string
+}
+
+func (s *SmsNotifier) Notify(message string) error {
+	fmt.Printf("发送短信成功：: %s\n", message)
+	return nil
+}
+
+type BroadCastNotifier struct {
+	notifierList []Notifier
+}
+
+func (b *BroadCastNotifier) Notify(message string) error {
+	for _, n := range b.notifierList {
+		if err := n.Notify(message); nil != err {
+			return err
+		}
+	}
+	return nil
+}
+
+type OrderService struct {
+	notifier Notifier
+}
+
+func (o *OrderService) SetNotify(n Notifier) {
+	o.notifier = n
+}
+
+func (o *OrderService) CreateOrder(product string, quantity int) {
+	fmt.Printf("创建订单：%s x %d \n", product, quantity)
+
+	if err := o.notifier.Notify("订单已创建"); err != nil {
+		fmt.Println(err)
+	}
+}
+
+func main() {
+	orderService := &OrderService{}
+
+	emailNotifier := &EmailNotifier{
+		SMTPHost: "smtp.163.com",
+		Port:     "465",
+	}
+	smsNotifier := &SmsNotifier{
+		APIKey:   "asgdhjghkjfxbanuie_jlkdfsla",
+		TmplCode: "hjklncxsaoiuiw",
+	}
+	broadCastNotifier := &BroadCastNotifier{
+		notifierList: []Notifier{emailNotifier, smsNotifier},
+	}
+
+	orderService.SetNotify(emailNotifier)
+	orderService.CreateOrder("邮件", 1)
+
+	orderService.SetNotify(smsNotifier)
+	orderService.CreateOrder("手机", 2)
+
+	orderService.SetNotify(broadCastNotifier)
+	orderService.CreateOrder("手机-邮件", 3)
+}
+
+```
+
+## 包与包的导入
+
+每个go源文件都必须属于一个包，声明在第一行
+```go 
+package main //main包是一个特殊的包，它定义了一个独立可执行的程序，而不是一个库。main包必须包含一个名为main的函数，作为程序的入口点。
+package mypackage //自定义包，通常用于组织代码和实现模块化。包名通常与目录名相同，便于管理和导入。
+```
+
+包导入机制:
+```go
+import (
+	"标准包名"
+	"第三方包"
+	"项目内部包"
+	"自定义包"
+)
+
+//也可以使用单个导入语句导入一个包
+import "fmt"
+import "github.com/gin-gonic/gin"
+```
+
+既然提到包的导入，就不得不提包的可见性了：
+	- 首字母大写的标识符是导出的，可以在包外部访问。
+	- 首字母小写的标识符是未导出的，只能在包内部访问。
+
+> go常用标准库：
+> 	- fmt：格式化输入输出
+> 	- os：操作系统功能
+> 	- io：输入输出操作
+> 	- net/http：HTTP客户端和服务器
+> 	- encoding/json：JSON编码和解码
+> 	- time：时间和日期处理
+> 	- math/rand：随机数生成
+> 	- strings：字符串操作
+> 	- strconv：字符串与基本数据类型转换
+>   - $\cdots \cdots \cdots$
+> 
+> 若需要其他标准库可查询官方文档
+
+样例：
+<div id="sify-gist-H8O6Qyv1EsOS"></div>
+<script src="https://gist.santisify.top/api/gists/H8O6Qyv1EsOS/embed.js?theme=dark"></script>
+
