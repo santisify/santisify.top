@@ -2,11 +2,10 @@
 title: 'golang学习之路：从入门到实践'
 tags: [ '分享', 'golang' ]
 publishDate: '2026-06-19 21:00:00'
-updatedDate: '2026-06-27 16:00:00'
-description: '记录个人学习Go的过程'
+updatedDate: '2026-07-01 21:00:00'
+description: 'Go基础学习'
 heroImage: { src: './assets/golang.png' }
 language: 'zh-cn'
-
 ---
 
 本人比较看重go的简洁性、跨平台不依赖运行时环境以及高并发（都是相对于Java），同时，我也比较侧重于后端开发，毕竟大部分理工男（懂的都懂）
@@ -897,3 +896,39 @@ import "github.com/gin-gonic/gin"
 <div id="sify-gist-H8O6Qyv1EsOS"></div>
 <script src="https://gist.santisify.top/api/gists/H8O6Qyv1EsOS/embed.js?theme=dark"></script>
 
+
+## 反射
+
+定义：程序在运行时检查其自身的结构和行为的能力。
+
+核心：`interface{}` + `reflect`包
+
+```go
+var x int = 42
+// 类型信息
+t := reflect.TypeOf(x)
+
+// 值信息
+v := reflect.ValueOf(x)
+```
+
+## Go工具链
+
+Go工具链是Go语言提供的一组命令行工具，用于构建、测试、安装和管理Go代码。常用的Go工具链包括：
+- **go mod**: Go模块依赖管理
+- **go build**: 编译程序生成可执行文件
+- **go run**: 编译直接运行Go程序
+- **go test**: 运行测试，支持单元测试、示例测试和基准测试。
+- **go fmt**: 格式化代码
+- **go get**: 添加依赖包到模块
+- **go install**: 编译并安装包或命令
+- **go vet**: 静态分析工具，检查代码中的潜在问题
+- **go doc**: 查看文档
+
+## 调试、分析工具(pprof,日志库)
+
+Go提供了强大的调试和性能分析工具:
+- **Delve调试器**: Go语言专用的调试器,支持断点、单步执行、变量查看等功能
+- **pprof性能分析**: Go内置的性能分析工具,用于分析CPU和内存使用情况,帮助开发者优化程序性能
+- **日志库**: Go标准库提供了基本的日志功能(log包),同时也有第三方日志库(如logrus、zap等)提供更丰富的日志功能和性能优化
+- **内置工具**: racedetector, benchmark
