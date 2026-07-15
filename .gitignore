@@ -81,3 +81,5 @@ bunfig.toml
 /test/
 .idea/*
 src/content/blog/assets
+
+AGENTS.md

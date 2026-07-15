@@ -2,7 +2,6 @@ import { parse } from 'node-html-parser'
 import readline from 'readline'
 
 const sitemapUrls = [
-  // CWorld Site
   'https://santisify.top/siteap-0.xml',
   'https://santisify.top/siteap-index.xml',
   'https://santisify.top/rss.xml'
