@@ -12,8 +12,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return allSeriesPosts
     .map((post) => {
       const parts = post.id.split('/')
-      const seriesSlug = parts[1]
-      const articleSlug = parts[2]
+      const seriesSlug = parts[0]
+      const articleSlug = parts[1]
 
       if (!seriesSlug || !articleSlug) return null
 
