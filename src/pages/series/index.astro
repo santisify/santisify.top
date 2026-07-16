@@ -1,0 +1,56 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content'
+import { sortMDByDate } from 'astro-pure/server'
+import { Button } from 'astro-pure/user'
+import PageLayout from '@/layouts/BaseLayout.astro'
+
+const allSeriesPosts = await getCollection('series')
+const allSeriesByDate = sortMDByDate(allSeriesPosts)
+
+// Group by series folder (first directory in the path)
+const seriesGroups = new Map<string, CollectionEntry<'series'>[]>()
+allSeriesByDate.forEach((post) => {
+  const parts = post.id.split('/')
+  const seriesSlug = parts[1] // e.g., "go" from "series/go/02-env-setup"
+  if (!seriesGroups.has(seriesSlug)) {
+    seriesGroups.set(seriesSlug, [])
+  }
+  seriesGroups.get(seriesSlug)!.push(post as CollectionEntry<'series'>)
+})
+
+const meta = {
+  description: 'Structured learning materials organized in series',
+  title: 'Series'
+}
+---
+
+<PageLayout {meta}>
+  <Button title='Back' href='/' variant='back' />
+
+  <main class='mt-6 lg:mt-10'>
+    <div id='content-header' class='animate'>
+      <h1 class='mb-6 text-3xl font-medium'>Series</h1>
+    </div>
+
+    <section id='content' class='animate'>
+      {seriesGroups.size > 0 ? (
+        <ul class='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+          {Array.from(seriesGroups.entries()).map(([seriesSlug, posts]) => (
+            <li>
+              <Button
+                href={`/series/${seriesSlug}`}
+                variant='pill'
+                class='flex w-full items-center justify-between rounded-xl px-4 py-3 text-left'
+              >
+                <span class='truncate text-lg font-medium capitalize'>{seriesSlug}</span>
+                <span class='ml-3 shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-sm font-medium text-primary'>{posts.length}</span>
+              </Button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No series yet.</p>
+      )}
+    </section>
+  </main>
+</PageLayout>
