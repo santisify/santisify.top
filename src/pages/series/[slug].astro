@@ -1,0 +1,79 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { getCollection } from 'astro:content'
+import { Button } from 'astro-pure/user'
+import PageLayout from '@/layouts/BaseLayout.astro'
+
+export const prerender = true
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const allSeriesPosts = await getCollection('series')
+
+  // Extract unique series slugs
+  const seriesSlugs = new Set<string>()
+  allSeriesPosts.forEach((post) => {
+    const parts = post.id.split('/')
+    seriesSlugs.add(parts[1])
+  })
+
+  return Array.from(seriesSlugs).map((slug) => ({
+    params: { slug },
+    props: { seriesSlug: slug }
+  }))
+}
+
+interface Props {
+  seriesSlug: string
+}
+
+const { seriesSlug } = Astro.props
+
+const allSeriesPosts = await getCollection('series')
+const seriesPosts = allSeriesPosts
+  .filter((post) => {
+    const parts = post.id.split('/')
+    return parts[1] === seriesSlug
+  })
+  .sort((a, b) => {
+    // Sort by filename prefix (e.g., 02-env-setup before 03-basics)
+    const aName = a.id.split('/').pop()?.replace(/\.[^.]+$/, '') || ''
+    const bName = b.id.split('/').pop()?.replace(/\.[^.]+$/, '') || ''
+    return aName.localeCompare(bName)
+  })
+
+const meta = {
+  description: `Learning series: ${seriesSlug}`,
+  title: seriesSlug
+}
+---
+
+<PageLayout {meta}>
+  <Button title='Back' href='/series' variant='back' />
+
+  <main class='mt-6 lg:mt-10'>
+    <div id='content-header' class='animate'>
+      <h1 class='mb-2 text-3xl font-medium capitalize'>{seriesSlug}</h1>
+      <p class='text-muted-foreground'>{seriesPosts.length} article{seriesPosts.length !== 1 && 's'}</p>
+    </div>
+
+    <section id='content' class='animate'>
+      <ul class='flex flex-col gap-y-3 text-start'>
+        {seriesPosts.map((post) => {
+          const stem = post.id.split('/').pop()?.replace(/\.[^.]+$/, '') || ''
+          const link = `/series/${seriesSlug}/${stem}`
+          return (
+            <li>
+              <a href={link} class='block rounded-lg border border-transparent p-3 hover:border-primary/20 hover:bg-muted/50'>
+                <div class='flex items-center gap-3'>
+                  <span class='shrink-0 font-mono text-muted-foreground'>{stem}</span>
+                  <span class='text-lg font-medium'>{post.data.title}</span>
+                </div>
+                <p class='mt-1 text-sm text-muted-foreground'>{post.data.description}</p>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    </section>
+  </main>
+</PageLayout>
