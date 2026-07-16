@@ -11,7 +11,7 @@ const allSeriesByDate = sortMDByDate(allSeriesPosts)
 const seriesGroups = new Map<string, CollectionEntry<'series'>[]>()
 allSeriesByDate.forEach((post) => {
   const parts = post.id.split('/')
-  const seriesSlug = parts[1] // e.g., "go" from "series/go/02-env-setup"
+  const seriesSlug = parts[0] // e.g., "go" from "go/02-env-setup"
   if (!seriesGroups.has(seriesSlug)) {
     seriesGroups.set(seriesSlug, [])
   }

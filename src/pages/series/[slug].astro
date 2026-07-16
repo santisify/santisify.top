@@ -9,11 +9,11 @@ export const prerender = true
 export const getStaticPaths: GetStaticPaths = async () => {
   const allSeriesPosts = await getCollection('series')
 
-  // Extract unique series slugs
+  // Extract unique series slugs (parts[0] = series folder name like "go")
   const seriesSlugs = new Set<string>()
   allSeriesPosts.forEach((post) => {
     const parts = post.id.split('/')
-    seriesSlugs.add(parts[1])
+    seriesSlugs.add(parts[0])
   })
 
   return Array.from(seriesSlugs).map((slug) => ({
@@ -32,7 +32,7 @@ const allSeriesPosts = await getCollection('series')
 const seriesPosts = allSeriesPosts
   .filter((post) => {
     const parts = post.id.split('/')
-    return parts[1] === seriesSlug
+    return parts[0] === seriesSlug
   })
   .sort((a, b) => {
     // Sort by filename prefix (e.g., 02-env-setup before 03-basics)
