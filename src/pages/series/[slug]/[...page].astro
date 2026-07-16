@@ -9,16 +9,20 @@ export const prerender = true
 export const getStaticPaths: GetStaticPaths = async () => {
   const allSeriesPosts = await getCollection('series')
 
-  return allSeriesPosts.map((post) => {
-    const parts = post.id.split('/')
-    const seriesSlug = parts[1]
-    const articleSlug = parts[2]
+  return allSeriesPosts
+    .map((post) => {
+      const parts = post.id.split('/')
+      const seriesSlug = parts[1]
+      const articleSlug = parts[2]
 
-    return {
-      params: { slug: seriesSlug, page: articleSlug },
-      props: { post }
-    }
-  })
+      if (!seriesSlug || !articleSlug) return null
+
+      return {
+        params: { slug: seriesSlug, page: articleSlug },
+        props: { post }
+      }
+    })
+    .filter((p): p is NonNullable<typeof p> => p !== null)
 }
 
 interface Props {
@@ -27,7 +31,7 @@ interface Props {
 
 const { post } = Astro.props
 const { slug } = Astro.params
-const { Content, headings } = await render(post)
+const { Content } = await render(post)
 
 const meta = {
   description: post.data.description,
