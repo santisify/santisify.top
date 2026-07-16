@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a `series` field to blog frontmatter and create dedicated series listing/detail pages with cross-reference in individual blog posts.
+**Goal:** Create a dedicated "series" content collection for organizing learning materials into structured series, with listing and detail pages accessible from the site header.
 
-**Architecture:** Extend existing blog content schema, add utility functions for grouping and slug generation, create two new page routes (`/series` and `/series/[slug]`), and add a conditional "this series" section in the BlogPost layout.
+**Architecture:** Define a new `series` content collection in `content.config.ts`, create `/series` listing page and `/series/[slug]` detail pages, add navigation link. Series articles are stored in `src/content/series/{slug}/` with frontmatter including `series` field. Each series folder represents one series.
 
-**Tech Stack:** Astro 5, astro-pure theme, UnoCSS, `pinyin` package for Chinese slug generation
+**Tech Stack:** Astro 5, astro-pure theme, UnoCSS
 
 ## Global Constraints
 
@@ -16,213 +16,114 @@
 - Single quotes, no semicolons, 2-space indent, print width 100
 - No test framework — verify by running `bun dev` and checking pages manually
 - Run `bun yijiansilian` (lint → sync → check → format) after completing all tasks
+- Series articles are INDEPENDENT from blog — they do NOT appear in `/blog` listing
 
 ---
 
-### Task 1: Install pinyin dependency
+### Task 1: Add series content collection to content.config.ts
 
 **Files:**
-- Modify: `package.json` (add devDependency)
-- Generate: `bun.lock`
+- Modify: `src/content.config.ts`
 
 **Interfaces:**
-- Consumes: none
-- Produces: `pinyin` package available for import
+- Consumes: existing `blog` collection definition
+- Produces: `series` content collection with its own schema, loaded from `src/content/series/`
 
-- [ ] **Step 1: Install pinyin package**
+- [ ] **Step 1: Add series collection definition**
 
-Run: `bun add -d pinyin`
+Edit `src/content.config.ts` to add a new `series` collection alongside the existing `blog` collection.
 
-- [ ] **Step 2: Verify installation**
-
-Run: `ls node_modules/pinyin/package.json` — should exist
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add package.json bun.lock
-git commit -m "chore: add pinyin dependency for series slug generation"
-```
-
----
-
-### Task 2: Add series fields to blog schema
-
-**Files:**
-- Modify: `src/content.config.ts:34-39` (add two fields to the z.object schema)
-
-**Interfaces:**
-- Consumes: existing blog schema from `src/content.config.ts`
-- Produces: `series: string | undefined`, `seriesOrder: number | undefined` available on all blog posts
-
-- [ ] **Step 1: Add series and seriesOrder to schema**
-
-Edit `src/content.config.ts`, inside the `z.object({...})` schema (after the `comment` field around line 39), add:
+After the existing `blog` collection definition (after line 41, before `export const collections`), add:
 
 ```ts
-series: z.string().optional(),
-seriesOrder: z.number().optional(),
+// Define series collection
+const series = defineCollection({
+  loader: glob({ base: './src/content/series', pattern: '**/*.{md,mdx}' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string().max(60),
+      description: z.string().max(160),
+      publishDate: z.coerce.date(),
+      heroImage: z
+        .object({
+          src: image(),
+          alt: z.string().optional()
+        })
+        .optional(),
+      tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
+      language: z.string().optional(),
+      series: z.string(),
+      comment: z.boolean().default(false)
+    })
+})
 ```
 
-The schema block should now end with:
-
+Then update the export line from:
 ```ts
 export const collections = { blog }
 ```
-
-Where the blog collection schema's z.object contains all original fields plus the two new ones.
+to:
+```ts
+export const collections = { blog, series }
+```
 
 - [ ] **Step 2: Verify TypeScript compiles**
 
 Run: `bun check`
 
-Expected: no errors related to content config.
+Expected: no new errors (existing errors in unrelated files are OK).
 
 - [ ] **Step 3: Commit**
 
 ```bash
 git add src/content.config.ts
-git commit -m "feat: add series and seriesOrder fields to blog schema"
+git commit -m "feat: add series content collection"
 ```
 
 ---
 
-### Task 3: Create series utility functions
-
-**Files:**
-- Create: `src/utils/series.ts`
-
-**Interfaces:**
-- Consumes: `pinyin` package, `CollectionEntry<'blog'>` type
-- Produces: `generateSlug(seriesName: string): string`, `getSeriesGroupMap(posts: CollectionEntry<'blog'>[]): Map<string, CollectionEntry<'blog'>[]>`, `getSeriesPosts(seriesName: string, posts: CollectionEntry<'blog'>[]): CollectionEntry<'blog'>[]`
-
-- [ ] **Step 1: Create src/utils/series.ts**
-
-Write the file `src/utils/series.ts` with the following content:
-
-```ts
-import type { CollectionEntry } from 'astro:content'
-import pinyin from 'pinyin'
-
-/**
- * Convert a series name to a URL-safe slug.
- * Chinese characters are converted to pinyin with hyphens.
- * Example: "Go学习指南" → "go-xue-xi-zhi-nan"
- */
-export function generateSlug(seriesName: string): string {
-  // First check if the name is already ASCII-only
-  if (/^[\x00-\x7F]+$/.test(seriesName)) {
-    return seriesName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-  }
-
-  // Convert Chinese (and other non-ASCII) characters to pinyin
-  const chars = seriesName.split('')
-  const pinyinParts = chars.map((char) => {
-    // Skip whitespace and punctuation
-    if (/[\s\-_]/.test(char)) return '-'
-    if (/^[\x00-\x7F]$/.test(char)) return char.toLowerCase()
-    const result = pinyin(char, { style: pinyin.STYLE_NORMAL })
-    // result is like [['hao'], ['xi']] — take first reading
-    return result[0]?.[0] ?? ''
-  })
-
-  return pinyinParts.join('-').replace(/-+/g, '-').replace(/^-|-$/g, '')
-}
-
-/**
- * Group blog posts by their series name.
- * Only includes posts that have a non-empty series field.
- */
-export function getSeriesGroupMap(
-  posts: CollectionEntry<'blog'>[]
-): Map<string, CollectionEntry<'blog'>[]> {
-  const map = new Map<string, CollectionEntry<'blog'>[]>()
-
-  posts.forEach((post) => {
-    const series = post.data.series
-    if (!series) return
-
-    if (!map.has(series)) {
-      map.set(series, [])
-    }
-    map.get(series)!.push(post)
-  })
-
-  return map
-}
-
-/**
- * Get all posts belonging to a series, sorted by seriesOrder ascending.
- * Posts without seriesOrder are placed at the end, sorted by publishDate.
- */
-export function getSeriesPosts(
-  seriesName: string,
-  posts: CollectionEntry<'blog'>[]
-): CollectionEntry<'blog'>[] {
-  const seriesPosts = posts.filter((p) => p.data.series === seriesName)
-
-  return seriesPosts.sort((a, b) => {
-    const aOrder = a.data.seriesOrder ?? Infinity
-    const bOrder = b.data.seriesOrder ?? Infinity
-
-    if (aOrder !== Infinity && bOrder !== Infinity) {
-      return aOrder - bOrder
-    }
-
-    // One or both lack seriesOrder — fall back to publishDate desc
-    return b.data.publishDate.getTime() - a.data.publishDate.getTime()
-  })
-}
-```
-
-- [ ] **Step 2: Verify TypeScript compiles**
-
-Run: `bun check`
-
-Expected: no errors.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/utils/series.ts
-git commit -m "feat: add series utility functions (slug, group, sort)"
-```
-
----
-
-### Task 4: Create series listing page (/series)
+### Task 2: Create series listing page (/series)
 
 **Files:**
 - Create: `src/pages/series/index.astro`
 
 **Interfaces:**
-- Consumes: `getBlogCollection()`, `getSeriesGroupMap()`, `generateSlug()`, `getSeriesPosts()`
-- Produces: paginated series list page at `/series`
+- Consumes: `getCollection('series')` from astro:content, `sortMDByDate()` from astro-pure/server
+- Produces: series listing page at `/series` showing each series folder as a card with name and article count
 
 - [ ] **Step 1: Create series listing page**
 
 Write the file `src/pages/series/index.astro`:
 
-```astro
+```ts
 ---
-import type { CollectionEntry } from 'astro:content'
-import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
+import { getCollection } from 'astro:content'
+import { sortMDByDate } from 'astro-pure/server'
 import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
-import { generateSlug, getSeriesGroupMap } from '@/utils/series'
 
-const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts)
-const seriesMap = getSeriesGroupMap(allPostsByDate)
+const allSeriesPosts = await getCollection('series')
+const allSeriesByDate = sortMDByDate(allSeriesPosts)
+
+// Group by series folder (first directory in the path)
+const seriesGroups = new Map<string, typeof allSeriesPosts>()
+allSeriesByDate.forEach((post) => {
+  const parts = post.id.split('/')
+  const seriesSlug = parts[1] // e.g., "go" from "series/go/02-env-setup"
+  if (!seriesGroups.has(seriesSlug)) {
+    seriesGroups.set(seriesSlug, [])
+  }
+  seriesGroups.get(seriesSlug)!.push(post)
+})
 
 const meta = {
-  description: 'A collection of article series published on this blog',
+  description: 'Structured learning materials organized in series',
   title: 'Series'
 }
 ---
 
 <PageLayout {meta}>
-  <Button title='Back' href='/blog' variant='back' />
+  <Button title='Back' href='/' variant='back' />
 
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
@@ -230,30 +131,20 @@ const meta = {
     </div>
 
     <section id='content' class='animate'>
-      {seriesMap.size > 0 ? (
+      {seriesGroups.size > 0 ? (
         <ul class='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-          {Array.from(seriesMap.entries()).map(([seriesName, posts]) => {
-            const slug = generateSlug(seriesName)
-            const lastUpdated = posts[0]?.data.updatedDate ?? posts[0]?.data.publishDate
-            const lastUpdatedStr = lastUpdated?.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })
-
-            return (
-              <li>
-                <Button
-                  href={`/series/${slug}`}
-                  variant='pill'
-                  class='flex w-full items-center justify-between rounded-xl px-4 py-3 text-left'
-                >
-                  <span class='truncate text-lg font-medium'>{seriesName}</span>
-                  <span class='ml-3 shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-sm font-medium text-primary'>{posts.length}</span>
-                </Button>
-              </li>
-            )
-          })}
+          {Array.from(seriesGroups.entries()).map(([seriesSlug, posts]) => (
+            <li>
+              <Button
+                href={`/series/${seriesSlug}`}
+                variant='pill'
+                class='flex w-full items-center justify-between rounded-xl px-4 py-3 text-left'
+              >
+                <span class='truncate text-lg font-medium capitalize'>{seriesSlug}</span>
+                <span class='ml-3 shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-sm font-medium text-primary'>{posts.length}</span>
+              </Button>
+            </li>
+          ))}
         </ul>
       ) : (
         <p>No series yet.</p>
@@ -278,59 +169,67 @@ git commit -m "feat: add series listing page at /series"
 
 ---
 
-### Task 5: Create series detail page (/series/[slug])
+### Task 3: Create series detail page (/series/[slug])
 
 **Files:**
 - Create: `src/pages/series/[slug].astro`
 
 **Interfaces:**
-- Consumes: `generateSlug()`, `getSeriesPosts()`, `getBlogCollection()`, `sortMDByDate()`
-- Produces: series detail page at `/series/{slug}` with ordered post list
+- Consumes: `getCollection('series')`, `sortMDByDate()`
+- Produces: series detail page at `/series/{slug}` showing all articles in that series, sorted by filename prefix
 
 - [ ] **Step 1: Create series detail page**
 
 Write the file `src/pages/series/[slug].astro`:
 
-```astro
+```ts
 ---
 import type { GetStaticPaths } from 'astro'
-import type { CollectionEntry } from 'astro:content'
-import { PostPreview } from 'astro-pure/components/pages'
-import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
+import { getCollection, render } from 'astro:content'
 import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
-import { generateSlug, getSeriesGroupMap, getSeriesPosts } from '@/utils/series'
 
 export const prerender = true
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const allPosts = await getBlogCollection()
-  const allPostsByDate = sortMDByDate(allPosts)
-  const seriesMap = getSeriesGroupMap(allPostsByDate)
+  const allSeriesPosts = await getCollection('series')
 
-  return Array.from(seriesMap.entries()).map(([seriesName]) => {
-    const slug = generateSlug(seriesName)
-    return {
-      params: { slug },
-      props: { seriesName }
-    }
+  // Extract unique series slugs
+  const seriesSlugs = new Set<string>()
+  allSeriesPosts.forEach((post) => {
+    const parts = post.id.split('/')
+    seriesSlugs.add(parts[1])
   })
+
+  return Array.from(seriesSlugs).map((slug) => ({
+    params: { slug },
+    props: { seriesSlug: slug }
+  }))
 }
 
 interface Props {
-  seriesName: string
+  seriesSlug: string
 }
 
-const { seriesName } = Astro.props
+const { seriesSlug } = Astro.props
 const { slug } = Astro.params
 
-const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts)
-const seriesPosts = getSeriesPosts(seriesName, allPostsByDate)
+const allSeriesPosts = await getCollection('series')
+const seriesPosts = allSeriesPosts
+  .filter((post) => {
+    const parts = post.id.split('/')
+    return parts[1] === seriesSlug
+  })
+  .sort((a, b) => {
+    // Sort by filename prefix (e.g., 02-env-setup before 03-basics)
+    const aName = a.file.stem || ''
+    const bName = b.file.stem || ''
+    return aName.localeCompare(bName)
+  })
 
 const meta = {
-  description: `Articles in the ${seriesName} series`,
-  title: seriesName
+  description: `Learning series: ${seriesSlug}`,
+  title: seriesSlug
 }
 ---
 
@@ -339,17 +238,24 @@ const meta = {
 
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
-      <h1 class='mb-2 text-3xl font-medium'>{seriesName}</h1>
+      <h1 class='mb-2 text-3xl font-medium capitalize'>{seriesSlug}</h1>
       <p class='text-muted-foreground'>{seriesPosts.length} article{seriesPosts.length !== 1 && 's'}</p>
     </div>
 
     <section id='content' class='animate'>
       <ul class='flex flex-col gap-y-3 text-start'>
-        {seriesPosts.map((post, index) => {
-          const order = post.data.seriesOrder ?? index + 1
+        {seriesPosts.map((post) => {
+          const stem = post.file.stem || ''
+          const link = `/series/${seriesSlug}/${stem}`
           return (
             <li>
-              <PostPreview post={post} detailed class='border-l-4 border-primary pl-4' />
+              <a href={link} class='block rounded-lg border border-transparent p-3 hover:border-primary/20 hover:bg-muted/50'>
+                <div class='flex items-center gap-3'>
+                  <span class='shrink-0 font-mono text-muted-foreground'>{stem}</span>
+                  <span class='text-lg font-medium'>{post.data.title}</span>
+                </div>
+                <p class='mt-1 text-sm text-muted-foreground'>{post.data.description}</p>
+              </a>
             </li>
           )
         })}
@@ -374,7 +280,95 @@ git commit -m "feat: add series detail page at /series/[slug]"
 
 ---
 
-### Task 6: Add Series to header navigation
+### Task 4: Create individual series article page
+
+**Files:**
+- Create: `src/pages/series/[slug]/[...page].astro`
+
+**Interfaces:**
+- Consumes: `getCollection('series')`, `render()` from astro:content
+- Produces: individual series article page at `/series/{slug}/{article-slug}`
+
+- [ ] **Step 1: Create series article page**
+
+Write the file `src/pages/series/[slug]/[...page].astro`:
+
+```ts
+---
+import type { GetStaticPaths } from 'astro'
+import { getCollection, render } from 'astro:content'
+import { Button } from 'astro-pure/user'
+import PageLayout from '@/layouts/BaseLayout.astro'
+
+export const prerender = true
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const allSeriesPosts = await getCollection('series')
+
+  return allSeriesPosts.map((post) => {
+    const parts = post.id.split('/')
+    const seriesSlug = parts[1]
+    const articleSlug = parts[2] || post.slug
+
+    return {
+      params: { slug: seriesSlug, page: articleSlug },
+      props: { post }
+    }
+  })
+}
+
+interface Props {
+  post: Awaited<ReturnType<typeof getCollection<'series'>>>[number]
+}
+
+const { post } = Astro.props
+const { slug, page } = Astro.params
+const { default: Content, headings } = await render(post)
+
+const meta = {
+  description: post.data.description,
+  title: post.data.title
+}
+---
+
+<PageLayout {meta}>
+  <Button title='Back' href={`/series/${slug}`} variant='back' />
+
+  <main class='mt-6 lg:mt-10'>
+    <div id='content-header' class='animate'>
+      <h1 class='mb-2 text-3xl font-medium'>{post.data.title}</h1>
+      <p class='text-muted-foreground'>
+        {new Date(post.data.publishDate).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })}
+      </p>
+    </div>
+
+    <article id='content' class='animate prose text-base text-muted-foreground'>
+      <Content />
+    </article>
+  </main>
+</PageLayout>
+```
+
+- [ ] **Step 2: Verify TypeScript compiles**
+
+Run: `bun check`
+
+Expected: no errors.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/pages/series/\[slug\]/\[...page\].astro
+git commit -m "feat: add series article page at /series/[slug]/[page]"
+```
+
+---
+
+### Task 5: Add Series to header navigation
 
 **Files:**
 - Modify: `src/site.config.ts:50-57` (header.menu array)
@@ -411,82 +405,7 @@ git commit -m "feat: add Series link to header navigation"
 
 ---
 
-### Task 7: Add "This Series" section to BlogPost layout
-
-**Files:**
-- Modify: `src/layouts/BlogPost.astro`
-
-**Interfaces:**
-- Consumes: `post.data.series`, `getSeriesPosts()`, `generateSlug()`
-- Produces: conditional "本系列" section rendered below ArticleBottom when post belongs to a series
-
-- [ ] **Step 1: Add series section to BlogPost layout**
-
-Edit `src/layouts/BlogPost.astro` to add the series section.
-
-First, add the import at the top of the script block (after line 8):
-
-```ts
-import { getSeriesPosts, generateSlug } from '@/utils/series'
-```
-
-Then, inside the `<Fragment slot='bottom'>` section, add the series component after `<ArticleBottom>` (around line 63) and before `<Comment>`:
-
-```astro
-<Fragment slot='bottom'>
-  {/* Copyright */}
-  <Copyright {data} />
-  {/* Article recommend */}
-  <ArticleBottom collections={posts} {id} class='mt-3 sm:mt-6' />
-  {/* This Series */}
-  {data.series && (() => {
-    const seriesPosts = getSeriesPosts(data.series, posts)
-    const slug = generateSlug(data.series)
-    return (
-      <div class='mt-3 sm:mt-6 rounded-lg border border-primary/20 p-4 sm:p-6'>
-        <h3 class='mb-3 text-lg font-semibold'>本系列 · {data.series}</h3>
-        <ul class='space-y-2'>
-          {seriesPosts.map((sp, i) => {
-            const order = sp.data.seriesOrder ?? i + 1
-            const isCurrent = sp.id === id
-            return (
-              <li class={isCurrent ? 'text-primary' : ''}>
-                <a
-                  href={`/series/${slug}`}
-                  class='flex items-start gap-2 text-sm hover:underline'
-                >
-                  <span class='shrink-0 font-mono text-muted-foreground'>{String(order).padStart(2, '0')}</span>
-                  <span class={isCurrent ? 'font-medium' : ''}>{sp.data.title}{isCurrent && ' (当前)'}</span>
-                </a>
-              </li>
-            )
-          })}
-        </ul>
-        <a href={`/series/${slug}`} class='mt-3 text-sm text-muted-foreground hover:text-primary'>查看全部 →</a>
-      </div>
-    )
-  })()}
-  {/* Comment */}
-  {!isDraft && enableComment && <Comment class='mt-3 sm:mt-6' />}
-</Fragment>
-```
-
-- [ ] **Step 2: Verify TypeScript compiles**
-
-Run: `bun check`
-
-Expected: no errors. May need to adjust types if Astro's expression syntax causes issues — if so, extract the series section into a separate component.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/layouts/BlogPost.astro
-git commit -m "feat: add 'this series' section to blog post layout"
-```
-
----
-
-### Task 8: Final verification and cleanup
+### Task 6: Final verification and cleanup
 
 **Files:**
 - All modified/created files above
@@ -506,18 +425,17 @@ Expected: all lint, typecheck, and format pass cleanly.
 Run: `bun dev`
 
 Then check:
-1. Navigate to `/series` — should show series listing (may be empty if no posts have series)
-2. Add a test blog post with `series: "测试系列"` and `seriesOrder: 1` in frontmatter
-3. Navigate to `/series` — should show the test series
-4. Click into the series detail page — should show the test post
-5. Navigate to the test blog post — should show "本系列" section at bottom
-6. Verify header nav shows "Series" link
+1. Navigate to `/series` — should show "go" series card with 18 articles
+2. Click into "go" series — should show all 18 articles sorted by filename prefix
+3. Click on an article (e.g., `02-env-setup`) — should render the full article content
+4. Verify header nav shows "Series" link
+5. Verify articles don't appear in `/blog` listing
 
 - [ ] **Step 3: Commit all remaining changes**
 
 ```bash
 git add -A
-git commit -m "feat: add series feature — listing, detail, and cross-reference"
+git commit -m "feat: add series feature — listing, detail, and article pages"
 ```
 
 ---
@@ -526,11 +444,8 @@ git commit -m "feat: add series feature — listing, detail, and cross-reference
 
 | File | Action |
 |------|--------|
-| `package.json` | Modified — add `pinyin` devDependency |
-| `bun.lock` | Generated — by `bun add` |
-| `src/content.config.ts` | Modified — add `series`, `seriesOrder` fields |
-| `src/utils/series.ts` | Created — utility functions |
+| `src/content.config.ts` | Modified — add `series` content collection |
 | `src/pages/series/index.astro` | Created — series listing page |
 | `src/pages/series/[slug].astro` | Created — series detail page |
+| `src/pages/series/[slug]/[...page].astro` | Created — series article page |
 | `src/site.config.ts` | Modified — add "Series" to header menu |
-| `src/layouts/BlogPost.astro` | Modified — add conditional series section |
