@@ -4,6 +4,7 @@ tags: ['GO', 'HOH', 'go']
 publishDate: '2026-07-15 23:00:00'
 description: 'Go学习资料，来自于HOH水分子社区'
 language: 'zh-cn'
+series: "go"
 comment: false
 ---
 # 第18章：模块与依赖管理（进阶）

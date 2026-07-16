@@ -40,4 +40,25 @@ const blog = defineCollection({
     })
 })
 
-export const collections = { blog }
+// Define series collection
+const series = defineCollection({
+  loader: glob({ base: './src/content/series', pattern: '**/*.{md,mdx}' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string().max(60),
+      description: z.string().max(160),
+      publishDate: z.coerce.date(),
+      heroImage: z
+        .object({
+          src: image(),
+          alt: z.string().optional()
+        })
+        .optional(),
+      tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
+      language: z.string().optional(),
+      series: z.string(),
+      comment: z.boolean().default(false)
+    })
+})
+
+export const collections = { blog, series }

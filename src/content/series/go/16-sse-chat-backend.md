@@ -4,6 +4,7 @@ tags: ['GO', 'HOH', 'go']
 publishDate: '2026-07-15 23:00:00'
 description: 'Go学习资料，来自于HOH水分子社区'
 language: 'zh-cn'
+series: "go"
 comment: false
 ---
 # 第16章：实现 SSE 流式对话后端
