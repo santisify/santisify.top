@@ -15,12 +15,12 @@ function loadExternalResource(url, type) {
     let tag
 
     if (type === 'css') {
-      // eslint-disable-next-line no-undef
+       
       tag = document.createElement('link')
       tag.rel = 'stylesheet'
       tag.href = url
     } else if (type === 'js') {
-      // eslint-disable-next-line no-undef
+       
       tag = document.createElement('script')
       tag.type = 'module'
       tag.src = url
@@ -28,7 +28,7 @@ function loadExternalResource(url, type) {
     if (tag) {
       tag.onload = () => resolve(url)
       tag.onerror = () => reject(url)
-      // eslint-disable-next-line no-undef
+       
       document.head.appendChild(tag)
     }
   })
@@ -37,19 +37,19 @@ function loadExternalResource(url, type) {
 ;(async () => {
   // If you are concerned about display issues on mobile devices, you can use screen.width to determine whether to load
   // 如果担心手机上显示效果不佳，可以根据屏幕宽度来判断是否加载
-  // eslint-disable-next-line no-undef
+   
   if (screen.width < 768) return
 
   // Avoid cross-origin issues with image resources
   // 避免图片资源跨域问题
   const OriginalImage = window.Image
-  // eslint-disable-next-line no-undef
+   
   window.Image = function (...args) {
     const img = new OriginalImage(...args)
     img.crossOrigin = 'anonymous'
     return img
   }
-  // eslint-disable-next-line no-undef
+   
   window.Image.prototype = OriginalImage.prototype
   // Load waifu.css and waifu-tips.js
   // 加载 waifu.css 和 waifu-tips.js
@@ -59,7 +59,7 @@ function loadExternalResource(url, type) {
   ])
   // For detailed usage of configuration options, see README.en.md
   // 配置选项的具体用法见 README.md
-  // eslint-disable-next-line no-undef
+   
   initWidget({
     waifuPath: live2d_path + 'waifu-tips.json',
     cdnPath: 'https://gh-proxy.org/https://github.com/fghrsh/live2d_api/blob/master/',
@@ -71,7 +71,7 @@ function loadExternalResource(url, type) {
   })
 })()
 
-// eslint-disable-next-line no-undef
+ 
 console.log(
   `\n%cLive2D%cWidget%c\n`,
   'padding: 8px; background: #cd3e45; font-weight: bold; font-size: large; color: white;',
