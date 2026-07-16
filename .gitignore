@@ -81,6 +81,7 @@ bunfig.toml
 /test/
 .idea/*
 src/content/blog/assets
+docs/
 
 AGENTS.md
 .superpowers
