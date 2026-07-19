@@ -1,61 +1,28 @@
 ---
-import type { GetStaticPaths } from 'astro'
-import { getCollection, render } from 'astro:content'
-import { Button } from 'astro-pure/user'
-import PageLayout from '@/layouts/BaseLayout.astro'
+import { getCollection, render, type CollectionEntry } from 'astro:content'
+
+import { sortMDByDate } from 'astro-pure/server'
+import SeriesPost from '@/layouts/SeriesPost.astro'
 
 export const prerender = true
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const allSeriesPosts = await getCollection('series')
-
-  return allSeriesPosts
-    .map((post) => {
-      const parts = post.id.split('/')
-      const seriesSlug = parts[0]
-      const articleSlug = parts[1]
-
-      if (!seriesSlug || !articleSlug) return null
-
-      return {
-        params: { slug: seriesSlug, page: articleSlug },
-        props: { post }
-      }
-    })
-    .filter((p): p is NonNullable<typeof p> => p !== null)
+export async function getStaticPaths() {
+  const posts = sortMDByDate(await getCollection('series'))
+  return posts.map((post) => ({
+    params: { slug: post.id.split('/')[0], page: post.id.split('/').slice(1).join('/') },
+    props: { post, posts }
+  }))
 }
 
-interface Props {
-  post: Awaited<ReturnType<typeof getCollection<'series'>>>[number]
+type Props = {
+  post: CollectionEntry<'series'>
+  posts: CollectionEntry<'series'>[]
 }
 
-const { post } = Astro.props
-const { slug } = Astro.params
-const { Content } = await render(post)
-
-const meta = {
-  description: post.data.description,
-  title: post.data.title
-}
+const { post, posts } = Astro.props
+const { Content, headings, remarkPluginFrontmatter } = await render(post)
 ---
 
-<PageLayout {meta}>
-  <Button title='Back' href={`/series/${slug}`} variant='back' />
-
-  <main class='mt-6 lg:mt-10'>
-    <div id='content-header' class='animate'>
-      <h1 class='mb-2 text-3xl font-medium'>{post.data.title}</h1>
-      <p class='text-muted-foreground'>
-        {new Date(post.data.publishDate).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })}
-      </p>
-    </div>
-
-    <article id='content' class='animate prose text-base text-muted-foreground'>
-      <Content />
-    </article>
-  </main>
-</PageLayout>
+<SeriesPost {post} {posts} {headings} {remarkPluginFrontmatter}>
+  <Content />
+</SeriesPost>

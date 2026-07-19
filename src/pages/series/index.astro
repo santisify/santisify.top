@@ -10,7 +10,8 @@ const allSeriesByDate = sortMDByDate(allSeriesPosts)
 // Group by series frontmatter field, default to 'other'
 const seriesGroups = new Map<string, CollectionEntry<'series'>[]>()
 allSeriesByDate.forEach((post) => {
-  const seriesSlug = post.data.series || 'other'
+  const postSeries = (post as CollectionEntry<'series'>).data.series
+  const seriesSlug = postSeries || 'other'
   if (!seriesGroups.has(seriesSlug)) {
     seriesGroups.set(seriesSlug, [])
   }

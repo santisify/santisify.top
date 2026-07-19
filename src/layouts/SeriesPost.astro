@@ -1,0 +1,117 @@
+---
+import type { MarkdownHeading } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+import config from 'virtual:config'
+
+import { MediumZoom } from 'astro-pure/advanced'
+import { Copyright, Hero, TOC } from 'astro-pure/components/pages'
+import PageLayout from '@/layouts/ContentLayout.astro'
+import { Comment, PageInfo } from '@/components/waline'
+
+interface Props {
+  post: CollectionEntry<'series'>
+  posts: CollectionEntry<'series'>[]
+  headings: MarkdownHeading[]
+  remarkPluginFrontmatter: Record<string, unknown>
+}
+
+const {
+  post: { id, data },
+  posts,
+  headings,
+  remarkPluginFrontmatter
+} = Astro.props
+
+const {
+  description,
+  heroImage,
+  publishDate,
+  title,
+  comment: enableComment
+} = data
+
+const socialImage = heroImage
+  ? typeof heroImage.src === 'string'
+    ? heroImage.src
+    : heroImage.src.src
+  : config.socialCard
+const articleDate = publishDate.toISOString()
+const primaryColor = 'hsl(var(--primary) / var(--un-text-opacity))'
+---
+
+<PageLayout
+  meta={{ articleDate, description, ogImage: socialImage, title }}
+  highlightColor={primaryColor}
+  back={`/series/${data.series || 'other'}`}
+>
+  {!!headings.length && <TOC {headings} slot='sidebar' />}
+
+  <Hero data={data as any} {remarkPluginFrontmatter} slot='header'>
+    <Fragment slot='description'>
+      {enableComment && <PageInfo comment class='mt-1' />}
+    </Fragment>
+  </Hero>
+
+  <slot />
+
+  <Fragment slot='bottom'>
+    {/* Copyright */}
+    <Copyright data={data as any} />
+    {/* Series articles list */}
+    {data.series && (() => {
+      const seriesPosts = posts.filter((p) => (p.data.series || 'other') === data.series)
+      const sorted = seriesPosts.sort((a, b) => {
+        const aName = a.id.split('/').pop()?.replace(/\.[^.]+$/, '') || ''
+        const bName = b.id.split('/').pop()?.replace(/\.[^.]+$/, '') || ''
+        return aName.localeCompare(bName)
+      })
+      return (
+        <div class='mt-3 sm:mt-6 rounded-lg border border-primary/20 p-4 sm:p-6'>
+          <h3 class='mb-3 text-lg font-semibold'>
+            本系列 · {data.series || 'other'}
+          </h3>
+          <ul class='space-y-2'>
+            {sorted.map((sp, i) => {
+              const stem = sp.id.split('/').pop()?.replace(/\.[^.]+$/, '') || ''
+              const isCurrent = sp.id === id
+              return (
+                <li class={isCurrent ? 'text-primary' : ''}>
+                  {isCurrent ? (
+                    <span class='flex items-start gap-2'>
+                      <span class='shrink-0 font-mono text-muted-foreground'>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span class='font-medium'>
+                        {sp.data.title} (当前)
+                      </span>
+                    </span>
+                  ) : (
+                    <a
+                      href={`/series/${sp.data.series || 'other'}/${stem}`}
+                      class='flex items-start gap-2 text-sm hover:underline'
+                    >
+                      <span class='shrink-0 font-mono text-muted-foreground'>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span>{sp.data.title}</span>
+                    </a>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+          <a
+            href={`/series/${data.series || 'other'}`}
+            class='mt-3 text-sm text-muted-foreground hover:text-primary'
+          >查看全部 →</a>
+        </div>
+      )
+    })()}
+    {/* Comment */}
+    {enableComment && <Comment class='mt-3 sm:mt-6' />}
+  </Fragment>
+
+  <slot name='bottom-sidebar' slot='bottom-sidebar' />
+</PageLayout>
+
+{config.integ.mediumZoom.enable && <MediumZoom />}
