@@ -2,8 +2,8 @@ import { parse } from 'node-html-parser'
 import readline from 'readline'
 
 const sitemapUrls = [
-  'https://santisify.top/siteap-0.xml',
-  'https://santisify.top/siteap-index.xml',
+  'https://santisify.top/sitemap-0.xml',
+  'https://santisify.top/sitemap-index.xml',
   'https://santisify.top/rss.xml'
 ]
 
