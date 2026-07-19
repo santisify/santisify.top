@@ -9,10 +9,10 @@ export const prerender = true
 export const getStaticPaths: GetStaticPaths = async () => {
   const allSeriesPosts = await getCollection('series')
 
-  // Extract unique series slugs from frontmatter
+  // Extract unique series slugs from frontmatter, default to 'other'
   const seriesSlugs = new Set<string>()
   allSeriesPosts.forEach((post) => {
-    if (post.data.series) seriesSlugs.add(post.data.series)
+    seriesSlugs.add(post.data.series || 'other')
   })
 
   return Array.from(seriesSlugs).map((slug) => ({
@@ -29,7 +29,7 @@ const { seriesSlug } = Astro.props
 
 const allSeriesPosts = await getCollection('series')
 const seriesPosts = allSeriesPosts
-  .filter((post) => post.data.series === seriesSlug)
+  .filter((post) => (post.data.series || 'other') === seriesSlug)
   .sort((a, b) => {
     // Sort by filename prefix (e.g., 02-env-setup before 03-basics)
     const aName = a.id.split('/').pop()?.replace(/\.[^.]+$/, '') || ''

@@ -7,11 +7,10 @@ import PageLayout from '@/layouts/BaseLayout.astro'
 const allSeriesPosts = await getCollection('series')
 const allSeriesByDate = sortMDByDate(allSeriesPosts)
 
-// Group by series frontmatter field
+// Group by series frontmatter field, default to 'other'
 const seriesGroups = new Map<string, CollectionEntry<'series'>[]>()
 allSeriesByDate.forEach((post) => {
-  const seriesSlug = post.data.series
-  if (!seriesSlug) return
+  const seriesSlug = post.data.series || 'other'
   if (!seriesGroups.has(seriesSlug)) {
     seriesGroups.set(seriesSlug, [])
   }
