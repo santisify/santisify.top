@@ -6,9 +6,9 @@ export interface TimelineEvent {
 
 export interface Competition {
     id: string;
-    name: string;
-    fullname: string;
-    icon: string;
+    name: string;          // 简称（显示在徽标上）
+    fullname: string;      // 全称（显示在详情卡片）
+    icon: string;          // 图片路径，如 '/icons/icpc.svg'
     timeline: TimelineEvent[];
 }
 
@@ -21,339 +21,56 @@ const { competitions } = Astro.props;
 import { Timeline } from 'astro-pure/user';
 ---
 
-<div class="badges-section">
-    <div class="badges-grid">
-        {competitions.map((comp) => {
-            const timelineEvents = comp.timeline.map((item) => ({
-                date: item.date,
-                content: item.content,
-            }));
+<div class="flex flex-wrap justify-start gap-8 px-4 py-4">
+    {competitions.map((comp) => {
+        const timelineEvents = comp.timeline.map((item) => ({
+            date: item.date,
+            content: item.content,
+        }));
 
-            return (
-                <div class="badge-wrapper" key={comp.id}>
-                    <!-- 圆形徽标 -->
-                    <div class="badge">
+        return (
+            <div
+                class="group relative flex flex-col items-center cursor-pointer z-1 hover:z-100"
+                key={comp.id}
+            >
+                <div
+                    class="flex flex-col items-center justify-center size-16 rounded-full transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:shadow-lg relative"
+                >
+                    <img
+                        class="size-9 object-contain block mb-0.5"
+                        src={comp.icon}
+                        alt={comp.name}
+                        loading="lazy"
+                    />
+                    <span class="text-[0.65rem] font-semibold tracking-wide uppercase opacity-90 drop-shadow">
+                        {comp.name}
+                    </span>
+                    <div class="absolute -inset-1 rounded-full border-2 border-white/30 opacity-0 transition duration-300 scale-90 group-hover:opacity-100 group-hover:scale-100 hidden dark:block"></div>
+                </div>
+
+                <div class="absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 translate-y-3 scale-95 min-w-[240px] max-w-[640px] w-max bg-background rounded-2xl p-5 shadow-lg border border-border/30 opacity-0 invisible pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:scale-100 max-h-[460px] overflow-y-auto backdrop-blur-sm">
+                    <div class="absolute -top-2 left-1/2 -translate-x-1/2 rotate-45 size-4 bg-background border-t border-l border-border/20 rounded-sm"></div>
+
+                    <div class="flex items-center gap-3 pb-3 mb-3 border-b border-border/30">
                         <img
-                            class="badge-icon"
+                            class="size-10 object-contain flex-shrink-0"
                             src={comp.icon}
                             alt={comp.name}
                             loading="lazy"
                         />
-                        <span class="badge-name">{comp.name}</span>
-                    </div>
-
-                    <!-- 悬停弹出详情卡片 -->
-                    <div class="detail-card">
-                        <div class="detail-header">
-                            <img
-                                class="detail-icon"
-                                src={comp.icon}
-                                alt={comp.name}
-                                loading="lazy"
-                            />
-                            <div>
-                                <h3 class="detail-title">{comp.fullname}</h3>
-                                <span class="detail-sub">{comp.name}</span>
-                            </div>
+                        <div>
+                            <h3 class="text-base font-bold text-foreground m-0 leading-tight">
+                                {comp.fullname}
+                            </h3>
+                            <span class="text-xs text-muted-foreground block mt-0.5">
+                                {comp.name}
+                            </span>
                         </div>
-                        <Timeline events={timelineEvents} />
                     </div>
+
+                    <Timeline events={timelineEvents} />
                 </div>
-            );
-        })}
-    </div>
+            </div>
+        );
+    })}
 </div>
-
-<style is:global>
-    .section-title {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1a1a2e;
-        margin-bottom: 2.5rem;
-        letter-spacing: 0.02em;
-    }
-
-    .badges-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2.5rem 3rem;
-        padding: 1rem 0;
-    }
-
-    .badge-wrapper {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        z-index: 1;
-        transition: z-index 0.3s;
-    }
-
-    .badge-wrapper:hover {
-        z-index: 100;
-    }
-
-    .badge {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 66px;
-        height: 66px;
-        border-radius: 50%;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-            box-shadow 0.35s ease;
-        user-select: none;
-        position: relative;
-        will-change: transform;
-    }
-
-    .badge::after {
-        content: '';
-        position: absolute;
-        inset: -4px;
-        border-radius: 50%;
-        background: transparent;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        transform: scale(0.9);
-    }
-
-    .badge-wrapper:hover .badge {
-        transform: scale(1.12) translateY(-4px);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.30);
-    }
-
-    .badge-wrapper:hover .badge::after {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    .badge-icon {
-        width: 38px;
-        height: 38px;
-        object-fit: contain;
-        display: block;
-        margin-bottom: 2px;
-        /* 移除 filter，保留图标原始颜色 */
-    }
-
-    .badge-name {
-        font-size: 0.7rem;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        opacity: 0.92;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        color: #fff;
-    }
-
-    .detail-card {
-        position: absolute;
-        top: calc(100% + 2px);
-        left: 50%;
-        transform: translateX(-50%) translateY(12px) scale(0.92);
-        min-width: 240px;
-        max-width: 640px;
-        width: max-content;
-        background: #ffffff;
-        border-radius: 18px;
-        padding: 1.25rem 1.5rem 1.5rem;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18),
-            0 8px 24px rgba(0, 0, 0, 0.06);
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition: opacity 0.3s ease,
-            transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-            visibility 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        backdrop-filter: blur(2px);
-        will-change: transform, opacity;
-        max-height: 460px;
-        overflow-y: auto;
-    }
-
-    .detail-card::before {
-        content: '';
-        position: absolute;
-        top: -8px;
-        left: 50%;
-        transform: translateX(-50%) rotate(45deg);
-        width: 16px;
-        height: 16px;
-        background: #ffffff;
-        border-top: 1px solid rgba(0, 0, 0, 0.04);
-        border-left: 1px solid rgba(0, 0, 0, 0.04);
-        border-radius: 4px 0 0 0;
-    }
-
-    .badge-wrapper:hover .detail-card {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-        transform: translateX(-50%) translateY(0) scale(1);
-    }
-
-    .detail-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding-bottom: 0.9rem;
-        border-bottom: 2px solid #f0f2f5;
-        margin-bottom: 1rem;
-    }
-
-    .detail-icon {
-        width: 40px;
-        height: 40px;
-        object-fit: contain;
-        display: block;
-        flex-shrink: 0;
-    }
-
-    .detail-title {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #1a1a2e;
-        margin: 0;
-        line-height: 1.3;
-    }
-
-    .detail-sub {
-        font-size: 0.75rem;
-        color: #8e8ea0;
-        font-weight: 500;
-        display: block;
-        margin-top: 1px;
-    }
-
-    .detail-card .timeline {
-        padding-left: 0;
-    }
-
-    .detail-card .timeline-item {
-        padding: 0.3rem 0;
-    }
-
-    .detail-card::-webkit-scrollbar {
-        width: 4px;
-    }
-    .detail-card::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .detail-card::-webkit-scrollbar-thumb {
-        background: #d0d5dd;
-        border-radius: 8px;
-    }
-    .detail-card::-webkit-scrollbar-thumb:hover {
-        background: #b0b8c4;
-    }
-
-    @media (max-width: 640px) {
-        .badges-grid {
-            gap: 2rem 1.5rem;
-        }
-        .badge {
-            width: 72px;
-            height: 72px;
-        }
-        .badge-icon {
-            width: 30px;
-            height: 30px;
-        }
-        .badge-name {
-            font-size: 0.6rem;
-        }
-        .detail-card {
-            min-width: 200px;
-            max-width: 280px;
-            padding: 1rem 1.2rem 1.2rem;
-            top: calc(100% + 12px);
-        }
-        .detail-icon {
-            width: 32px;
-            height: 32px;
-        }
-        .detail-title {
-            font-size: 0.9rem;
-        }
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.8rem;
-        }
-    }
-
-    @media (max-width: 420px) {
-        .badges-grid {
-            gap: 1.5rem 1.2rem;
-        }
-        .badge {
-            width: 64px;
-            height: 64px;
-        }
-        .badge-icon {
-            width: 26px;
-            height: 26px;
-        }
-        .badge-name {
-            font-size: 0.5rem;
-        }
-        .detail-card {
-            min-width: 170px;
-            max-width: 240px;
-            padding: 0.8rem 1rem 1rem;
-        }
-        .detail-card::before {
-            width: 12px;
-            height: 12px;
-            top: -6px;
-        }
-        .detail-icon {
-            width: 28px;
-            height: 28px;
-        }
-    }
-
-    /* ============================================================
-       暗色模式
-       ============================================================ */
-    @media (prefers-color-scheme: dark) {
-        .section-title {
-            color: #e8e8f0;
-        }
-        .detail-card {
-            background: #1e1e2e;
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-        .detail-card::before {
-            background: #1e1e2e;
-            border-color: rgba(255, 255, 255, 0.04);
-        }
-        .detail-title {
-            color: #e8e8f0;
-        }
-        .detail-sub {
-            color: #9a9ab0;
-        }
-        .detail-header {
-            border-bottom-color: #2e2e42;
-        }
-        .badge {
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-        }
-        .badge-wrapper:hover .badge {
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
-        }
-        .detail-card::-webkit-scrollbar-thumb {
-            background: #3a3a4e;
-        }
-        .detail-card::-webkit-scrollbar-thumb:hover {
-            background: #4a4a5e;
-        }
-    }
-</style>
