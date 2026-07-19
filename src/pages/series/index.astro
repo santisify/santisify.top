@@ -7,11 +7,11 @@ import PageLayout from '@/layouts/BaseLayout.astro'
 const allSeriesPosts = await getCollection('series')
 const allSeriesByDate = sortMDByDate(allSeriesPosts)
 
-// Group by series folder (first directory in the path)
+// Group by series frontmatter field
 const seriesGroups = new Map<string, CollectionEntry<'series'>[]>()
 allSeriesByDate.forEach((post) => {
-  const parts = post.id.split('/')
-  const seriesSlug = parts[0] // e.g., "go" from "go/02-env-setup"
+  const seriesSlug = post.data.series
+  if (!seriesSlug) return
   if (!seriesGroups.has(seriesSlug)) {
     seriesGroups.set(seriesSlug, [])
   }
