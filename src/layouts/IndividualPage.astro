@@ -3,9 +3,10 @@ import type { MarkdownHeading, MarkdownLayoutProps } from 'astro'
 import config from 'virtual:config'
 
 import { BackToTop, TOC } from 'astro-pure/components/pages'
-import { Button, Icon } from 'astro-pure/user'
+import { Button } from 'astro-pure/user'
 import { cn } from 'astro-pure/utils'
 import PageLayout from '@/layouts/BaseLayout.astro'
+import {MyIcon} from '@/components/Icons/icons'
 
 type Props = MarkdownLayoutProps<{
   title: string
@@ -44,12 +45,12 @@ const socialImage = heroImage?.src ?? config.socialCard
             // Language
             language && (
               <span class='flex items-center gap-1'>
-                <Icon name='earth' />
+                <MyIcon name='earth' />
                 {language}
               </span>
             )
           }
-          {
+            {
             // Description
             description && (
               <blockquote class='text-sm italic text-muted-foreground'>

@@ -1,76 +1,74 @@
 ---
+import { Timeline } from 'astro-pure/user'
+
 export interface TimelineEvent {
-    date: string;
-    content: string;
+  date: string
+  content: string
 }
 
 export interface Competition {
-    id: string;
-    name: string;          // 简称（显示在徽标上）
-    fullname: string;      // 全称（显示在详情卡片）
-    icon: string;          // 图片路径，如 '/icons/icpc.svg'
-    timeline: TimelineEvent[];
+  id: string
+  name: string // 简称（显示在徽标上）
+  fullname: string // 全称（显示在详情卡片）
+  icon: string // 图片路径，如 '/icons/icpc.svg'
+  timeline: TimelineEvent[]
 }
 
 export interface Props {
-    competitions: Competition[];
+  competitions: Competition[]
 }
 
-const { competitions } = Astro.props;
-
-import { Timeline } from 'astro-pure/user';
+const { competitions } = Astro.props
 ---
 
-<div class="flex flex-wrap justify-start gap-8 px-4 py-4">
-    {competitions.map((comp) => {
-        const timelineEvents = comp.timeline.map((item) => ({
-            date: item.date,
-            content: item.content,
-        }));
+<div class='flex flex-wrap justify-start gap-8 px-4 py-4'>
+  {
+    competitions.map((comp) => {
+      const timelineEvents = comp.timeline.map((item) => ({
+        date: item.date,
+        content: item.content
+      }))
 
-        return (
-            <div
-                class="group relative flex flex-col items-center cursor-pointer z-1 hover:z-100"
-                key={comp.id}
-            >
-                <div
-                    class="flex flex-col items-center justify-center size-16 rounded-full transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:shadow-lg relative"
-                >
-                    <img
-                        class="size-9 object-contain block mb-0.5"
-                        src={comp.icon}
-                        alt={comp.name}
-                        loading="lazy"
-                    />
-                    <span class="text-[0.65rem] font-semibold tracking-wide uppercase opacity-90 drop-shadow">
-                        {comp.name}
-                    </span>
-                    <div class="absolute -inset-1 rounded-full border-2 border-white/30 opacity-0 transition duration-300 scale-90 group-hover:opacity-100 group-hover:scale-100 hidden dark:block"></div>
-                </div>
+      return (
+        <div
+          class='group relative flex flex-col items-center cursor-pointer z-1 hover:z-100'
+          key={comp.id}
+        >
+          <div class='flex flex-col items-center justify-center size-16 rounded-full transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:shadow-lg relative'>
+            <img
+              class='size-9 object-contain block mb-0.5'
+              src={comp.icon}
+              alt={comp.name}
+              loading='lazy'
+            />
+            <span class='text-[0.65rem] font-semibold tracking-wide uppercase opacity-90 drop-shadow'>
+              {comp.name}
+            </span>
+            <div class='absolute -inset-1 rounded-full border-2 border-white/30 opacity-0 transition duration-300 scale-90 group-hover:opacity-100 group-hover:scale-100 hidden dark:block' />
+          </div>
 
-                <div class="absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 translate-y-3 scale-95 min-w-[240px] max-w-[640px] w-max bg-background rounded-2xl p-5 shadow-lg border border-border/30 opacity-0 invisible pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:scale-100 max-h-[460px] overflow-y-auto backdrop-blur-sm">
-                    <div class="absolute -top-2 left-1/2 -translate-x-1/2 rotate-45 size-4 bg-background border-t border-l border-border/20 rounded-sm"></div>
+          <div class='absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 translate-y-3 scale-95 min-w-[240px] max-w-[640px] w-max bg-background rounded-2xl p-5 shadow-lg border border-border/30 opacity-0 invisible pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:scale-100 max-h-[460px] overflow-y-auto backdrop-blur-sm'>
+            <div class='absolute -top-2 left-1/2 -translate-x-1/2 rotate-45 size-4 bg-background border-t border-l border-border/20 rounded-sm' />
 
-                    <div class="flex items-center gap-3 pb-3 mb-3 border-b border-border/30">
-                        <img
-                            class="size-10 object-contain flex-shrink-0"
-                            src={comp.icon}
-                            alt={comp.name}
-                            loading="lazy"
-                        />
-                        <div>
-                            <h3 class="text-base font-bold text-foreground m-0 leading-tight">
-                                {comp.fullname}
-                            </h3>
-                            <span class="text-xs text-muted-foreground block mt-0.5">
-                                {comp.name}
-                            </span>
-                        </div>
-                    </div>
-
-                    <Timeline events={timelineEvents} />
-                </div>
+            <div class='flex items-center gap-3 pb-3 mb-3 border-b border-border/30'>
+              <img
+                class='size-10 object-contain flex-shrink-0'
+                src={comp.icon}
+                alt={comp.name}
+                loading='lazy'
+              />
+              <div>
+                <h3 class='text-base font-bold text-foreground m-0 leading-tight'>
+                  {comp.fullname}
+                </h3>
+                <span class='text-xs text-muted-foreground block mt-0.5'>{comp.name}</span>
+              </div>
             </div>
-        );
-    })}
+
+            <Timeline events={timelineEvents} />
+          </div>
+        </div>
+      )
+    })
+  }
 </div>

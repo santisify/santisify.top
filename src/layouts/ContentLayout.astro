@@ -1,10 +1,11 @@
 ---
 import { BackToTop } from 'astro-pure/components/pages'
 import type { SiteMeta } from 'astro-pure/types'
-import { Button, Icon } from 'astro-pure/user'
+import { Button } from 'astro-pure/user'
 import { cn } from 'astro-pure/utils'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import { integ } from '@/site-config'
+import { MyIcon } from '@/components/Icons/icons'
 
 interface Props {
   meta: SiteMeta
@@ -69,7 +70,7 @@ const { meta, highlightColor, back = '/', ...props } = Astro.props
       class='size-10 flex items-center justify-center rounded-full border-2 border-transparent bg-muted text-muted-foreground duration-300 hover:border-border/75 md:hidden sm:size-12'
       id='sidebar-btn'
     >
-      <Icon name='list' />
+      <MyIcon name='list' />
     </button>
   </BackToTop>
 </PageLayout>

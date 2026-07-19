@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets'
 
-import { Button, Collapse, Icon } from 'astro-pure/user'
+import { Button, Collapse } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import ProjectSection from '@/components/projects/ProjectSection.astro'
 import Sponsors from '@/components/projects/Sponsors.astro'
@@ -10,12 +10,14 @@ import alipay from '@/assets/alipay-qrcode.jpg'
 import KeyIcon from '@/assets/icons/key.svg'
 import wechat from '@/assets/wechat-qrcode.jpg'
 import config from '@/site-config'
+import {MyIcon} from '@/components/Icons/icons'
 
 const headings = [
-  { depth: 2, slug: 'applications', text: 'Applications' },
-  { depth: 2, slug: 'programs', text: 'Programs' },
-  { depth: 2, slug: 'learnings', text: 'Learnings' },
+  // { depth: 2, slug: 'applications', text: 'Applications' },
+  // { depth: 2, slug: 'programs', text: 'Programs' },
+  // { depth: 2, slug: 'learnings', text: 'Learnings' },
   { depth: 2, slug: 'others', text: 'Others' },
+  { depth: 2, slug: 'template', text: 'Template' },
   { depth: 2, slug: 'sponsorship', text: 'Sponsorship' }
 ]
 ---
@@ -56,22 +58,45 @@ const headings = [
     support my work or contact me to discuss a project.
   </p>
   <Button title='Checkout sponsorship' class='w-fit' href='#sponsorship'>
-    <Icon class='size-5' name='receive-money' slot='before' />
+    <MyIcon class='size-5' name='receive-money' slot='before' />
   </Button>
 
-  <!--<h2 id="applications">Applications</h2>-->
-  <!--<ProjectSection-->
-  <!--  project={[-->
-  <!--{-->
-  <!--  name: '➕ Pure New Tab [Browser Extension]',-->
-  <!--  description: 'A open-source, clean and minimalistic new tab page extension',-->
-  <!--  links: [-->
-  <!--    { type: 'github', href: 'https://github.com/cworld1/pure-new-tab' },-->
-  <!--    { type: 'site', href: 'https://cworld0.com/blog/pure-new-tab' }-->
-  <!--  ]-->
-  <!--}-->
-  <!--]}-->
-  <!--/>-->
+  <h2 id='others'>Others</h2>
+  <ProjectSection
+    project={[
+      {
+        name: 'astro-theme-sify',
+        description: '基于 Astro 6 + Tailwind CSS v4 的现代化博客主题。',
+        links: [
+          { type: 'github', href: 'https://github.com/santisify/astro-theme-sify' },
+          { type: 'site', href: 'https://astro-sify-demo.lazy-boy-acmer.cn/' }
+        ]
+      },
+      {
+        name: 'sify-gist',
+        description: '基于 Supabase + Nextjs 搭建的轻量代码片段分享平台，可部署到Vercel',
+        links: [
+          { type: 'github', href: 'https://github.com/santisify/astro-theme-sify' },
+          { type: 'site', href: 'https://gist.santisify.top' }
+        ]
+      }
+    ]}
+  />
+
+  <h2 id='template'>Template</h2>
+  <ProjectSection
+    project={[
+      {
+        name: 'nodejs-backend-template',
+        description: '基于express的后端模板',
+        links: [
+          { type: 'github', href: 'https://github.com/santisify/nodejs-backend-template' },
+          { type: 'gitee', href: 'https://gitee.com/santisify/nodejs-backend-template' }
+        ]
+      }
+    ]}
+  />
+
   <!--<Collapse title="Some old projects">-->
   <!--  <ProjectSection-->
   <!--    project={[]}-->

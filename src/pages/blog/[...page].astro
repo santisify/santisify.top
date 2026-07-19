@@ -4,9 +4,10 @@ import type { CollectionEntry } from 'astro:content'
 
 import { Paginator, PostPreview } from 'astro-pure/components/pages'
 import { getBlogCollection, getUniqueTagsWithCount, sortMDByDate } from 'astro-pure/server'
-import { Button, Icon } from 'astro-pure/user'
+import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import config from '@/site-config'
+import { MyIcon } from '@/components/Icons/icons'
 
 export const prerender = true
 
@@ -83,7 +84,7 @@ const paginationProps = {
           {!!uniqueTags.length && (
             <aside class='animate' id='sidebar'>
               <h2 class='mb-4 flex items-center text-lg font-medium'>
-                <Icon name='tag-2' class='me-2' />
+                <MyIcon name='tag-2' class='me-2' />
                 Tags
               </h2>
               <ul class='text-bgColor flex flex-wrap gap-2'>
