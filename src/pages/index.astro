@@ -11,7 +11,7 @@ import Section from '@/components/home/Section.astro'
 import SkillLayout from '@/components/home/SkillLayout.astro'
 import avatar from '@/assets/avatar.png'
 import config from '@/site-config'
-
+import Competition from '@/components/home/Competition.astro'
 const languages = ['Python', 'C', 'C++', 'Java', 'Html', 'JavaScript', 'CSS', 'SQL', 'PostgreSQL']
 const frontend = ['TypeScript', 'React', 'Vue', 'Pinia', 'Vite', 'Webpack', 'Astro', 'Hexo']
 const backend = ['Nodejs', 'Nginx', 'NextJS']
@@ -29,6 +29,76 @@ const websiteList = [
     heading: 'Website data',
     subheading: 'Umami makes it easy to collect, analyze, and understand your website data',
     imagePath: '/src/assets/projects/site-data.png'
+  }
+]
+
+const competitions = [
+  {
+    id: 'lanqiao',
+    name: '蓝桥杯',
+    fullname: '蓝桥杯全国软件和信息技术专业人才大赛',
+    icon: '/images/lanqiao.png',
+    timeline: [
+      { date: '2025-06', content: '四川省一等奖' },
+      { date: '2024-06', content: '四川省一等奖' },
+      { date: '2023-06', content: '四川省二等奖' },
+    ]
+  },
+  {
+    id: 'sccpc',
+    name: '四川省赛',
+    fullname: '四川省大学生程序设计竞赛',
+    icon: '/images/sccpc.ico',
+    timeline: [
+      { date: '2025-06', content: '乐山师范学院举办第十七届，获三等奖' },
+      { date: '2024-06', content: '电子科技大学成都学院举办第十六届，获三等奖' },
+      { date: '2023-06', content: '阿坝师范学院举办第十五届，获三等奖' },
+    ]
+  },
+  {
+    id: 'cqcpc',
+    name: '重庆市赛',
+    fullname: '重庆市大学生程序设计竞赛',
+    icon: '/images/sccpc.ico',
+    timeline: [
+      { date: '2025-05', content: '重庆大学虎溪校区举办第十三届，获二等奖' },
+      { date: '2024-06', content: '重庆对外经贸学院举办第十二届，获二等奖\<br\>(但因为赛后才说重庆高校和其他高校分开排名被迫三等奖)' },
+      { date: '2023-12', content: '西南大学北碚校区举办第十一届，获三等奖' },
+    ]
+  },
+  {
+    id: 'icpc-invitation',
+    name: '西安邀请赛',
+    fullname: 'ICPC 国际大学生程序设计竞赛全国邀请赛（陕西）',
+    icon: '/images/sccpc.ico',
+    timeline: [
+      { date: '2025-05', content: '西北工业大学举办第五十届，获三等奖' },
+    ]
+  },
+  {
+    id: 'baidu',
+    name: '百度-码蹄集',
+    fullname: '百度之星、码蹄杯',
+    icon: '/images/baidu.png',
+    timeline: [
+      { date: '2025-08', content: '码题杯决赛，AC 5（好几个题都是现推数据结构）' },
+      { date: '2025-07', content: '码题杯初赛（记不清第几场），AC 2（进了国赛）' },
+      { date: '2024-06', content: '百度之星初赛(第三场)，AC 1(这一年没进国赛，继续沉淀)' },
+      { date: '2024-06', content: '百度之星初赛(第一场)，AC 1' },
+      { date: '2023-08', content: '百度之星初赛(第一场)，AC 0' },
+    ]
+  },
+  {
+    id: 'raicom',
+    name: 'raicom',
+    fullname: '睿抗机器人开发者大赛（RAICOM）编程技能赛道',
+    icon: '/images/raicom.png',
+    timeline: [
+      { date: '2025-08', content: '获国二等奖' },
+      { date: '2025-07', content: '获省一等奖，进入国赛' },
+      { date: '2024-08', content: '获国三等奖' },
+      { date: '2024-07', content: '获省二等奖，进入国赛' },
+    ]
   }
 ]
 
@@ -83,6 +153,11 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
           </Section>
         )
       }
+      <Section title='competition'>
+        <p class='text-muted-foreground'>
+          <Competition competitions={competitions}/>
+        </p>
+      </Section>
       <Section title='Education'>
         <Card
           as='a'
@@ -107,17 +182,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
           }
         </div>
       </Section>
-
-      <!--<Section title="Certifications">-->
-      <!--  <Card-->
-      <!--    as="a"-->
-      <!--    heading="Mathematical Modeling Competition"-->
-      <!--    subheading='Won the first prize of the national award in the National Mathematical Modeling Competition of "Higher Education Society"'-->
-      <!--    date="October 2023"-->
-      <!--    href="http://www.mcm.edu.cn"-->
-      <!--  />-->
-      <!--</Section>-->
-
+      
       <Section title='Skills'>
         <SkillLayout title='Languages' skills={languages} />
         <SkillLayout title='Frontend' skills={frontend} />
