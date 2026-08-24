@@ -68,6 +68,11 @@
           "intro": "博客人的朋友圈",
           "link": "https://www.boyouquan.com/",
           "avatar": "https://www.boyouquan.com/assets/images/sites/logo/logo-small.png"
+        },{
+          "name": "BlogsClub",
+          "intro": "一个独立且相互包容的个人博客俱乐部",
+          "link": "https://www.blogsclub.org/",
+          "avatar": "https://www.blogsclub.org/usr/themes/default/favicon.png"
         }
       ]
     }
