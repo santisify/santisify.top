@@ -53,12 +53,12 @@ console.log(u, v) // 1 3
 ```
 使用场景：
 1. 实现两数交换
-   ```js
+```js
 let a = 10, b = 20
 console.log(a, b); // 10 20
 [a, b] = [b, a]
 console.log(a, b); // 20 10
-   ```
+```
 2. 使用函数返回值
 ```js
 function fn() {
