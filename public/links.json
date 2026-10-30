@@ -21,14 +21,15 @@
           "link": "https://blog.liushen.fun/",
           "avatar": "https://blog.liushen.fun/info/avatar.ico",
           "intro": "柳影曳曳，清酒孤灯，扬笔撒墨，心境如霜"
-        },{
+        },
+        {
           "name": "朽丘秋雨",
           "link": "https://koxiuqiu.cn",
-          "intro" : "一定会和喜欢的人在夏日夜晚牵手慢步",
+          "intro": "一定会和喜欢的人在夏日夜晚牵手慢步",
           "avatar": "https://koxiuqiu.cn/img/avatar/xiaokeb.png"
         },
         {
-          "name":"韩小韩博客",
+          "name": "韩小韩博客",
           "link": "https://www.vvhan.com/",
           "avatar": "https://q1.qlogo.cn/g?b=qq&nk=1655466387&s=640",
           "desc": "运气是计划之外的东西."
@@ -38,14 +39,19 @@
           "link": "https://blog.mckero.com/",
           "avatar": "https://cdn.jsdelivr.net/gh/MCKero6423/picx-images-hosting@master/mmexport1759493247573.8hguugc4dt.png",
           "desc": "MC_Kero的博客"
+        },
+        {
+          "name": "渡劫博客",
+          "link": "https://www.520691.xyz",
+          "avatar": "https://www.520691.xyz/images/16456faa-fdea-4a15-9d01-88efd5863791.jpg",
+          "intro": "个人全栈开发者，cf生态爱好者"
         }
       ]
     },
     {
       "id_name": "inactive-links",
       "desc": "Inactive or rule-breaking friends",
-      "link_list": [
-      ]
+      "link_list": []
     },
     {
       "id_name": "special-links",
@@ -74,7 +80,8 @@
           "intro": "博客人的朋友圈",
           "link": "https://www.boyouquan.com/",
           "avatar": "https://www.boyouquan.com/assets/images/sites/logo/logo-small.png"
-        },{
+        },
+        {
           "name": "BlogsClub",
           "intro": "一个独立且相互包容的个人博客俱乐部",
           "link": "https://www.blogsclub.org/",
